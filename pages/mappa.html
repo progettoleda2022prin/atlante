@@ -6,15 +6,15 @@
     <title>Mappa Interattiva</title>
     
     <link rel="icon" href="data:;base64,=" />
-  <script type="module" crossorigin src="/leda/assets/js/mappa.js"></script>
-  <link rel="modulepreload" crossorigin href="/leda/assets/js/universalFooter-BH0r178q.js">
-  <link rel="modulepreload" crossorigin href="/leda/assets/js/dataParser-7VK0E9mz.js">
-  <link rel="modulepreload" crossorigin href="/leda/assets/js/_commonjsHelpers-BosuxZz1.js">
-  <link rel="modulepreload" crossorigin href="/leda/assets/js/initMap-SJMGpn5m.js">
-  <link rel="modulepreload" crossorigin href="/leda/assets/js/modalRenderer-Cg3dEo6B.js">
-  <link rel="stylesheet" crossorigin href="/leda/assets/css/universalFooter.css">
-  <link rel="stylesheet" crossorigin href="/leda/assets/css/initMap.css">
-  <link rel="stylesheet" crossorigin href="/leda/assets/css/mappa.css">
+  <script type="module" crossorigin src="/atlante/assets/js/mappa.js"></script>
+  <link rel="modulepreload" crossorigin href="/atlante/assets/js/universalFooter-DRDAn_Zc.js">
+  <link rel="modulepreload" crossorigin href="/atlante/assets/js/dataParser-DPOaL89J.js">
+  <link rel="modulepreload" crossorigin href="/atlante/assets/js/_commonjsHelpers-BosuxZz1.js">
+  <link rel="modulepreload" crossorigin href="/atlante/assets/js/initMap-CoPbO_Us.js">
+  <link rel="modulepreload" crossorigin href="/atlante/assets/js/modalRenderer-BQCKlDBe.js">
+  <link rel="stylesheet" crossorigin href="/atlante/assets/css/universalFooter.css">
+  <link rel="stylesheet" crossorigin href="/atlante/assets/css/initMap.css">
+  <link rel="stylesheet" crossorigin href="/atlante/assets/css/mappa.css">
 </head>
 <body class="h-screen flex flex-col" id="map-page">
 
@@ -42,24 +42,48 @@
         <!-- Results Panel -->
         <div id="results-panel" class="overlay-panel panel-closed-right absolute right-0 top-0 bottom-0 w-30 z-50 shadow-lg overflow-auto">
             
-            <div class="results-container">
+            <div class="results-container h-full overflow-y-auto flex flex-col">
                 <div class="search-sort-container">
-                    <!-- Search Input -->
-                    <div class="mb-4">
+                <!-- CERCA -->
+                <div class="flex gap-2 mb-4 items-center">
+                    <div class="flex-1">
                         <input type="text" id="search-input" 
-                            class="w-full p-2 border rounded" 
-                            placeholder="Cerca...">
+                            class="border p-1 rounded w-full" 
+                            placeholder="Cerca tra le fonti...">
                     </div>
-
-                    <!-- Sort -->
-                    <div class="mb-4">
-                            <select id="sort-select" class="w-full p-2 border rounded-lg">
-                                <!-- Sort options will be populated by JavaScript -->
-                            </select>
+                    <div class="relative group">
+                        <button type="button" class="cursor-help">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </button>
+                        <div class="invisible group-hover:visible absolute right-0 top-8 w-64 px-4 py-3 bg-gray-900 text-white text-xs rounded-lg shadow-xl z-50 transition-opacity duration-200">
+                            <p><strong>Cerca:</strong> Usa la ricerca tesuale per trovare le fonti</p>
+                        </div>
                     </div>
                 </div>
+                <!-- ORDINA -->
+                <div class="flex gap-2 mb-4 items-center">
+                    <div class="flex-1">
+                        <select id="sort-select" class="w-full p-1 border rounded">
+                            <!-- popolato da JS -->
+                        </select>
+                    </div>
+                    <div class="relative group">
+                        <button type="button" class="cursor-help">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </button>
+                        <div class="invisible group-hover:visible absolute right-0 top-8 w-64 px-4 py-3 bg-gray-900 text-white text-xs rounded-lg shadow-xl z-50 transition-opacity duration-200">
+                            <p><strong>Ordina:</strong> Seleziona un criterio per ordinare le fonti</p>
+                        </div>
+                    </div>
+                </div>
+
+                </div>
                     
-                <div id="results" class="space-y-4">
+                <div id="results" class="space-y-4 flex-1 overflow-y-auto p-4">
                     <!-- Results will be populated by JavaScript -->
                 </div>
             </div>
@@ -127,11 +151,11 @@
                     <span class="text-secondary-700">luoghi</span>
                     <span class="text-gray-400">·</span>
                     <span id="unique-results-count" class="text-primary-800">0</span>
-                    <span class="text-primary-700">riferimenti</span>
+                    <span class="text-primary-700">fonti</span>
                 </div>
 
                 <button id="toggle-results" class="group nav-button flex items-center space-x-2 px-4 py-2 rounded-full shadow-lg hover:shadow-xl">
-                    <span class="font-medium">Riferimenti</span>
+                    <span class="font-medium">Fonti</span>
                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 group-hover:rotate-12 transition-transform duration-200">
                         <path d="M8 6.00067L21 6.00139M8 12.0007L21 12.0015M8 18.0007L21 18.0015M3.5 6H3.51M3.5 12H3.51M3.5 18H3.51M4 6C4 6.27614 3.77614 6.5 3.5 6.5C3.22386 6.5 3 6.27614 3 6C3 5.72386 3.22386 5.5 3.5 5.5C3.77614 5.5 4 5.72386 4 6ZM4 12C4 12.2761 3.77614 12.5 3.5 12.5C3.22386 12.5 3 12.2761 3 12C3 11.7239 3.22386 11.5 3.5 11.5C3.77614 11.5 4 11.7239 4 12ZM4 18C4 18.2761 3.77614 18.5 3.5 18.5C3.22386 18.5 3 18.2761 3 18C3 17.7239 3.22386 17.5 3.5 17.5C3.77614 17.5 4 17.7239 4 18Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
