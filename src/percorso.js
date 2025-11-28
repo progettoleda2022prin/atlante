@@ -91,7 +91,7 @@ function renderDocumentMetadata(documentInfo) {
             </div>
             <div class="mb-4 p-4 bg-gradient-to-br from-primary-50 to-accent-50 rounded-xl border border-primary-100">
                 <p class="text-xs font-semibold text-primary-700 mb-1.5 uppercase tracking-wide">Abstract</p>
-                <p class="text-sm text-gray-700 font-body leading-relaxed">${documentInfo.description}</p>
+                <p id="abstract-content" class="text-sm text-gray-700 font-body leading-relaxed"><p0>${documentInfo.description}</p>
             </div>
         </div>
     `;
@@ -484,10 +484,11 @@ function handleMapButtons() {
             svg.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
+
                 const mapUrl = `mappa.html?filter=Location&value=${encodeURIComponent(locationValue)}`;
                 window.open(mapUrl, '_blank', 'noopener,noreferrer');
             });
-            
+
             // Inserisci l'SVG dopo il bottone nascosto
             button.parentNode.insertBefore(svg, button.nextSibling);
         }

@@ -184,7 +184,7 @@ return `
     ${work.Description ? `
       <div class="flex items-stretch gap-2">
         <div class="w-1 bg-gradient-to-b from-primary-500 to-primary-600 rounded-full shadow-sm flex-shrink-0"></div>
-        <p class="text-xs text-gray-600 flex-1">${work.Description}</p>
+        <p class="text-xxs text-gray-600 flex-1 leading-tight">${work.Description}</p>
       </div>
     ` : ''}
     

@@ -11,7 +11,6 @@ import {
     ActiveFiltersPopupManager, 
     LayerSelectionPopupManager, 
     MarkersSelectionPopupManager, 
-    LegendPopupManager 
 } from './functionalitiesManager.js';
 
 const ELEMENT_IDS = {
@@ -32,7 +31,7 @@ const ELEMENT_IDS = {
     markersButton: 'map-markers-selector', // bottone per selettore tipo di marker
     bottomNav: 'bottom-nav', // contenitore barra di navigazione
     bottomNavContent: 'bottom-nav-content', // contenuto barra di navigazione
-    toggleLegendBtn: 'toggle-legend-btn' // bottone legenda
+    // toggleLegendBtn: 'toggle-legend-btn' // bottone legenda
 };
 
 export class NavBarRenderer {
@@ -231,12 +230,6 @@ export class NavBarRenderer {
             if (this.mapInstance) {
                 this.popups.markers = new MarkersSelectionPopupManager(this.mapInstance);
                 this.popups.markers.init();
-
-                // Init legend con delay
-                setTimeout(() => {
-                    this.popups.legend = new LegendPopupManager(this);
-                    this.popups.legend.init();
-                }, 5000);
             }
         });
     }
@@ -330,9 +323,9 @@ export class NavBarRenderer {
         tooltip.style.zIndex = '99999';
         tooltip.innerHTML = `
             <div class="space-y-1">
-                <div><strong class="text-yellow-300">Menzioni:</strong> Numero delle menzioni di luoghi nei riferimenti</div>
-                <div><strong class="text-green-300">Luoghi:</strong> Numero di luoghi unici menzionati</div>
-                <div><strong class="text-blue-300">Riferimenti:</strong> Numero di riferimenti che menzionano i luoghi</div>
+                <div><strong class="text-yellow-300">Menzioni:</strong> Numero di menzioni di luoghi nelle fonti</div>
+                <div><strong class="text-green-300">Luoghi:</strong> Numero di luoghi unici menzionati dalle fonti</div>
+                <div><strong class="text-blue-300">Riferimenti:</strong> Numero di fonti che menzionano i luoghi</div>
             </div>
             <div class="absolute top-full left-1/2 transform -translate-x-1/2 -mt-1">
                 <div class="border-4 border-transparent border-t-gray-900"></div>

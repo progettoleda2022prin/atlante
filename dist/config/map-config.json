@@ -2,9 +2,9 @@
   "project" : {
     "projectShortTitle": "LEDA",
     "projectThumbnailURL": "LEDA_logo.png",
-    "projectTitle": "For an Atlas of Italian Ecological Literature",
-    "projectSubtitle":"From the Great Acceleration to the Pandemic",
-    "projectDescription":"For an Atlas of Italian Ecological Literature è un progetto biennale (novembre 2023-novembre 2025) realizzato in collaborazione fra l'Università IULM di Milano, l'Università degli Studi di Siena e l'Università di Bologna. <br><br> L'obiettivo è realizzare il primo atlante della letteratura ecocritica italiana: uno strumento interattivo, basato su una struttura ipertestuale, che consentirà di visualizzare, interagire e ragionare sugli spazi di quei testi che hanno tematizzato in chiave critica il rapporto uomo-ambiente. Verranno presi in considerazione testi narrativi che vanno dalla Grande accelerazione alla Pandemia, dunque per un arco temporale di circa ottant'anni.",
+    "projectTitle": "Atlante digitale della letteratura ecologica italiana",
+    "projectSubtitle":"LEDA: Literary Ecology in a Digital Altlas",
+    "projectDescription":"L’<b>Atlante digitale della letteratura ecologica italiana</b> è il frutto del progetto <i>For an Atlas of Italian Ecological Literature: From the Great Acceleration to the Pandemic</i>, nato dalla collaborazione fra l’<i>Università IULM di Milano</i>, l'<i>Università degli Studi di Siena</i> e l’<i>Università di Bologna</i> nell’ambito del programma PRIN 2022 PNRR.<br><br>Si tratta di uno strumento interattivo che consente di visualizzare, interagire e ragionare sugli spazi di quei <i>testi che hanno tematizzato in chiave critica il rapporto uomo-ambiente</i>. <br><br> Al suo interno, trovano spazio circa <i>cento testi narrativi</i>, pubblicati in un arco temporale che va <i>dalla Grande accelerazione</i> degli anni Cinquanta <i>alla Pandemia</i> degli anni Venti del nuovo millennio. <br><br> Questi testi sono indagabili attraverso una <i>mappa</i>, ma anche a partire da una serie di indici e percorsi che consentono di riflettere sul rapporto fra letteratura, spazio e questioni ecocritiche. <br><br> L’atlante è frutto del progetto For an Atlas of Italian Ecological Literature: From the Great Acceleration to the Pandemic, nato dalla collaborazione fra l’<b>Università IULM di Milano</b>, l'<b>Università degli Studi di Siena</b> e l’<b>Università di Bologna</b> nell’ambito del programma PRIN 2022 PNRR. ",
     "mapInfoTitle": "Scopri l'Atlante",
     "mapInfoDescription": "Questa mappa interattiva ti permette di esplorare i luoghi descritti dalle opere selezionate. Clicca sui marker per visualizzare informazioni dettagliate."
   },
@@ -23,18 +23,24 @@
     "popup_description": "Note sullo spazio"
   },
   "modal_information": {
-    "Titolo": "Titolo",
-    "Autore": "Autore",
-    "Anno": "Anno di prima pubblicazione", 
-    "Editore": "Editore",
-    "Modo": "Modo",
-    "Temi Ecologici": "Temi Ecologici",
-    "Descrizione Ecocritica": "Descrizione dei Temi Ecocritici",
-    "Note sullo spazio": "Note",
-    "Tipologia dello Spazio": "Tipologia",
-    "Temporalità dello Spazio": "Temporalità", 
-    "Definizione dello spazio": "Definizione",
-    "Interpretazione": "Motivazione dello studioso"
+    "fields" :{
+    "catalogue": {
+      "Titolo": "Titolo",
+      "Autore": "Autore",
+      "Anno": "Anno di prima pubblicazione", 
+      "Editore": "Editore",
+      "Modo": "Modo",
+      "Temi Ecologici": "Temi Ecologici",
+      "Descrizione Ecocritica": "Descrizione dei Temi Ecocritici"
+    },
+    "geodata" : {
+      "Note sullo spazio": "Note",
+      "Tipologia del luogo": "Tipologia",
+      "Temporalità dello Spazio": "Temporalità", 
+      "Definizione dello spazio": "Definizione",
+      "Interpretazione": "Motivazione dello studioso"
+    }
+  }
   },
   "map": {
     "initialView": [41.8719, 12.5674],
@@ -62,10 +68,10 @@
     "debounceTime": 300,
     "defaultSort": "title_asc",
     "sortOptions": [
-      {"value": "title_asc", "label": "Titolo (Asc)"},
-      {"value": "title_desc", "label": "Titolo (Desc)"},
-      {"value": "date_asc", "label": "Anno (Asc)"},
-      {"value": "date_desc", "label": "Anno (Desc)"}
+      {"value": "title_asc", "label": "Titolo (Ascendente)"},
+      {"value": "title_desc", "label": "Titolo (Discendente)"},
+      {"value": "date_asc", "label": "Anno (Ascentende)"},
+      {"value": "date_desc", "label": "Anno (Discendente)"}
     ]
   },
   "resultsDisplay": {
@@ -93,62 +99,62 @@
     "Location": {
       "title": "I luoghi",
       "category": "Gli spazi narrati",
-      "size": 100,
+      "size": 500,
       "conjunction": false,
       "type": "simple"
     },
-    "Tipologia dello Spazio": {
-      "title": "Le tipologie",
+    "Tipologia del luogo": {
+      "title": "Le tipologie di spazio",
       "category": "Gli spazi narrati",
-      "size": 100,
+      "size": 500,
       "conjunction": false,
-      "type": "taxonomy"
+      "type": "simple"
     },
     "Temporalità dello Spazio": {
-      "title": "Il tempo",
+      "title": "Le collocazioni temporali",
       "category": "Gli spazi narrati",
-      "size": 100,
+      "size": 500,
       "conjunction": false,
       "type": "simple"
     },
     "Definizione dello spazio": {
-      "title": "Riferimento spaziale",
+      "title": "Gli stati di realtà",
       "category": "Gli spazi narrati",
-      "size": 100,
+      "size": 500,
       "conjunction": false,
       "type": "simple"
     },
     "Temi Ecologici": {
       "title": "I temi ecologici",
       "category": "I riferimenti letterari",
-      "size": 100,
+      "size": 500,
       "conjunction": false,
       "type": "taxonomy"
     },
     "Titolo": {
       "title": "I titoli",
       "category": "I riferimenti letterari",
-      "size": 100,
+      "size": 500,
       "conjunction": false,
       "type": "simple"
     },
     "Autore": {
       "title": "Gli autori",
-      "size": 100,
+      "size": 500,
       "category": "I riferimenti letterari",
       "conjunction": false,
       "type": "simple"
     },
     "Anno": {
       "title": "Gli anni di pubblicazione",
-      "size": 100,
+      "size": 500,
       "category": "I riferimenti letterari",
       "conjunction": false,
       "type": "range"
     },
     "Modo": {
       "title": "I modi",
-      "size": 100,
+      "size": 500,
       "category": "I riferimenti letterari",
       "conjunction": false,
       "type": "simple"

@@ -26,11 +26,87 @@ h1, h2, h3, h4, h5, h6 {
   @apply font-headings;
 }
 
+/* INDEX */
+
+.scroll-arrow-container {
+  position: fixed;
+  z-index: 100;
+  cursor: pointer;
+  bottom: 2rem;
+  opacity: 0;
+  transform: translateY(0);
+  /* Calcola il margine laterale del contenitore */
+  left: max(1rem, calc((100vw - 80rem) / 2 + 1rem)); /* 80rem = max-w-7xl (1280px) */
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  display: none;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+@media (min-width: 1024px) {
+  .scroll-arrow-container {
+    left: max(2rem, calc((100vw - 80rem) / 2 + 2rem));
+  }
+}
+
+.scroll-arrow-container.active {
+  display: block;
+  opacity: 0.7;
+}
+
+.scroll-arrow-container:hover {
+  opacity: 1;
+  transform: translateY(5px);
+}
+
+.scroll-arrow-svg {
+  @apply fill-secondary-500;
+  width: 50px;
+  height: 50px;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+  transition: all 0.3s ease;
+}
+
+.scroll-arrow-container:hover .scroll-arrow-svg {
+  @apply fill-secondary-600;
+  filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.4));
+  transform: scale(1.1);
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(15px);
+  }
+}
+
+/* Versione alternativa con pulsazione */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+/* Variante con colore secondary */
+.scroll-arrow-svg.secondary-color {
+  @apply fill-secondary-400;
+}
+
+.scroll-arrow-container:hover .scroll-arrow-svg.secondary-color {
+  @apply fill-secondary-500;
+}
+
 /* button, a {
   @apply font-body;
 } */
 
-/* Map container */
+/* Map container for both index and map */
 #map { 
   left: 0;
   width: 100vw;
@@ -71,7 +147,7 @@ body#map-page #map {
   flex-direction: column;
   gap: 1.5rem;
   max-width: 20rem;
-}
+} 
 
 .facet-hidden {
   display: none !important;
@@ -142,12 +218,12 @@ body#map-page #map {
   background: #ffffff;
   transition: all 0.3s ease;
   max-height: none;
-  overflow: visible;
+  /* overflow: visible; */
 }
 
 #results {
   max-height: 70vh;
-  overflow-y: auto;
+  /* overflow-y: auto; */
   overflow-x: hidden;
 }
 
@@ -225,8 +301,8 @@ input[type="checkbox"]:checked::before {
 .result-card p {
   margin: 0;
   color: #64748b;
-  font-size: 0.9rem;
-  line-height: 1.4;
+  font-size: 0.85rem;
+  line-height: 1.2;
 }
 
 .result-card .result-meta {
@@ -389,24 +465,6 @@ input[type="checkbox"].form-checkbox:indeterminate::after {
   background: linear-gradient(to bottom, #64748b, #475569);
 }
 
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-  .result-card {
-    @apply bg-gray-800 border-gray-700 text-white;
-  }
-  
-  .result-card h3 {
-    @apply text-gray-100;
-  }
-  
-  .result-card p {
-    @apply text-gray-300;
-  }
-  
-  .result-highlighted {
-    box-shadow: 0 0 20px rgba(var(--primary), 0.5);
-  }
-}
 
 /* Responsive Design */
 @media (max-width: 768px) {
@@ -1074,6 +1132,7 @@ header {
     align-items: center;
     justify-content: center;
     padding: 12px;
+    background-color: white;
 }
 
 .footer-logo-slide img {
@@ -1234,10 +1293,6 @@ header {
             @apply font-headings text-xl font-semibold text-gray-700 mt-4 mb-2;
         }
 
-        #content p {
-            @apply font-body text-lg text-gray-700 mb-4 leading-relaxed;
-        }
-
         #content ul, #content ol {
             @apply ml-6 mb-4 space-y-2;
         }
@@ -1263,7 +1318,7 @@ header {
         }
 
         #content blockquote {
-            @apply border-l-4 border-accent-500 pl-4 my-4 italic text-gray-600;
+            @apply border-l-4 border-accent-500 pl-4 my-4 italic;
         }
 
         #content table {
@@ -1303,12 +1358,20 @@ body.percorso #side-panel-content > div > div {
 
 body.percorso #content {
   @apply max-w-4xl mx-auto px-12 py-16 bg-white;
-  line-height: 1.8;
-  font-size: 14px;
+  flex:1; 
+  overflow-y:auto; 
+  transition: flex 0.3s ease;
 }
 
 body.percorso #content p {
+  @apply font-body text-lg text-black mb-4 leading-relaxed;
   text-align: justify;
+  line-height: 2;
+  font-size: 1rem;
+}
+
+body.percorso #abstract-content {
+  line-height: 1.5 !important
 }
 
  @keyframes fadeIn {
@@ -1338,7 +1401,10 @@ body.percorso #content p {
         min-width: 30vw;
         backdrop-filter: blur(8px);
         box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-        z-index:9999 !important
+        z-index:999999 !important
     }
+
+
+li[id^="footnote-"] {display:none !important} /* nascondde le footnote dalla fine del documento */
 
     

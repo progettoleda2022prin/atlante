@@ -53,6 +53,7 @@ export class UniversalNav {
             { text: 'Mappa', path: 'pages/mappa.html'},
             { text: 'Indici', path: 'pages/indici.html'},
             { text: 'Percorsi critici', path: 'pages/percorsi.html'},
+            { text: 'Progetto', path: 'https://ledaprin2022pnrr.altervista.org/'},
         ];
 
         const navHTML = this.generateNavHTML(navItems);
@@ -93,21 +94,57 @@ export class UniversalNav {
 
     generateNavHTML(items) {
         const desktopNav = items.map(item => {
-            const href = this.getRelativePath(item.path);
-            const isActive = this.isActivePath(item.path);
-            const activeClass = isActive ? 'text-primary-900 border-b-2 border-primary-600 pb-1' : 'text-gray-600 hover:text-primary-600';
+            const isExternal = item.path.startsWith('http://') || item.path.startsWith('https://');
+            const href = isExternal ? item.path : this.getRelativePath(item.path);
+            const target = isExternal ? 'target="_blank" rel="noopener noreferrer"' : '';
+            const isActive = !isExternal && this.isActivePath(item.path);
+            
+            let linkClass, linkContent;
+            
+            if (isExternal) {
+                linkClass = 'bg-primary-500 text-white px-4 py-2 rounded-lg hover:bg-primary-600 font-medium transition duration-200 flex items-center gap-2';
+                linkContent = `
+                    ${item.text}
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                `;
+            } else {
+                const activeClass = isActive ? 'text-primary-900 border-b-2 border-primary-600 pb-1' : 'text-gray-600 hover:text-primary-600';
+                linkClass = `nav-link ${activeClass} font-medium transition duration-200`;
+                linkContent = item.text;
+            }
+            
             const sectionData = item.section ? `data-section="${item.section}"` : '';
             
-            return `<a href="${href}" class="nav-link ${activeClass} font-medium transition duration-200" ${sectionData}>${item.text}</a>`;
+            return `<a href="${href}" ${target} class="${linkClass}" ${sectionData}>${linkContent}</a>`;
         }).join('');
 
         const mobileNav = items.map(item => {
-            const href = this.getRelativePath(item.path);
-            const isActive = this.isActivePath(item.path);
-            const activeClass = isActive ? 'text-primary-900 bg-primary-50 font-medium' : 'text-gray-600 hover:text-primary-600 hover:bg-gray-50';
+            const isExternal = item.path.startsWith('http://') || item.path.startsWith('https://');
+            const href = isExternal ? item.path : this.getRelativePath(item.path);
+            const target = isExternal ? 'target="_blank" rel="noopener noreferrer"' : '';
+            const isActive = !isExternal && this.isActivePath(item.path);
+            
+            let linkClass, linkContent;
+            
+            if (isExternal) {
+                linkClass = 'block px-4 py-3 bg-primary-500 text-white hover:bg-primary-600 font-medium transition duration-200 flex items-center justify-between';
+                linkContent = `
+                    ${item.text}
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                `;
+            } else {
+                const activeClass = isActive ? 'text-primary-900 bg-primary-50 font-medium' : 'text-gray-600 hover:text-primary-600 hover:bg-gray-50';
+                linkClass = `block px-4 py-3 ${activeClass} transition duration-200`;
+                linkContent = item.text;
+            }
+            
             const sectionData = item.section ? `data-section="${item.section}"` : '';
             
-            return `<a href="${href}" class="block px-4 py-3 ${activeClass} transition duration-200" ${sectionData}>${item.text}</a>`;
+            return `<a href="${href}" ${target} class="${linkClass}" ${sectionData}>${linkContent}</a>`;
         }).join('');
 
         return `
