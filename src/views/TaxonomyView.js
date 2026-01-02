@@ -27,12 +27,12 @@ export class TaxonomyView {
       rawValues.forEach(val => {
         const path = val.split('>').map(s => s.trim());
         let current = root;
-        
+
         path.forEach(segment => {
           if (!current[segment]) current[segment] = {};
           current = current[segment];
         });
-        
+
         if (!current._items) current._items = [];
         current._items.push(item);
       });
@@ -58,14 +58,14 @@ export class TaxonomyView {
   generateTabsMenu() {
     const container = document.createElement('div');
     container.className = 'mb-6';
-    
+
     const title = document.createElement('h3');
     title.className = 'text-sm font-medium text-slate-700 mb-2';
     title.textContent = 'Visualizzazione';
-    
+
     const buttons = document.createElement('div');
     buttons.className = 'flex flex-col gap-2';
-    
+
     const tabs = [
       { id: 'nested-list', label: 'Lista Annidata', icon: '📋' },
       { id: 'treemap', label: 'Treemap', icon: '🔲' },
@@ -87,7 +87,7 @@ export class TaxonomyView {
       tabButtons.push(button);
       buttons.appendChild(button);
     });
-    
+
     container.appendChild(title);
     container.appendChild(buttons);
     return container;
@@ -118,8 +118,8 @@ export class TaxonomyView {
 
   renderActiveView(container) {
     container.innerHTML = '';
-    
-    switch(this.activeTab) {
+
+    switch (this.activeTab) {
       case 'nested-list':
         this.renderNestedList(container);
         break;
@@ -151,7 +151,7 @@ export class TaxonomyView {
   shouldShowItem(key, items, currentPath) {
     if (!this.currentSearchTerm) return true;
     if (key.toLowerCase().includes(this.currentSearchTerm)) return true;
-    if (items && items.some(item => 
+    if (items && items.some(item =>
       (item.Name && item.Name.toLowerCase().includes(this.currentSearchTerm)) ||
       (item.Location && item.Location.toLowerCase().includes(this.currentSearchTerm))
     )) return true;
@@ -176,7 +176,7 @@ export class TaxonomyView {
     }
 
     const mapUrl = createMapUrlWithFilter(this.indexKey, taxonomyValue);
-    
+
     if (typeof window.navigateToMap === 'function') {
       window.navigateToMap(filterAction);
     } else {
@@ -191,20 +191,20 @@ export class TaxonomyView {
   renderNestedList(container) {
     const buildList = (obj, level = 0, parentPath = '') => {
       const listContainer = document.createElement("div");
-      
+
       Object.entries(obj).forEach(([key, value]) => {
         if (key === "_items") return;
 
         const currentPath = parentPath ? `${parentPath} > ${key}` : key;
         const items = value._items || [];
-        
+
         if (!this.shouldShowItem(key, items, currentPath)) return;
 
         const count = this.countItems(value);
         const hasChildren = Object.keys(value).some(k => k !== "_items");
         const hasDirectItems = items.length > 0;
         const itemId = `item-${level}-${key.replace(/\s+/g, '-')}`;
-        
+
         // LEAF NODE: only items, no children
         if (hasDirectItems && !hasChildren) {
           const itemContainer = document.createElement('div');
@@ -222,7 +222,7 @@ export class TaxonomyView {
             items: items, // Passa gli items per estrarre le descrizioni
             customClasses: this.getListItemClasses(level),
             titleClasses: this.getTitleSizeForLevel(level),
-            onToggle: () => {} // Nessuna azione al toggle
+            onToggle: () => { } // Nessuna azione al toggle
           });
 
           itemContainer.appendChild(header);
@@ -280,7 +280,7 @@ export class TaxonomyView {
         if (hasDirectItems) {
           const directItemsContainer = document.createElement("div");
           directItemsContainer.className = "ml-4 border-b border-slate-200";
-          
+
           const { header: directHeader } = ViewComponents.createAccordionHeader({
             title: `${key} (direttamente)`,
             subtitle: null,
@@ -293,9 +293,9 @@ export class TaxonomyView {
             items: items, // Passa gli items per estrarre le descrizioni
             customClasses: this.getListItemClasses(level + 1),
             titleClasses: this.getTitleSizeForLevel(level + 1),
-            onToggle: () => {} // Nessuna azione al toggle
+            onToggle: () => { } // Nessuna azione al toggle
           });
-          
+
           directItemsContainer.appendChild(directHeader);
           childrenWrapper.appendChild(directItemsContainer);
         }
@@ -320,7 +320,7 @@ export class TaxonomyView {
     const wrapper = document.createElement("div");
     wrapper.className = "bg-white rounded-lg shadow-sm divide-y divide-slate-200";
     const list = buildList(this.hierarchyData);
-    
+
     if (list.children.length === 0) {
       wrapper.appendChild(ViewComponents.createEmptyState('Nessun risultato trovato'));
     } else {
@@ -352,7 +352,7 @@ export class TaxonomyView {
   }
 
   getTitleSizeForLevel(level) {
-    switch(level) {
+    switch (level) {
       case 0: return 'text-lg text-primary-900';
       case 1: return 'text-base text-primary-800';
       case 2: return 'text-sm text-primary-700';
@@ -366,7 +366,7 @@ export class TaxonomyView {
 
   convertHierarchyToD3Format(obj, name = "root") {
     let children = [];
-    
+
     for (const [key, val] of Object.entries(obj)) {
       if (key === "_items") continue;
       const child = this.convertHierarchyToD3Format(val, key);
@@ -374,7 +374,7 @@ export class TaxonomyView {
     }
 
     let value = 0;
-    
+
     if (Array.isArray(obj._items) && obj._items.length > 0) {
       value = obj._items.length;
     }
@@ -389,7 +389,7 @@ export class TaxonomyView {
   renderTreemap(container) {
     const wrapper = document.createElement("div");
     wrapper.className = "bg-white rounded-lg shadow-sm p-6 flex justify-center";
-    
+
     const width = Math.min(800, container.clientWidth - 48);
     const height = 500;
 
@@ -461,14 +461,14 @@ export class TaxonomyView {
         .style("top", (event.pageY + 10) + "px");
       d3.select(event.currentTarget).select("rect").attr("opacity", 0.8);
     })
-    .on("mousemove", (event) => {
-      tooltip.style("left", (event.pageX + 10) + "px")
-             .style("top", (event.pageY + 10) + "px");
-    })
-    .on("mouseout", (event) => {
-      tooltip.style("opacity", 0);
-      d3.select(event.currentTarget).select("rect").attr("opacity", 1);
-    });
+      .on("mousemove", (event) => {
+        tooltip.style("left", (event.pageX + 10) + "px")
+          .style("top", (event.pageY + 10) + "px");
+      })
+      .on("mouseout", (event) => {
+        tooltip.style("opacity", 0);
+        d3.select(event.currentTarget).select("rect").attr("opacity", 1);
+      });
 
     container.appendChild(wrapper);
   }
@@ -480,7 +480,7 @@ export class TaxonomyView {
   renderSunburst(container) {
     const wrapper = document.createElement("div");
     wrapper.className = "bg-white rounded-lg shadow-sm p-6 flex justify-center";
-    
+
     const width = 500, radius = width / 2;
 
     const root = d3.partition()
@@ -527,18 +527,18 @@ export class TaxonomyView {
       .attr("stroke", "#fff")
       .attr("stroke-width", 1)
       .style("cursor", "pointer")
-      .on("mouseover", function(event, d) {
+      .on("mouseover", function (event, d) {
         tooltip.style("opacity", 1);
         tooltip.html(`<div class="font-semibold">${d.data.name}</div><div class="text-xs mt-1">Elementi: ${d.value}</div>`)
           .style("left", (event.pageX + 10) + "px")
           .style("top", (event.pageY + 10) + "px");
         d3.select(this).attr("opacity", 0.8);
       })
-      .on("mousemove", function(event) {
+      .on("mousemove", function (event) {
         tooltip.style("left", (event.pageX + 10) + "px")
-               .style("top", (event.pageY + 10) + "px");
+          .style("top", (event.pageY + 10) + "px");
       })
-      .on("mouseout", function() {
+      .on("mouseout", function () {
         tooltip.style("opacity", 0);
         d3.select(this).attr("opacity", 1);
       });

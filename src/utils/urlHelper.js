@@ -1,6 +1,6 @@
 // utils/urlHelper.js
 
-const base = import.meta.env.BASE_URL 
+const base = import.meta.env.BASE_URL
 
 export function getURLParameter(name) {
   const urlParams = new URLSearchParams(window.location.search);

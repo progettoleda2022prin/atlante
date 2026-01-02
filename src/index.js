@@ -13,28 +13,28 @@ function updateProjectDescription(config) {
   if (config.project && config.project.projectShortTitle) {
     document.title = config.project.projectShortTitle;
   }
-  
+
   // Aggiorna elementi in base agli attributi data-*
 
   const projectTitle = document.querySelector('[data-content="project-title"]');
-  if (projectTitle) projectTitle.innerHTML = config.project.projectTitle; 
-  
+  if (projectTitle) projectTitle.innerHTML = config.project.projectTitle;
+
   const projectSubtitle = document.querySelector('[data-content="project-subtitle"]');
-  if (projectSubtitle) projectSubtitle.innerHTML = config.project.projectSubtitle;  
-  
+  if (projectSubtitle) projectSubtitle.innerHTML = config.project.projectSubtitle;
+
   const mapInfoTitle = document.querySelector('[data-content="map-info-title"]');
   if (mapInfoTitle) mapInfoTitle.textContent = config.project.mapInfoTitle;
-  
+
   const mapInfoDescription = document.querySelector('[data-content="map-info-description"]');
   if (mapInfoDescription) mapInfoDescription.textContent = config.project.mapInfoDescription;
-  
+
   // **NUOVA GESTIONE THUMBNAIL**
   // Aggiunge/aggiorna la thumbnail del progetto usando data-content
   const projectThumbnail = document.querySelector('[data-content="project-thumbnail"]');
   if (projectThumbnail && config.project.projectThumbnailURL) {
     // Controlla se esiste già un'immagine
     let existingImage = projectThumbnail.querySelector('img');
-    
+
     if (existingImage) {
       // Se esiste già, aggiorna solo il src e l'alt
       existingImage.src = config.project.projectThumbnailURL;
@@ -42,13 +42,13 @@ function updateProjectDescription(config) {
     } else {
       // Pulisce il contenuto esistente
       projectThumbnail.innerHTML = '';
-      
+
       // Crea una nuova immagine
       const thumbnailImage = document.createElement('img');
       thumbnailImage.src = config.project.projectThumbnailURL;
       thumbnailImage.alt = config.project.projectShortTitle || 'Logo del progetto';
       thumbnailImage.className = 'h-20 object-contain'; // Dimensioni appropriate per l'header
-      
+
       projectThumbnail.appendChild(thumbnailImage);
     }
   } else if (projectThumbnail && !config.project.projectThumbnailURL) {
@@ -58,7 +58,7 @@ function updateProjectDescription(config) {
       existingImage.remove();
     }
   }
-  
+
   // Per il testo del titolo del progetto (codice esistente)
   const projectNameElement = document.querySelector('[data-content="project-name"]');
   if (projectNameElement) {
@@ -69,286 +69,286 @@ function updateProjectDescription(config) {
         lastTextNode = projectNameElement.childNodes[i];
       }
     }
-    
+
     if (lastTextNode) {
       lastTextNode.textContent = "Il " + config.project.projectName;
     }
   }
-  
+
   // Aggiorna i paragrafi della descrizione (codice esistente)
   const projectDescription = document.querySelector('[data-content="project-description"]');
-  if (projectDescription) projectDescription.innerHTML = config.project.projectDescription; 
-  
+  if (projectDescription) projectDescription.innerHTML = config.project.projectDescription;
+
   console.log("Contenuti aggiornati con successo");
 }
 
 function initializeScrollytelling() {
-    const sectionsContainer = document.querySelector('.sections-container');
-    const sections = document.querySelectorAll('.section-fullscreen[data-section-id]');
-    const indicators = document.querySelectorAll('.indicator');
-    const navLinks = document.querySelectorAll('.nav-link');
-    const sectionButtons = document.querySelectorAll('.section-btn');
-    
-    let currentSection = 0;
-    let isScrolling = false;
-    let isManualScroll = false;
+  const sectionsContainer = document.querySelector('.sections-container');
+  const sections = document.querySelectorAll('.section-fullscreen[data-section-id]');
+  const indicators = document.querySelectorAll('.indicator');
+  const navLinks = document.querySelectorAll('.nav-link');
+  const sectionButtons = document.querySelectorAll('.section-btn');
 
-    sectionButtons.forEach((button) => {
-        button.addEventListener('click', (e) => {
-            e.preventDefault(); // Previene comportamenti di default
-            
-            const targetSection = parseInt(button.getAttribute('data-section'));
-            
-            // Verifica che la sezione target sia valida
-            if (!isNaN(targetSection) && targetSection >= 0 && targetSection < sections.length) {
-                console.log(`Navigazione verso sezione ${targetSection} tramite bottone`);
-                goToSection(targetSection);
-            } else {
-                console.warn(`Sezione target non valida: ${targetSection}`);
-            }
-        });
+  let currentSection = 0;
+  let isScrolling = false;
+  let isManualScroll = false;
+
+  sectionButtons.forEach((button) => {
+    button.addEventListener('click', (e) => {
+      e.preventDefault(); // Previene comportamenti di default
+
+      const targetSection = parseInt(button.getAttribute('data-section'));
+
+      // Verifica che la sezione target sia valida
+      if (!isNaN(targetSection) && targetSection >= 0 && targetSection < sections.length) {
+        console.log(`Navigazione verso sezione ${targetSection} tramite bottone`);
+        goToSection(targetSection);
+      } else {
+        console.warn(`Sezione target non valida: ${targetSection}`);
+      }
     });
+  });
 
-function ensureContainerHeight() {
+  function ensureContainerHeight() {
     if (sectionsContainer) {
-        sectionsContainer.style.height = '100vh';
-        sectionsContainer.style.overflow = 'auto';
-        sectionsContainer.style.display = 'block';
-        // Add smooth scrolling if desired
-        sectionsContainer.style.scrollBehavior = 'smooth';
+      sectionsContainer.style.height = '100vh';
+      sectionsContainer.style.overflow = 'auto';
+      sectionsContainer.style.display = 'block';
+      // Add smooth scrolling if desired
+      sectionsContainer.style.scrollBehavior = 'smooth';
     }
-    
+
     // Ensure sections have correct height
     sections.forEach(section => {
-        section.style.minHeight = '100vh';
-        section.style.display = 'flex';
-        section.style.justifyContent = 'center'; // Center content
-        section.style.boxSizing = 'border-box'; // Include padding in calculations
+      section.style.minHeight = '100vh';
+      section.style.display = 'flex';
+      section.style.justifyContent = 'center'; // Center content
+      section.style.boxSizing = 'border-box'; // Include padding in calculations
     });
-    
+
     // Remove browser defaults more comprehensively
     const resetStyles = {
-        margin: '0',
-        padding: '0',
-        boxSizing: 'border-box'
+      margin: '0',
+      padding: '0',
+      boxSizing: 'border-box'
     };
-    
+
     Object.assign(document.body.style, resetStyles);
     Object.assign(document.documentElement.style, resetStyles);
-    
+
     // Optional: Set html height for better consistency
     document.documentElement.style.height = '100%';
     document.body.style.height = '100%';
-}
+  }
 
-    // Funzione per navigare a una sezione specifica
-    function goToSection(sectionIndex) {
-        if (sectionIndex < 0 || sectionIndex >= sections.length || isScrolling) return;
-        
-        isScrolling = true;
-        isManualScroll = true;
-        currentSection = sectionIndex;
-        
-        // Scroll alla sezione con calcolo preciso
-        const targetSection = sections[sectionIndex];
-        const headerHeight = 80; // Altezza header fisso
-        
-        sectionsContainer.scrollTo({
-            top: targetSection.offsetTop - headerHeight,
-            behavior: 'smooth'
-        });
-        
-        // Aggiorna indicatori e navigazione
-        updateIndicators();
-        updateNavigation();
-        
-        // Reset dei flag dopo l'animazione
-        setTimeout(() => {
-            isScrolling = false;
-            setTimeout(() => {
-                isManualScroll = false;
-            }, 50);
-        }, 600);
-    }
+  // Funzione per navigare a una sezione specifica
+  function goToSection(sectionIndex) {
+    if (sectionIndex < 0 || sectionIndex >= sections.length || isScrolling) return;
 
-    // Aggiorna gli indicatori attivi
-    function updateIndicators() {
-        indicators.forEach((indicator, index) => {
-            indicator.classList.toggle('active', index === currentSection);
-        });
-    }
+    isScrolling = true;
+    isManualScroll = true;
+    currentSection = sectionIndex;
 
-    // Aggiorna la navigazione
-    function updateNavigation() {
-        navLinks.forEach((link, index) => {
-            const sectionId = parseInt(link.getAttribute('data-section'));
+    // Scroll alla sezione con calcolo preciso
+    const targetSection = sections[sectionIndex];
+    const headerHeight = 80; // Altezza header fisso
 
-            // 🔹 Only update if link corresponds to scrollytelling sections
-            if (isNaN(sectionId)) return;
-
-            if (sectionId === currentSection) {
-                link.classList.remove('text-gray-600');
-                link.classList.add('text-primary-900', 'border-b-2', 'border-primary-600', 'pb-1');
-            } else {
-                link.classList.remove('text-primary-900', 'border-b-2', 'border-primary-600', 'pb-1');
-                link.classList.add('text-gray-600');
-            }
-        });
-    }
-
-
-    // Event listeners per gli indicatori
-    indicators.forEach((indicator, index) => {
-        indicator.addEventListener('click', () => {
-            goToSection(index);
-        });
+    sectionsContainer.scrollTo({
+      top: targetSection.offsetTop - headerHeight,
+      behavior: 'smooth'
     });
 
-    // FIX: Wheel scrolling migliorato con prevenzione della barra bianca
-    let lastWheelTime = 0;
-    let wheelTimeout;
-    let isWheelBlocked = false;
-
-    sectionsContainer.addEventListener('wheel', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        
-        // Blocca se c'è già un'animazione in corso o se il wheel è temporaneamente bloccato
-        if (isScrolling || isManualScroll || isWheelBlocked) return;
-        
-        // Soglia per movimenti minimi
-        if (Math.abs(e.deltaY) < 15) return;
-        
-        const now = Date.now();
-        
-        // Throttling più efficace
-        if (now - lastWheelTime < 300) return;
-        
-        lastWheelTime = now;
-        isWheelBlocked = true;
-        
-        if (e.deltaY > 0 && currentSection < sections.length - 1) {
-            goToSection(currentSection + 1);
-        } else if (e.deltaY < 0 && currentSection > 0) {
-            goToSection(currentSection - 1);
-        }
-        
-        // Rilascia il blocco dopo l'animazione
-        setTimeout(() => {
-            isWheelBlocked = false;
-        }, 650);
-        
-    }, { passive: false });
-
-    // Gestione delle frecce da tastiera
-    document.addEventListener('keydown', (e) => {
-        if (isScrolling || isManualScroll) return;
-
-        switch(e.key) {
-            case 'ArrowDown':
-            case 'PageDown':
-                e.preventDefault();
-                if (currentSection < sections.length - 1) {
-                    goToSection(currentSection + 1);
-                }
-                break;
-            case 'ArrowUp':
-            case 'PageUp':
-                e.preventDefault();
-                if (currentSection > 0) {
-                    goToSection(currentSection - 1);
-                }
-                break;
-            case 'Home':
-                e.preventDefault();
-                goToSection(0);
-                break;
-            case 'End':
-                e.preventDefault();
-                goToSection(sections.length - 1);
-                break;
-        }
-    });
-
-    // FIX: Detecta la sezione attuale durante lo scroll manuale (MIGLIORATA)
-    let scrollDetectionTimeout;
-    sectionsContainer.addEventListener('scroll', () => {
-        // Solo se non è uno scroll programmatico
-        if (isScrolling || isManualScroll) return;
-
-        clearTimeout(scrollDetectionTimeout);
-        scrollDetectionTimeout = setTimeout(() => {
-            const scrollTop = sectionsContainer.scrollTop + 80;
-            let newSection = currentSection;
-            
-            // Trova la sezione più vicina al centro dello schermo
-            let minDistance = Infinity;
-            sections.forEach((section, index) => {
-                const sectionCenter = section.offsetTop - 80 + (section.offsetHeight / 2);
-                const distance = Math.abs(scrollTop + (window.innerHeight / 2) - sectionCenter);
-                
-                if (distance < minDistance) {
-                    minDistance = distance;
-                    newSection = index;
-                }
-            });
-            
-            if (currentSection !== newSection) {
-                currentSection = newSection;
-                updateIndicators();
-                updateNavigation();
-            }
-        }, 50);
-    });
-
-    // FIX: Gestione del tocco per dispositivi mobili (MIGLIORATA)
-    let touchStartY = 0;
-    let touchEndY = 0;
-    let touchStartTime = 0;
-
-    sectionsContainer.addEventListener('touchstart', (e) => {
-        touchStartY = e.touches[0].clientY;
-        touchStartTime = Date.now();
-    }, { passive: true });
-
-    sectionsContainer.addEventListener('touchend', (e) => {
-        if (isScrolling || isManualScroll) return;
-        
-        const touchEndTime = Date.now();
-        const touchDuration = touchEndTime - touchStartTime;
-        
-        // Ignora tocchi troppo lunghi (probabilmente scroll normale)
-        if (touchDuration > 300) return;
-        
-        touchEndY = e.changedTouches[0].clientY;
-        const touchDiff = touchStartY - touchEndY;
-        
-        // Minimo movimento per attivare il cambio sezione
-        if (Math.abs(touchDiff) > 80) {
-            if (touchDiff > 0 && currentSection < sections.length - 1) {
-                // Swipe verso l'alto - vai alla sezione successiva
-                goToSection(currentSection + 1);
-            } else if (touchDiff < 0 && currentSection > 0) {
-                // Swipe verso il basso - vai alla sezione precedente
-                goToSection(currentSection - 1);
-            }
-        }
-    }, { passive: true });
-
-    // FIX: Gestione del resize della finestra
-    window.addEventListener('resize', () => {
-        ensureContainerHeight();
-    });
-
-    // FIX: Inizializzazione con correzione dell'altezza
-    ensureContainerHeight();
+    // Aggiorna indicatori e navigazione
     updateIndicators();
     updateNavigation();
-    
-    // FIX: Forza un reflow dopo l'inizializzazione
+
+    // Reset dei flag dopo l'animazione
     setTimeout(() => {
-        ensureContainerHeight();
-    }, 100);
+      isScrolling = false;
+      setTimeout(() => {
+        isManualScroll = false;
+      }, 50);
+    }, 600);
+  }
+
+  // Aggiorna gli indicatori attivi
+  function updateIndicators() {
+    indicators.forEach((indicator, index) => {
+      indicator.classList.toggle('active', index === currentSection);
+    });
+  }
+
+  // Aggiorna la navigazione
+  function updateNavigation() {
+    navLinks.forEach((link, index) => {
+      const sectionId = parseInt(link.getAttribute('data-section'));
+
+      // 🔹 Only update if link corresponds to scrollytelling sections
+      if (isNaN(sectionId)) return;
+
+      if (sectionId === currentSection) {
+        link.classList.remove('text-gray-600');
+        link.classList.add('text-primary-900', 'border-b-2', 'border-primary-600', 'pb-1');
+      } else {
+        link.classList.remove('text-primary-900', 'border-b-2', 'border-primary-600', 'pb-1');
+        link.classList.add('text-gray-600');
+      }
+    });
+  }
+
+
+  // Event listeners per gli indicatori
+  indicators.forEach((indicator, index) => {
+    indicator.addEventListener('click', () => {
+      goToSection(index);
+    });
+  });
+
+  // FIX: Wheel scrolling migliorato con prevenzione della barra bianca
+  let lastWheelTime = 0;
+  let wheelTimeout;
+  let isWheelBlocked = false;
+
+  sectionsContainer.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    // Blocca se c'è già un'animazione in corso o se il wheel è temporaneamente bloccato
+    if (isScrolling || isManualScroll || isWheelBlocked) return;
+
+    // Soglia per movimenti minimi
+    if (Math.abs(e.deltaY) < 15) return;
+
+    const now = Date.now();
+
+    // Throttling più efficace
+    if (now - lastWheelTime < 300) return;
+
+    lastWheelTime = now;
+    isWheelBlocked = true;
+
+    if (e.deltaY > 0 && currentSection < sections.length - 1) {
+      goToSection(currentSection + 1);
+    } else if (e.deltaY < 0 && currentSection > 0) {
+      goToSection(currentSection - 1);
+    }
+
+    // Rilascia il blocco dopo l'animazione
+    setTimeout(() => {
+      isWheelBlocked = false;
+    }, 650);
+
+  }, { passive: false });
+
+  // Gestione delle frecce da tastiera
+  document.addEventListener('keydown', (e) => {
+    if (isScrolling || isManualScroll) return;
+
+    switch (e.key) {
+      case 'ArrowDown':
+      case 'PageDown':
+        e.preventDefault();
+        if (currentSection < sections.length - 1) {
+          goToSection(currentSection + 1);
+        }
+        break;
+      case 'ArrowUp':
+      case 'PageUp':
+        e.preventDefault();
+        if (currentSection > 0) {
+          goToSection(currentSection - 1);
+        }
+        break;
+      case 'Home':
+        e.preventDefault();
+        goToSection(0);
+        break;
+      case 'End':
+        e.preventDefault();
+        goToSection(sections.length - 1);
+        break;
+    }
+  });
+
+  // FIX: Detecta la sezione attuale durante lo scroll manuale (MIGLIORATA)
+  let scrollDetectionTimeout;
+  sectionsContainer.addEventListener('scroll', () => {
+    // Solo se non è uno scroll programmatico
+    if (isScrolling || isManualScroll) return;
+
+    clearTimeout(scrollDetectionTimeout);
+    scrollDetectionTimeout = setTimeout(() => {
+      const scrollTop = sectionsContainer.scrollTop + 80;
+      let newSection = currentSection;
+
+      // Trova la sezione più vicina al centro dello schermo
+      let minDistance = Infinity;
+      sections.forEach((section, index) => {
+        const sectionCenter = section.offsetTop - 80 + (section.offsetHeight / 2);
+        const distance = Math.abs(scrollTop + (window.innerHeight / 2) - sectionCenter);
+
+        if (distance < minDistance) {
+          minDistance = distance;
+          newSection = index;
+        }
+      });
+
+      if (currentSection !== newSection) {
+        currentSection = newSection;
+        updateIndicators();
+        updateNavigation();
+      }
+    }, 50);
+  });
+
+  // FIX: Gestione del tocco per dispositivi mobili (MIGLIORATA)
+  let touchStartY = 0;
+  let touchEndY = 0;
+  let touchStartTime = 0;
+
+  sectionsContainer.addEventListener('touchstart', (e) => {
+    touchStartY = e.touches[0].clientY;
+    touchStartTime = Date.now();
+  }, { passive: true });
+
+  sectionsContainer.addEventListener('touchend', (e) => {
+    if (isScrolling || isManualScroll) return;
+
+    const touchEndTime = Date.now();
+    const touchDuration = touchEndTime - touchStartTime;
+
+    // Ignora tocchi troppo lunghi (probabilmente scroll normale)
+    if (touchDuration > 300) return;
+
+    touchEndY = e.changedTouches[0].clientY;
+    const touchDiff = touchStartY - touchEndY;
+
+    // Minimo movimento per attivare il cambio sezione
+    if (Math.abs(touchDiff) > 80) {
+      if (touchDiff > 0 && currentSection < sections.length - 1) {
+        // Swipe verso l'alto - vai alla sezione successiva
+        goToSection(currentSection + 1);
+      } else if (touchDiff < 0 && currentSection > 0) {
+        // Swipe verso il basso - vai alla sezione precedente
+        goToSection(currentSection - 1);
+      }
+    }
+  }, { passive: true });
+
+  // FIX: Gestione del resize della finestra
+  window.addEventListener('resize', () => {
+    ensureContainerHeight();
+  });
+
+  // FIX: Inizializzazione con correzione dell'altezza
+  ensureContainerHeight();
+  updateIndicators();
+  updateNavigation();
+
+  // FIX: Forza un reflow dopo l'inizializzazione
+  setTimeout(() => {
+    ensureContainerHeight();
+  }, 100);
 }
 
 // ========================================
@@ -360,79 +360,79 @@ function ensureContainerHeight() {
 const scrollArrow = document.getElementById('scroll-down-arrow');
 
 function updateScrollArrow() {
-    const sections = document.querySelectorAll('.section-fullscreen[data-section-id]');
-    
-    if (!scrollArrow || sections.length === 0) return;
-    
-    // Trova la sezione corrente visibile usando getBoundingClientRect
-    const windowHeight = window.innerHeight;
-    
-    let currentSectionId = null;
-    let maxVisibleArea = 0;
-    
-    sections.forEach((section) => {
-        const rect = section.getBoundingClientRect();
-        const sectionId = section.getAttribute('data-section-id');
-        
-        // Calcola quanta area della sezione è visibile nel viewport
-        const visibleTop = Math.max(0, rect.top);
-        const visibleBottom = Math.min(windowHeight, rect.bottom);
-        const visibleHeight = Math.max(0, visibleBottom - visibleTop);
-        
-        // La sezione con più area visibile è quella corrente
-        if (visibleHeight > maxVisibleArea) {
-            maxVisibleArea = visibleHeight;
-            currentSectionId = sectionId;
-        }
-    });
-    
-    console.log('Current Section ID:', currentSectionId);
-    
-    // Se siamo nella sezione 3 (ultima), nascondi la freccia
-    if (currentSectionId === '3') {
-        scrollArrow.classList.remove('active');
-        return;
+  const sections = document.querySelectorAll('.section-fullscreen[data-section-id]');
+
+  if (!scrollArrow || sections.length === 0) return;
+
+  // Trova la sezione corrente visibile usando getBoundingClientRect
+  const windowHeight = window.innerHeight;
+
+  let currentSectionId = null;
+  let maxVisibleArea = 0;
+
+  sections.forEach((section) => {
+    const rect = section.getBoundingClientRect();
+    const sectionId = section.getAttribute('data-section-id');
+
+    // Calcola quanta area della sezione è visibile nel viewport
+    const visibleTop = Math.max(0, rect.top);
+    const visibleBottom = Math.min(windowHeight, rect.bottom);
+    const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+
+    // La sezione con più area visibile è quella corrente
+    if (visibleHeight > maxVisibleArea) {
+      maxVisibleArea = visibleHeight;
+      currentSectionId = sectionId;
     }
-    
-    // Altrimenti mostra la freccia e imposta target = currentSectionId + 1
-    if (currentSectionId !== null) {
-        scrollArrow.classList.add('active');
-        
-        // ⭐ LOGICA: PRENDE SEZIONE CORRENTE E AGGIUNGE 1
-        const targetSection = parseInt(currentSectionId) + 1;
-        scrollArrow.setAttribute('data-target-section', targetSection);
-        console.log('Target Section:', targetSection);
-    }
+  });
+
+  console.log('Current Section ID:', currentSectionId);
+
+  // Se siamo nella sezione 3 (ultima), nascondi la freccia
+  if (currentSectionId === '3') {
+    scrollArrow.classList.remove('active');
+    return;
+  }
+
+  // Altrimenti mostra la freccia e imposta target = currentSectionId + 1
+  if (currentSectionId !== null) {
+    scrollArrow.classList.add('active');
+
+    // ⭐ LOGICA: PRENDE SEZIONE CORRENTE E AGGIUNGE 1
+    const targetSection = parseInt(currentSectionId) + 1;
+    scrollArrow.setAttribute('data-target-section', targetSection);
+    console.log('Target Section:', targetSection);
+  }
 }
 
 // Click sulla freccia
 if (scrollArrow) {
-    scrollArrow.addEventListener('click', function(e) {
-        e.preventDefault();
-        
-        const targetSectionId = this.getAttribute('data-target-section');
-        
-        if (targetSectionId) {
-            const targetSection = document.querySelector(`[data-section-id="${targetSectionId}"]`);
-            
-            if (targetSection) {
-                // Usa la funzione goToSection esistente se disponibile
-                if (typeof goToSection === 'function') {
-                    goToSection(parseInt(targetSectionId));
-                } else {
-                    // Altrimenti scroll diretto
-                    targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            }
+  scrollArrow.addEventListener('click', function (e) {
+    e.preventDefault();
+
+    const targetSectionId = this.getAttribute('data-target-section');
+
+    if (targetSectionId) {
+      const targetSection = document.querySelector(`[data-section-id="${targetSectionId}"]`);
+
+      if (targetSection) {
+        // Usa la funzione goToSection esistente se disponibile
+        if (typeof goToSection === 'function') {
+          goToSection(parseInt(targetSectionId));
+        } else {
+          // Altrimenti scroll diretto
+          targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
-    });
+      }
+    }
+  });
 }
 
 // Previeni scroll orizzontale
-window.addEventListener('scroll', function() {
-    if (window.scrollX !== 0) {
-        window.scrollTo(0, window.scrollY);
-    }
+window.addEventListener('scroll', function () {
+  if (window.scrollX !== 0) {
+    window.scrollTo(0, window.scrollY);
+  }
 });
 
 // Aggiorna al caricamento
@@ -445,7 +445,7 @@ window.addEventListener('resize', updateScrollArrow);
 // Se usi sectionsContainer con scroll interno
 const sectionsContainer = document.querySelector('.sections-container');
 if (sectionsContainer) {
-    sectionsContainer.addEventListener('scroll', updateScrollArrow);
+  sectionsContainer.addEventListener('scroll', updateScrollArrow);
 }
 
 // Funzione principale asincrona per la mappa
@@ -453,10 +453,10 @@ async function initializeMap(config, data) {
   try {
     // Crea un elemento container con ID specifico per Leaflet preso dal config file 
     const mapId = 'map';
-    
+
     // Verifica se il container esiste già
     let mapContainer = document.getElementById(mapId);
-    
+
     // Assicurati che la struttura della configurazione sia completa
     if (!config.map) {
       console.warn('Configurazione della mappa mancante, utilizzo configurazione predefinita');
@@ -467,39 +467,39 @@ async function initializeMap(config, data) {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       };
     }
-    
+
     // Passa l'ID del container alla configurazione
     config.map.containerId = mapId;
-    
+
     console.log(`Inizializzazione mappa con container ID: "${mapId}"`);
-    
+
     // Inizializza la mappa con la configurazione UNA SOLA VOLTA
     const mapResult = initMap(config);
     const map = mapResult.map;
     const markers = mapResult.markers;
     const renderMarkers = mapResult.renderMarkers;
-    
-      // Aggiungi i dati alla mappa
-      if (data && Array.isArray(data)) {
-        console.log(`Aggiunti ${data.length} punti alla mappa`);
-        
-        // Usa la funzione renderMarkers per aggiungere i marker alla mappa già inizializzata
-        if (renderMarkers && typeof renderMarkers === 'function') {
-          renderMarkers(data);
-        } else {
-          console.warn('La funzione renderMarkers non è disponibile');
-        }
-        
-        // Rendi i dati disponibili globalmente per altri moduli
-        window.alpinismData = data;
+
+    // Aggiungi i dati alla mappa
+    if (data && Array.isArray(data)) {
+      console.log(`Aggiunti ${data.length} punti alla mappa`);
+
+      // Usa la funzione renderMarkers per aggiungere i marker alla mappa già inizializzata
+      if (renderMarkers && typeof renderMarkers === 'function') {
+        renderMarkers(data);
       } else {
-        console.warn('Nessun dato valido trovato o formato dati non valido');
+        console.warn('La funzione renderMarkers non è disponibile');
       }
-    
+
+      // Rendi i dati disponibili globalmente per altri moduli
+      window.alpinismData = data;
+    } else {
+      console.warn('Nessun dato valido trovato o formato dati non valido');
+    }
+
     console.log('Mappa inizializzata con successo');
   } catch (error) {
     console.error('Errore durante l\'inizializzazione della mappa:', error);
-    
+
     // Mostra un messaggio di errore visibile
     const errorContainer = document.querySelector('.map-container') || document.body;
     const errorMessage = document.createElement('div');
@@ -516,7 +516,7 @@ function generateIndexPreview(config) {
     console.warn('Nessuna configurazione aggregations trovata');
     return null;
   }
-  
+
   const aggregationsArray = Object.entries(config.aggregations);
   if (aggregationsArray.length === 0) {
     console.warn('Nessuna aggregation trovata');
@@ -526,59 +526,59 @@ function generateIndexPreview(config) {
   // Container principale centrato 100vh
   const container = document.createElement('div');
   container.className = 'w-full min-h-screen bg-gradient-to-br from-primary-50 via-white to-secondary-50 flex items-center justify-center relative overflow-hidden';
-  
+
   // Elementi decorativi semplici
   const deco1 = document.createElement('div');
   deco1.className = 'absolute top-10 left-10 w-20 h-20 bg-primary-200 rounded-full opacity-20';
   container.appendChild(deco1);
-  
+
   const deco2 = document.createElement('div');
   deco2.className = 'absolute bottom-10 right-10 w-24 h-24 bg-secondary-200 rounded-full opacity-15';
   container.appendChild(deco2);
-  
+
   // Contenuto centrato
   const content = document.createElement('div');
   content.className = 'text-center px-6 max-w-4xl mx-auto relative z-10';
-  
+
   // Badge
-  const badge = document.createElement('div');
-  badge.className = 'inline-flex items-center bg-primary-100 text-primary-700 px-4 py-2 rounded-full text-sm font-medium mb-6';
-  badge.innerHTML = `
-    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-    </svg>
-    Navigazione per indici
-  `;
-  
+  // const badge = document.createElement('div');
+  // badge.className = 'inline-flex items-center bg-primary-100 text-primary-700 px-4 py-2 rounded-full text-sm font-medium mb-6';
+  // badge.innerHTML = `
+  //   <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  //     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+  //   </svg>
+  //   Navigazione per indici
+  // `;
+
   // Titolo
   const title = document.createElement('h2');
   title.className = 'pb-6 text-4xl sm:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-primary-700 to-secondary-700 bg-clip-text text-transparent';
   title.textContent = 'Esplora le categorie';
-  
+
   // Descrizione
   const description = document.createElement('p');
   description.className = 'text-xl sm:text-2xl text-gray-600 mb-8 lg:mb-12';
-  description.textContent = 'Scopri contenuti organizzati per categoria attraverso i gli indici strutturati';
-  
+  description.textContent = 'Scopri i contenuti organizzati per categoria attraverso gli indici strutturati';
+
   // CTA Button
   const ctaButton = document.createElement('a');
   ctaButton.href = 'pages/indici.html';
   ctaButton.className = 'inline-flex items-center bg-primary-600 hover:bg-gradient-to-r hover:from-primary-600 hover:to-secondary-600 text-white px-8 py-4 lg:px-12 lg:py-6 rounded-xl font-semibold text-lg lg:text-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1 group';
-  
+
   ctaButton.innerHTML = `
     <span class="mr-3">Vai agli indici</span>
     <svg class="w-5 h-5 lg:w-6 lg:h-6 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5-5 5M6 12h12"></path>
     </svg>
   `;
-  
+
   // Assembla tutto
-  content.appendChild(badge);
+  // content.appendChild(badge);
   content.appendChild(title);
   content.appendChild(description);
   content.appendChild(ctaButton);
   container.appendChild(content);
-  
+
   return container;
 }
 
@@ -607,7 +607,7 @@ async function initializeApp() {
     // Carica la configurazione
     const config = await loadConfiguration();
     console.log('Configurazione caricata:', config);
-    
+
     // Inizializza la navigazione universale (navbar e footer)
     const universalNav = new UniversalNav(config);
     universalNav.render();
@@ -617,14 +617,14 @@ async function initializeApp() {
 
     // Aggiorna la descrizione del progetto
     updateProjectDescription(config);
-    
+
     // Inizializza le schede degli indici
     await initializeIndexPreview(config);
-    
+
     // Carica e processa i dati
     const data = await parseData();
     console.log('Dati caricati:', data);
-    
+
     // Inizializza la mappa
     await initializeMap(config, data);
 
@@ -632,7 +632,7 @@ async function initializeApp() {
     setTimeout(() => {
       initializeScrollytelling();
     }, 200);
-    
+
   } catch (error) {
     console.error('Errore durante l\'inizializzazione dell\'app:', error);
   }
@@ -646,10 +646,10 @@ document.addEventListener('DOMContentLoaded', () => {
   document.body.style.overflow = 'hidden'; // Previene lo scroll del body
   document.documentElement.style.margin = '0';
   document.documentElement.style.padding = '0';
-  
+
   // Inizializza l'app
   initializeApp();
-  
+
   // FIX: Controllo aggiuntivo dopo il caricamento completo
   window.addEventListener('load', () => {
     setTimeout(() => {

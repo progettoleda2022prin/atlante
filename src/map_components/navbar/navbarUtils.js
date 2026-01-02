@@ -49,23 +49,23 @@ export const DOMUtils = {
  */
 export const PositionUtils = {
     positionPopup(popup, referenceElement, options = {}) {
-        const { 
-            offset = 10, 
-            maxWidth = 288, 
-            placement = 'above' 
+        const {
+            offset = 10,
+            maxWidth = 288,
+            placement = 'above'
         } = options;
 
         const rect = referenceElement.getBoundingClientRect();
-        
+
         // Posizionamento base
         popup.style.left = `${rect.left}px`;
-        
+
         if (placement === 'above') {
             popup.style.bottom = `${window.innerHeight - rect.top + offset}px`;
         } else {
             popup.style.top = `${rect.bottom + offset}px`;
         }
-        
+
         // Aggiusta se esce dallo schermo
         if (rect.left + maxWidth > window.innerWidth) {
             popup.style.left = `${window.innerWidth - maxWidth - 16}px`;
@@ -79,14 +79,14 @@ export const PositionUtils = {
 export const FilterUtils = {
     calculateActiveFiltersCount(filters) {
         if (!filters || typeof filters !== 'object') return 0;
-        
+
         let count = 0;
-        
+
         for (const filterValues of Object.values(filters)) {
             if (Array.isArray(filterValues)) {
                 // Range filter [min, max]
-                if (filterValues.length === 2 && 
-                    typeof filterValues[0] === 'number' && 
+                if (filterValues.length === 2 &&
+                    typeof filterValues[0] === 'number' &&
                     typeof filterValues[1] === 'number') {
                     count += 1;
                 } else {
@@ -100,7 +100,7 @@ export const FilterUtils = {
                 }
             }
         }
-        
+
         return count;
     },
 
@@ -145,9 +145,9 @@ export const NotificationUtils = {
         const notification = document.createElement('div');
         notification.className = `fixed top-4 left-1/2 transform -translate-x-1/2 z-50 px-4 py-2 rounded-lg shadow-lg ${this.getNotificationClasses(type)} transition-opacity duration-300`;
         notification.textContent = message;
-        
+
         document.body.appendChild(notification);
-        
+
         // Fade out e rimozione
         setTimeout(() => {
             notification.style.opacity = '0';
@@ -172,15 +172,15 @@ export const ResetUtils = {
         // Reset range sliders
         facetsContainer.querySelectorAll('[id$="-slider"]').forEach(sliderElement => {
             if (!sliderElement.noUiSlider) return;
-            
+
             try {
                 const range = sliderElement.noUiSlider.options.range;
                 sliderElement.noUiSlider.set([range.min, range.max]);
-                
+
                 const facetKey = sliderElement.id.replace('-slider', '');
                 const minInput = document.getElementById(`${facetKey}-min-input`);
                 const maxInput = document.getElementById(`${facetKey}-max-input`);
-                
+
                 if (minInput) minInput.value = range.min;
                 if (maxInput) maxInput.value = range.max;
             } catch (error) {
@@ -192,7 +192,7 @@ export const ResetUtils = {
         facetsContainer.querySelectorAll('.toggle-btn').forEach(button => {
             const path = button.dataset.path;
             const childrenContainer = facetsContainer.querySelector(`[data-parent="${path}"]`);
-            
+
             if (childrenContainer && childrenContainer.style.display !== 'none') {
                 childrenContainer.style.display = 'none';
                 button.textContent = '▶';

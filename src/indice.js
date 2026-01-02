@@ -95,11 +95,11 @@ class IndexPageManager {
     } else {
       // Fallback: se la view restituisce ancora un array, usa il primo per sidebar e il resto per content
       console.warn('View dovrebbe restituire {sidebar: [...], content: [...]} invece di un array');
-      
+
       if (Array.isArray(viewComponents) && viewComponents.length > 0) {
         // Fallback temporaneo per compatibilità
         sidebar.appendChild(viewComponents[0]);
-        
+
         for (let i = 1; i < viewComponents.length; i++) {
           content.appendChild(viewComponents[i]);
         }
@@ -120,7 +120,7 @@ class IndexPageManager {
   getIndexTypeDisplayName(viewType) {
     const typeNames = {
       'simple': 'Indice Semplice',
-      'taxonomy': 'Indice Tassonomico', 
+      'taxonomy': 'Indice Tassonomico',
       'range': 'Indice per Intervalli'
     };
     return typeNames[viewType] || 'Indice';
@@ -131,7 +131,7 @@ class IndexPageManager {
     // Usa il key come fallback se non c'è configurazione
     let indexName = indexKey;
     let indexCategory = null;
-    
+
     // Cerca prima in aggregations, poi in indices come fallback
     if (config && config.aggregations && config.aggregations[indexKey]) {
       indexName = config.aggregations[indexKey].title || indexKey;
@@ -152,7 +152,7 @@ class IndexPageManager {
   async initialize() {
     const indexKey = getURLParameter('index');
     const viewType = getURLParameter('view') || 'simple'; // default a simple
-    
+
     if (!indexKey) {
       console.error('Parametro index mancante nell\'URL');
       this.showError('Parametro index mancante nell\'URL');
@@ -162,7 +162,7 @@ class IndexPageManager {
     try {
       // Carica configurazione e dati
       const [config, data] = await Promise.all([
-        loadConfiguration(), 
+        loadConfiguration(),
         parseData()
       ]);
 
@@ -200,7 +200,7 @@ class IndexPageManager {
 
   showError(message) {
     this.ensureBodyPadding();
-    
+
     const errorContent = document.createElement('div');
     errorContent.className = 'page-content max-w-4xl mx-auto py-8';
     errorContent.innerHTML = `
@@ -208,7 +208,7 @@ class IndexPageManager {
         <strong>Errore:</strong> ${message}
       </div>
     `;
-    
+
     this.clearContainer();
     this.container.appendChild(errorContent);
   }
@@ -221,7 +221,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   try {
     // Carica la configurazione prima di inizializzare qualsiasi cosa
     const config = await loadConfiguration();
-    
+
     // Rende la configurazione disponibile globalmente se necessario
     window.appConfig = config;
 
@@ -231,14 +231,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const universalFooter = new UniversalFooter(config);
     universalFooter.render();
-    
+
     // Inizializza il page manager che gestirà tutto il resto
     const pageManager = new IndexPageManager();
     await pageManager.initialize();
-    
+
   } catch (error) {
     console.error('Errore durante l\'inizializzazione dell\'applicazione:', error);
-    
+
     // Fallback per errori critici
     document.body.innerHTML = `
       <div class="min-h-screen flex items-center justify-center bg-gray-50">

@@ -7,7 +7,7 @@ import '../../styles/tailwind.css'
 export class FacetRenderer {
   constructor(config) {
     this.config = config;
-    this.taxonomyRenderer = new TaxonomyRenderer(); 
+    this.taxonomyRenderer = new TaxonomyRenderer();
     this.rangeRenderer = new RangeRenderer();
     this.searchTerms = {}; // Store search terms for each facet
   }
@@ -31,11 +31,11 @@ export class FacetRenderer {
 
     Object.entries(this.config.aggregations).forEach(([facetKey, facetConfig]) => {
       const category = facetConfig.category || 'Other'; // Default category if none specified
-      
+
       if (!categorizedFacets[category]) {
         categorizedFacets[category] = [];
       }
-      
+
       categorizedFacets[category].push({ facetKey, facetConfig });
     });
 
@@ -45,31 +45,31 @@ export class FacetRenderer {
       const categoryDiv = document.createElement('div');
       categoryDiv.className = 'facet-category';
       categoryDiv.setAttribute('data-category', categoryName);
-      
+
       // Create category title
       const categoryTitle = document.createElement('h3');
       categoryTitle.className = 'facet-category-title';
       categoryTitle.textContent = categoryName;
       categoryDiv.appendChild(categoryTitle);
-      
+
       // Create container for facets within this category
       const categoryFacetsContainer = document.createElement('div');
       categoryFacetsContainer.className = 'facet-category-content';
-      
+
       // Render each facet in this category
       facets.forEach(({ facetKey, facetConfig }) => {
         const facetGroup = this._createFacetGroup(facetKey, facetConfig);
-        
+
         if (facetConfig.type === 'range') {
           this.rangeRenderer._renderRangeFacet(facetGroup, facetKey, facetConfig, aggregations, checkedState, state, onStateChange);
         } else if (facetConfig.type === 'taxonomy') {
           this.taxonomyRenderer._renderTaxonomyFacet(facetGroup, facetKey, facetConfig, aggregations, checkedState, state, onStateChange)
         } else if (facetConfig.type === 'simple') {
-            this._renderStandardFacet(facetGroup, facetKey, facetConfig, aggregations, checkedState, state, onStateChange);
+          this._renderStandardFacet(facetGroup, facetKey, facetConfig, aggregations, checkedState, state, onStateChange);
         }
         categoryFacetsContainer.appendChild(facetGroup);
       });
-      
+
       categoryDiv.appendChild(categoryFacetsContainer);
       facetsContainer.appendChild(categoryDiv);
     });
@@ -80,22 +80,22 @@ export class FacetRenderer {
   _filterFacetOptions(facetGroup, searchTerm) {
     const options = facetGroup.querySelectorAll('label');
     let visibleCount = 0;
-    
+
     options.forEach(option => {
       const text = option.textContent.toLowerCase();
       const isVisible = searchTerm === '' || text.includes(searchTerm);
-      
+
       // Usa una classe invece di modificare direttamente lo style
       option.classList.toggle('facet-hidden', !isVisible);
       if (isVisible) visibleCount++;
     });
-    
+
     this._showNoResultsMessage(facetGroup, visibleCount === 0 && searchTerm !== '');
   }
 
   _showNoResultsMessage(facetGroup, showMessage) {
     let noResultsDiv = facetGroup.querySelector('.no-results-disclaimer');
-    
+
     if (showMessage) {
       if (!noResultsDiv) {
         noResultsDiv = document.createElement('div');
@@ -110,20 +110,20 @@ export class FacetRenderer {
         noResultsDiv.style.display = 'none';
       }
     }
-    
+
     // Keep the facet group always visible
     facetGroup.style.display = 'block';
   }
 
   _updateCategoryVisibility() {
     const categories = document.querySelectorAll('.facet-category');
-    
+
     categories.forEach(category => {
       const visibleFacets = category.querySelectorAll('.facet-group[style*="display: block"], .facet-group:not([style*="display: none"])');
-      const hasVisibleFacets = Array.from(visibleFacets).some(facet => 
+      const hasVisibleFacets = Array.from(visibleFacets).some(facet =>
         facet.style.display !== 'none'
       );
-      
+
       category.style.display = hasVisibleFacets ? 'block' : 'none';
     });
   }
@@ -156,21 +156,21 @@ export class FacetRenderer {
     if (facetConfig.type == 'simple') {
       const searchContainer = document.createElement('div');
       searchContainer.className = 'facet-search mb-2';
-      
+
       const searchInput = document.createElement('input');
       searchInput.type = 'text';
       searchInput.className = 'facet-search-input w-full px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-primary-500';
       searchInput.placeholder = `Cerca...`;
       searchInput.id = `search-${facetKey}`;
-      
+
       const debouncedSearch = this._debounce((searchTerm) => {
         this._searchWithinFacet(facetKey, searchTerm);
       }, 300);
-      
+
       searchInput.addEventListener('input', (e) => {
         debouncedSearch(e.target.value);
       });
-      
+
       searchContainer.appendChild(searchInput);
       facetHeader.appendChild(searchContainer);
     }
@@ -182,27 +182,27 @@ export class FacetRenderer {
   _searchWithinFacet(facetKey, searchTerm) {
     const facetGroup = document.getElementById(`${facetKey}-facet`);
     if (!facetGroup) return;
-    
+
     this.searchTerms[facetKey] = searchTerm.toLowerCase().trim();
     this._filterFacetOptions(facetGroup, this.searchTerms[facetKey]);
   }
 
-_renderStandardFacet(facetGroup, facetKey, facetConfig, aggregations, checkedState, state, onStateChange) {
+  _renderStandardFacet(facetGroup, facetKey, facetConfig, aggregations, checkedState, state, onStateChange) {
     const optionsContainer = document.createElement('div');
     optionsContainer.className = 'facet-options space-y-2';
 
     const facetData = aggregations[facetKey] || [];
     const currentFilters = state.filters || {};
-    
+
     facetData.forEach(bucket => {
       const isSelected = currentFilters[facetKey]?.includes(bucket.key);
       const isDisabled = bucket.doc_count === 0;
-      
+
       const label = document.createElement('label');
       label.className = 'block facet-option flex items-center justify-between';
       label.style.display = 'flex';
       label.setAttribute('data-search-text', bucket.key.toLowerCase());
-      
+
       // Gestione stile disabilitato
       if (isDisabled) {
         label.classList.add('text-gray-400', 'cursor-not-allowed', 'opacity-50');
@@ -229,21 +229,20 @@ _renderStandardFacet(facetGroup, facetKey, facetConfig, aggregations, checkedSta
 
       const countContainer = document.createElement('span');
       countContainer.textContent = bucket.doc_count;
-      countContainer.className = `text-xs px-2 py-0.5 rounded-full flex-shrink-0 ml-auto ${
-        isDisabled 
-          ? 'text-gray-400 bg-gray-100' 
+      countContainer.className = `text-xs px-2 py-0.5 rounded-full flex-shrink-0 ml-auto ${isDisabled
+          ? 'text-gray-400 bg-gray-100'
           : 'text-secondary-500 bg-secondary-100'
-      }`;
+        }`;
 
       leftContainer.appendChild(text);
-      
+
       label.appendChild(leftContainer);
       label.appendChild(countContainer);
       optionsContainer.appendChild(label);
     });
 
     facetGroup.appendChild(optionsContainer);
-}
+  }
 
   _addFacetEventListeners(onStateChange) {
     if (!this.config.aggregations) {
@@ -253,7 +252,7 @@ _renderStandardFacet(facetGroup, facetKey, facetConfig, aggregations, checkedSta
 
     Object.keys(this.config.aggregations).forEach(facetKey => {
       const facetContainer = document.getElementById(`${facetKey}-facet`);
-      
+
       if (facetContainer) {
         facetContainer.querySelectorAll('input[type="checkbox"]').forEach(input => {
           input.addEventListener('change', (event) => {
@@ -273,7 +272,7 @@ _renderStandardFacet(facetGroup, facetKey, facetConfig, aggregations, checkedSta
   // Clear all search terms and show all facet options
   clearAllSearches() {
     this.searchTerms = {};
-    
+
     // Clear individual facet searches
     Object.keys(this.config.aggregations).forEach(facetKey => {
       const searchInput = document.getElementById(`search-${facetKey}`);
@@ -281,18 +280,18 @@ _renderStandardFacet(facetGroup, facetKey, facetConfig, aggregations, checkedSta
         searchInput.value = '';
       }
     });
-    
+
     // Show all options and categories
     const options = document.querySelectorAll('.facet-option, label');
     options.forEach(option => {
       option.style.display = 'block';
     });
-    
+
     const facetGroups = document.querySelectorAll('.facet-group');
     facetGroups.forEach(group => {
       group.style.display = 'block';
     });
-    
+
     const categories = document.querySelectorAll('.facet-category');
     categories.forEach(category => {
       category.style.display = 'block';
@@ -302,7 +301,7 @@ _renderStandardFacet(facetGroup, facetKey, facetConfig, aggregations, checkedSta
   _debounce(func, delay) {
     let timer;
     return function () {
-      clearTimeout(timer);  
+      clearTimeout(timer);
       timer = setTimeout(() => func.apply(this, arguments), delay);
     };
   }

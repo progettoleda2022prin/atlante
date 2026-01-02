@@ -42,7 +42,7 @@ function updatePopupButton(locationId, locationName, coords) {
   const isVisible = window.polygonState.visiblePolygons.has(locationId);
   const hasPolygon = hasPolygonForLocation(locationName);
 
-const eyeIcon = isVisible
+  const eyeIcon = isVisible
     ? `<svg class="w-6 h-6 text-white-800 dark:text-white" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><polygon points="12,4 20,9 20,17 12,22 4,17 4,9" fill="currentColor" fill-opacity="0.3" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="4" r="1.5" fill="currentColor"/><circle cx="20" cy="9" r="1.5" fill="currentColor"/><circle cx="20" cy="17" r="1.5" fill="currentColor"/><circle cx="12" cy="22" r="1.5" fill="currentColor"/><circle cx="4" cy="17" r="1.5" fill="currentColor"/><circle cx="4" cy="9" r="1.5" fill="currentColor"/></svg>`
     : `<svg class="w-6 h-6 text-white-800 dark:text-white" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><polygon points="12,4 20,9 20,17 12,22 4,17 4,9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3,2" opacity="0.5"/><circle cx="12" cy="4" r="1.5" fill="currentColor" opacity="0.5"/><circle cx="20" cy="9" r="1.5" fill="currentColor" opacity="0.5"/><circle cx="20" cy="17" r="1.5" fill="currentColor" opacity="0.5"/><circle cx="12" cy="22" r="1.5" fill="currentColor" opacity="0.5"/><circle cx="4" cy="17" r="1.5" fill="currentColor" opacity="0.5"/><circle cx="4" cy="9" r="1.5" fill="currentColor" opacity="0.5"/><line x1="3" y1="3" x2="21" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
   const title = hasPolygon
@@ -59,7 +59,7 @@ const eyeIcon = isVisible
 /**
  * Toggle per mostrare/nascondere poligoni
  */
-window.togglePolygonDisplay = function(locationId, locationName, coords) {
+window.togglePolygonDisplay = function (locationId, locationName, coords) {
   const polygonManager = window.polygonState.polygonManager;
 
   if (!polygonManager) {
@@ -136,8 +136,8 @@ function createPolygonButton(coords, locationName) {
     ? (isVisible ? 'Nascondi poligono' : 'Mostra poligono')
     : 'Poligono non disponibile';
 
-// Icona SVG - cambia in base allo stato
-const eyeIcon = isVisible ? 
+  // Icona SVG - cambia in base allo stato
+  const eyeIcon = isVisible ?
     // Poligono visibile (quando il poligono è visibile)
     `<svg class="w-6 h-6 text-white-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
       <polygon points="12,4 20,9 20,17 12,22 4,17 4,9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3,2" opacity="0.5"/>
@@ -159,7 +159,7 @@ const eyeIcon = isVisible ?
       <circle cx="4" cy="17" r="1.5" fill="currentColor"/>
       <circle cx="4" cy="9" r="1.5" fill="currentColor"/>
     </svg>`
-;
+    ;
 
   return `
     <button class="${buttonClass}" 
@@ -175,31 +175,31 @@ const eyeIcon = isVisible ?
  * Crea il contenuto dei popup (speciale o normale)
  */
 const createPopupContent = (name, items, coords, isSpecial, config) => {
-      
-      const cardConfig = config.result_cards;
-      
-      if (isSpecial) {
-          // Special popup format showing opera name and location
-          // Group items by title and year, collecting unique locations
-          const operaGroups = {};
-          items.forEach(item => {
-              const key = `${item[cardConfig.card_title] || ''} (${item[cardConfig.card_subtitle] || ''})`;
-              if (!operaGroups[key]) {
-                  operaGroups[key] = {
-                      title: item[cardConfig.card_title] || '',
-                      year: item[cardConfig.card_subtitle] || '',
-                      locations: new Set(),
-                      type: item[cardConfig.card_subtitle_2],
-                      description: item[cardConfig.popup_description] || '',
-                      item: item // Store reference to item for focus button
-                  };
-              }
-              if (item["Location"]) {
-                  operaGroups[key].locations.add(item["Location"]);
-              }
-          });
-          
-          return `<div class="max-w-sm bg-white rounded-xl shadow-2xl overflow-hidden border border-primary-100/50 backdrop-blur-sm">
+
+  const cardConfig = config.result_cards;
+
+  if (isSpecial) {
+    // Special popup format showing opera name and location
+    // Group items by title and year, collecting unique locations
+    const operaGroups = {};
+    items.forEach(item => {
+      const key = `${item[cardConfig.card_title] || ''} (${item[cardConfig.card_subtitle] || ''})`;
+      if (!operaGroups[key]) {
+        operaGroups[key] = {
+          title: item[cardConfig.card_title] || '',
+          year: item[cardConfig.card_subtitle] || '',
+          locations: new Set(),
+          type: item[cardConfig.card_subtitle_2],
+          description: item[cardConfig.popup_description] || '',
+          item: item // Store reference to item for focus button
+        };
+      }
+      if (item["Location"]) {
+        operaGroups[key].locations.add(item["Location"]);
+      }
+    });
+
+    return `<div class="max-w-sm bg-white rounded-xl shadow-2xl overflow-hidden border border-primary-100/50 backdrop-blur-sm">
               <!-- Header con gradiente animato -->
               <div class="bg-gradient-to-r from-primary-500 via-primary-600 to-secondary-600 text-white p-3 relative overflow-hidden">
                   <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12"></div>
@@ -318,9 +318,9 @@ const createPopupContent = (name, items, coords, isSpecial, config) => {
               </div>
           </div>
           `;
-      } else {
-          // Regular popup format
-return `
+  } else {
+    // Regular popup format
+    return `
           <div class="max-w-sm bg-white rounded-xl shadow-2xl overflow-hidden border border-secondary-100/50 backdrop-blur-sm">
               <!-- Header con gradiente animato -->
               <div class="bg-gradient-to-r from-primary-500 via-primary-600 to-secondary-600 text-white p-3 relative overflow-hidden">
@@ -439,7 +439,7 @@ return `
               </div>
           </div>
           `;
-      }
-    };
+  }
+};
 
 export { createPopupContent };

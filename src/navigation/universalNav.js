@@ -16,27 +16,27 @@ export class UniversalNav {
         if (path.endsWith('/')) {
             return path + 'index.html';
         }
-        
+
         if (!path.includes('.') && !path.endsWith('/')) {
             return path + '/index.html';
         }
-        
+
         return path;
     }
 
     calculateBasePath() {
         // Use the environmental base path from Vite
         const envBasePath = import.meta.env.BASE_URL || '/';
-        
+
         const currentDir = dirname(this.currentPath);
-        
+
         // Calculate relative path from current directory to the base
         const relativePath = relative(currentDir, envBasePath);
-        
+
         if (relativePath === '' || relativePath === '.') {
             return './';
         }
-        
+
         return relativePath || './';
     }
 
@@ -47,35 +47,35 @@ export class UniversalNav {
     // Metodo render pubblico
     render() {
         const nav = this.createNavElement();
-        
+
         const navItems = [
-            { text: 'Home', path: 'index.html'},
-            { text: 'Mappa', path: 'pages/mappa.html'},
-            { text: 'Indici', path: 'pages/indici.html'},
-            { text: 'Percorsi critici', path: 'pages/percorsi.html'},
-            { text: 'Progetto', path: 'https://ledaprin2022pnrr.altervista.org/'},
+            { text: 'Home', path: 'index.html' },
+            { text: 'Mappa', path: 'pages/mappa.html' },
+            { text: 'Indici', path: 'pages/indici.html' },
+            { text: 'Percorsi critici', path: 'pages/percorsi.html' },
+            { text: 'Progetto', path: 'https://ledaprin2022pnrr.altervista.org/' },
         ];
 
         const navHTML = this.generateNavHTML(navItems);
         nav.innerHTML = navHTML;
-        
+
         // Setup event listeners
         this.setupEventListeners();
         this.setupScrollListener();
-        
+
         console.log('Navigation rendered from:', this.currentPath, 'Base path:', this.basePath);
         return nav;
     }
 
     generateLogoHTML() {
         const logoImageUrl = this.config?.project?.projectThumbnailURL;
-        
+
         if (logoImageUrl && logoImageUrl.trim() !== '') {
             // Controlla se il percorso inizia già con imgs/
-            const imagePath = logoImageUrl.startsWith('imgs/') 
+            const imagePath = logoImageUrl.startsWith('imgs/')
                 ? this.getRelativePath(logoImageUrl)
                 : this.getRelativePath(`imgs/${logoImageUrl}`);
-                
+
             return `
                 <a href="${this.getRelativePath('index.html')}">
                     <img src="${imagePath}" alt="Logo" class="h-10 object-contain">
@@ -98,9 +98,9 @@ export class UniversalNav {
             const href = isExternal ? item.path : this.getRelativePath(item.path);
             const target = isExternal ? 'target="_blank" rel="noopener noreferrer"' : '';
             const isActive = !isExternal && this.isActivePath(item.path);
-            
+
             let linkClass, linkContent;
-            
+
             if (isExternal) {
                 linkClass = 'bg-primary-500 text-white px-4 py-2 rounded-lg hover:bg-primary-600 font-medium transition duration-200 flex items-center gap-2';
                 linkContent = `
@@ -114,9 +114,9 @@ export class UniversalNav {
                 linkClass = `nav-link ${activeClass} font-medium transition duration-200`;
                 linkContent = item.text;
             }
-            
+
             const sectionData = item.section ? `data-section="${item.section}"` : '';
-            
+
             return `<a href="${href}" ${target} class="${linkClass}" ${sectionData}>${linkContent}</a>`;
         }).join('');
 
@@ -125,9 +125,9 @@ export class UniversalNav {
             const href = isExternal ? item.path : this.getRelativePath(item.path);
             const target = isExternal ? 'target="_blank" rel="noopener noreferrer"' : '';
             const isActive = !isExternal && this.isActivePath(item.path);
-            
+
             let linkClass, linkContent;
-            
+
             if (isExternal) {
                 linkClass = 'block px-4 py-3 bg-primary-500 text-white hover:bg-primary-600 font-medium transition duration-200 flex items-center justify-between';
                 linkContent = `
@@ -141,9 +141,9 @@ export class UniversalNav {
                 linkClass = `block px-4 py-3 ${activeClass} transition duration-200`;
                 linkContent = item.text;
             }
-            
+
             const sectionData = item.section ? `data-section="${item.section}"` : '';
-            
+
             return `<a href="${href}" ${target} class="${linkClass}" ${sectionData}>${linkContent}</a>`;
         }).join('');
 
@@ -184,7 +184,7 @@ export class UniversalNav {
     isActivePath(targetPath) {
         const currentFile = basename(this.currentPath);
         const targetFile = basename(targetPath);
-        
+
         // For index.html, check if we're at the root of the app
         if (currentFile === 'index.html' && targetFile === 'index.html') {
             if (targetPath === 'index.html') {
@@ -192,11 +192,11 @@ export class UniversalNav {
                 // Use the environmental base path
                 const basePath = import.meta.env.BASE_URL || '/';
                 const normalizedBasePath = basePath.endsWith('/') ? basePath.slice(0, -1) : basePath;
-                
+
                 return currentDir === normalizedBasePath || currentDir === normalizedBasePath + '/';
             }
         }
-        
+
         return currentFile === targetFile;
     }
 
@@ -208,58 +208,58 @@ export class UniversalNav {
             header.className = 'bg-white shadow-lg border-b border-primary-100 w-full sticky top-0 z-40 transition-all duration-300';
             document.body.insertBefore(header, document.body.firstChild);
         }
-        
+
         // Memorizza il riferimento all'header
         this.header = header;
-        
+
         let nav = header.querySelector('nav');
         if (!nav) {
             nav = document.createElement('nav');
             nav.className = 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8';
             header.appendChild(nav);
         }
-        
+
         return nav;
     }
 
     setupScrollListener() {
         let ticking = false;
-        
+
         const updateNavbar = () => {
             if (!this.header) return;
-            
+
             const scrollY = window.scrollY;
             const shouldBeOverlay = scrollY > this.scrollThreshold;
-            
+
             if (shouldBeOverlay && !this.isScrolling) {
                 // Passa a modalità overlay
                 this.isScrolling = true;
                 this.header.className = 'bg-white shadow-lg border-b border-primary-100 w-full fixed top-0 z-40 transition-all duration-300';
-                
+
                 // Aggiungi padding al body per compensare l'header fixed
                 document.body.style.paddingTop = this.header.offsetHeight + 'px';
-                
+
             } else if (!shouldBeOverlay && this.isScrolling) {
                 // Torna a modalità normale
                 this.isScrolling = false;
                 this.header.className = 'bg-white shadow-lg border-b border-primary-100 w-full sticky top-0 z-40 transition-all duration-300';
-                
+
                 // Rimuovi il padding dal body
                 document.body.style.paddingTop = '';
             }
-            
+
             ticking = false;
         };
-        
+
         const requestUpdate = () => {
             if (!ticking) {
                 requestAnimationFrame(updateNavbar);
                 ticking = true;
             }
         };
-        
+
         window.addEventListener('scroll', requestUpdate, { passive: true });
-        
+
         // Cleanup function per rimuovere il listener se necessario
         this.cleanupScrollListener = () => {
             window.removeEventListener('scroll', requestUpdate);
@@ -272,7 +272,7 @@ export class UniversalNav {
             if (link && link.dataset.section) {
                 const section = link.dataset.section;
                 const href = link.getAttribute('href');
-                
+
                 if (href && href.includes('index.html')) {
                     e.preventDefault();
                     const baseUrl = href.split('#')[0];
@@ -284,7 +284,7 @@ export class UniversalNav {
         document.addEventListener('click', (e) => {
             const menuToggle = document.getElementById('menu-toggle');
             const menuContainer = e.target.closest('.md\\:hidden');
-            
+
             if (menuToggle && menuToggle.checked && !menuContainer) {
                 menuToggle.checked = false;
             }
@@ -296,7 +296,7 @@ export class UniversalNav {
         if (this.cleanupScrollListener) {
             this.cleanupScrollListener();
         }
-        
+
         // Rimuovi il padding dal body se presente
         document.body.style.paddingTop = '';
     }

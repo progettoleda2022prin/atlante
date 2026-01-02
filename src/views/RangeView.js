@@ -76,13 +76,13 @@ export class RangeView {
 
     // Crea i bucket
     const buckets = {};
-    
+
     Object.entries(ranges).forEach(([value, items]) => {
       const numValue = parseFloat(value);
       const bucketStart = Math.floor(numValue / rangeSize) * rangeSize;
       const bucketEnd = bucketStart + rangeSize - 1;
       const bucketKey = `${bucketStart}-${bucketEnd}`;
-      
+
       if (!buckets[bucketKey]) {
         buckets[bucketKey] = {
           start: bucketStart,
@@ -91,7 +91,7 @@ export class RangeView {
           values: new Set()
         };
       }
-      
+
       buckets[bucketKey].items.push(...items);
       buckets[bucketKey].values.add(numValue);
     });
@@ -123,17 +123,17 @@ export class RangeView {
   generateSearchBar() {
     const container = document.createElement('div');
     container.className = 'mb-6';
-    
+
     const input = document.createElement('input');
     input.placeholder = 'Cerca valore numerico...';
     input.className = 'w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500';
-    
+
     let timeout;
     input.addEventListener('input', (e) => {
       clearTimeout(timeout);
       timeout = setTimeout(() => this.filterBySearch(e.target.value), 300);
     });
-    
+
     container.appendChild(input);
     return container;
   }
@@ -141,14 +141,14 @@ export class RangeView {
   generateTabsMenu() {
     const container = document.createElement('div');
     container.className = 'mb-6';
-    
+
     const title = document.createElement('h3');
     title.className = 'text-sm font-medium text-slate-700 mb-2';
     title.textContent = 'Visualizzazione';
-    
+
     const buttons = document.createElement('div');
     buttons.className = 'flex flex-col gap-2';
-    
+
     const tabs = [
       { id: 'range-list', label: 'Lista degli intervalli', icon: '📋' },
       { id: 'timeline', label: 'Grafico di andamento', icon: '📊' },
@@ -170,7 +170,7 @@ export class RangeView {
       tabButtons.push(button);
       buttons.appendChild(button);
     });
-    
+
     container.appendChild(title);
     container.appendChild(buttons);
     return container;
@@ -186,9 +186,9 @@ export class RangeView {
   generateRangeInfo() {
     const info = document.createElement('div');
     info.className = 'mb-6 p-4 bg-slate-50 rounded-lg';
-    
+
     const totalItems = Object.values(this.rangeData.buckets || {}).reduce((sum, bucket) => sum + bucket.items.length, 0);
-    
+
     info.innerHTML = `
       <h4 class="font-small text-slate-700 mb-3">Statistiche degli intervalli</h4>
       <div class="text-xs text-slate-600 space-y-2">
@@ -231,8 +231,8 @@ export class RangeView {
 
   renderActiveView(container) {
     container.innerHTML = '';
-    
-    switch(this.activeTab) {
+
+    switch (this.activeTab) {
       case 'timeline':
         this.renderTimeline(container);
         break;
@@ -256,13 +256,13 @@ export class RangeView {
     const sidebarContent = document.querySelector('.sidebar-content');
     if (sidebarContent) {
       sidebarContent.innerHTML = '';
-      
+
       const sidebarComponents = [
         this.generateHeader(),
         this.generateTabsMenu(),
         this.generateRangeInfo(),
       ];
-      
+
       sidebarComponents.forEach(component => {
         sidebarContent.appendChild(component);
       });
@@ -287,7 +287,7 @@ export class RangeView {
     }
 
     const mapUrl = createMapUrlWithFilter(this.indexKey, rangeValue);
-    
+
     if (typeof window.navigateToMap === 'function') {
       window.navigateToMap(filterAction);
     } else {
@@ -348,15 +348,15 @@ export class RangeView {
     bucket.items.forEach(item => {
       const value = item[this.indexKey];
       const location = item.Location || 'Senza location';
-      
+
       if (!itemsByValueAndLocation[value]) {
         itemsByValueAndLocation[value] = {};
       }
-      
+
       if (!itemsByValueAndLocation[value][location]) {
         itemsByValueAndLocation[value][location] = [];
       }
-      
+
       itemsByValueAndLocation[value][location].push(item);
     });
 
@@ -385,10 +385,10 @@ export class RangeView {
     sortedValues.forEach((value, valueIndex) => {
       const locationGroups = itemsByValueAndLocation[value];
       const sortedLocations = Object.keys(locationGroups).sort();
-      
+
       sortedLocations.forEach((location, locationIndex) => {
         const items = locationGroups[location];
-        
+
         const row = document.createElement("div");
         row.className = "flex items-center text-sm py-2 hover:bg-white rounded px-2";
 
@@ -425,7 +425,7 @@ export class RangeView {
         `;
         viewButton.onclick = () => this.goToMapWithFilter(value);
         viewButton.title = `Visualizza sulla mappa: ${location} con valore ${value}`;
-        
+
         actionCell.appendChild(viewButton);
 
         row.appendChild(valueCell);
@@ -510,7 +510,7 @@ export class RangeView {
       .attr("stroke", "#ffffff")
       .attr("stroke-width", 2)
       .style("cursor", "pointer")
-      .on("mouseover", function(event, d) {
+      .on("mouseover", function (event, d) {
         const tooltip = d3.select("body").append("div")
           .attr("class", "tooltip")
           .style("position", "absolute")
@@ -522,7 +522,7 @@ export class RangeView {
           .text(`Range: ${d.start}-${d.end} (${d.items.length} elementi)`)
           .style("left", (event.pageX + 10) + "px")
           .style("top", (event.pageY - 10) + "px");
-        
+
         setTimeout(() => tooltip.remove(), 3000);
       })
       .on("click", (event, d) => {
@@ -602,7 +602,7 @@ export class RangeView {
       .attr("height", d => height - margin.bottom - yScale(d.items.length))
       .attr("fill", "#3B82F6")
       .style("cursor", "pointer")
-      .on("mouseover", function(event, d) {
+      .on("mouseover", function (event, d) {
         d3.select(this).attr("fill", "#1E40AF");
         const tooltip = d3.select("body").append("div")
           .attr("class", "tooltip")
@@ -615,10 +615,10 @@ export class RangeView {
           .text(`Range: ${d.key} (${d.items.length} elementi)`)
           .style("left", (event.pageX + 10) + "px")
           .style("top", (event.pageY - 10) + "px");
-        
+
         setTimeout(() => tooltip.remove(), 3000);
       })
-      .on("mouseout", function() {
+      .on("mouseout", function () {
         d3.select(this).attr("fill", "#3B82F6");
       })
       .on("click", (event, d) => {

@@ -9,7 +9,7 @@ export class StateManager {
       sort: '',
       bounds: null,
     };
-    
+
     this.state.sort = this.config.searchConfig.defaultSort;
     this.state.filters = this.createEmptyFilters();
   }
@@ -24,7 +24,7 @@ export class StateManager {
 
   hasActiveFilters() {
     if (!this.state.filters) return false;
-    
+
     for (const [key, values] of Object.entries(this.state.filters)) {
       if (Array.isArray(values) && values.length > 0) {
         return true;
@@ -38,25 +38,25 @@ export class StateManager {
 
   updateFilters(facetType, value, checked) {
     console.log(`Updating filter: ${facetType}, value: ${value}, checked: ${checked}`);
-    
+
     if (checked) {
       if (!this.state.filters[facetType]) {
         this.state.filters[facetType] = [];
       }
-      
+
       // Controlla se il valore esiste già prima di aggiungerlo [fix per taxonomy]
       if (!this.state.filters[facetType].includes(value)) {
         this.state.filters[facetType].push(value);
-      } 
+      }
     } else {
-      this.state.filters[facetType] = 
+      this.state.filters[facetType] =
         this.state.filters[facetType]?.filter(v => v !== value) || [];
     }
   }
 
   async handleStateChange(action, callbacks) {
     console.log('handleStateChange called with action:', action);
-    
+
     try {
       switch (action.type) {
         case 'FACET_CHANGE':
@@ -72,14 +72,14 @@ export class StateManager {
           this.state.sort = action.sort;
           break;
       }
-      
+
       console.log('State updated, triggering search. New state:', this.state);
-      
+
       // Chiama il callback per eseguire la ricerca
       if (callbacks && callbacks.onStateChange) {
         await callbacks.onStateChange(this.state);
       }
-      
+
     } catch (error) {
       console.error('Error in handleStateChange:', error);
     }

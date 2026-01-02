@@ -21,7 +21,7 @@ export class FacetsRenderer {
     Object.entries(this.config.aggregations).forEach(([facetKey, facetConfig]) => {
       const facetGroup = this.createFacetGroup(facetKey, facetConfig);
       facetsContainer.appendChild(facetGroup);
-      
+
       if (facetConfig.type === 'range') {
         this.renderRangeFacet(facetKey, facetConfig, aggregations);
       } else {
@@ -103,66 +103,66 @@ export class FacetsRenderer {
     const slider = sliderContainer.querySelector(`#${facetKey}-slider`);
     const minInput = sliderContainer.querySelector(`#${facetKey}-min-input`);
     const maxInput = sliderContainer.querySelector(`#${facetKey}-max-input`);
-    
+
     // Get current filter values or use min/max values
     const currentFilter = this.state.filters[facetKey];
     let startValue, endValue;
 
     if (!currentFilter || currentFilter.length === 0) {
-        startValue = minValue;
-        endValue = maxValue;
+      startValue = minValue;
+      endValue = maxValue;
     } else {
-        startValue = currentFilter[0];
-        endValue = currentFilter[1];
+      startValue = currentFilter[0];
+      endValue = currentFilter[1];
     }
 
     // Initialize noUiSlider
     noUiSlider.create(slider, {
-        start: [startValue, endValue],
-        connect: true,
-        step: 1, // Integer steps
-        range: {
-            'min': minValue,
-            'max': maxValue
-        },
-        format: {
-            to: (value) => Math.round(value),
-            from: (value) => parseInt(value, 10)
-        }
+      start: [startValue, endValue],
+      connect: true,
+      step: 1, // Integer steps
+      range: {
+        'min': minValue,
+        'max': maxValue
+      },
+      format: {
+        to: (value) => Math.round(value),
+        from: (value) => parseInt(value, 10)
+      }
     });
 
     // Update inputs when slider changes
     slider.noUiSlider.on('update', (values) => {
-        minInput.value = Math.round(Number(values[0]));
-        maxInput.value = Math.round(Number(values[1]));
+      minInput.value = Math.round(Number(values[0]));
+      maxInput.value = Math.round(Number(values[1]));
     });
 
     // Handle slider changes
     slider.noUiSlider.on('change', (values) => {
-        const [start, end] = values.map(val => Math.round(Number(val)));
+      const [start, end] = values.map(val => Math.round(Number(val)));
 
-        if (!isNaN(start) && !isNaN(end)) {
-            this.state.filters[facetKey] = [start, end];
-            this.performSearch();
-            this.fetchAggregations();
-            
-            // Update the highlighted range in the chart
-            this.updateChartHighlight(chartElement, buckets, start, end);
-        }
+      if (!isNaN(start) && !isNaN(end)) {
+        this.state.filters[facetKey] = [start, end];
+        this.performSearch();
+        this.fetchAggregations();
+
+        // Update the highlighted range in the chart
+        this.updateChartHighlight(chartElement, buckets, start, end);
+      }
     });
 
     // Handle input changes
     const handleInputChange = this.debounce((evt) => {
-        const isMin = evt.target === minInput;
-        const inputValue = parseInt(evt.target.value, 10);
-        const [currentMin, currentMax] = slider.noUiSlider.get().map(Number);
+      const isMin = evt.target === minInput;
+      const inputValue = parseInt(evt.target.value, 10);
+      const [currentMin, currentMax] = slider.noUiSlider.get().map(Number);
 
-        if (!isNaN(inputValue)) {
-            slider.noUiSlider.set([
-                isMin ? inputValue : currentMin,
-                isMin ? currentMax : inputValue
-            ]);
-        }
+      if (!isNaN(inputValue)) {
+        slider.noUiSlider.set([
+          isMin ? inputValue : currentMin,
+          isMin ? currentMax : inputValue
+        ]);
+      }
     }, 200);
 
     minInput.addEventListener('input', handleInputChange);
@@ -219,7 +219,7 @@ export class FacetsRenderer {
     const slider = sliderContainer.querySelector(`#${facetKey}-slider`);
     const minInput = sliderContainer.querySelector(`#${facetKey}-min-input`);
     const maxInput = sliderContainer.querySelector(`#${facetKey}-max-input`);
-    
+
     // Render the bar chart
     this.renderBarChart(chartElement, buckets, minValue, maxValue);
 
@@ -228,60 +228,60 @@ export class FacetsRenderer {
     let startValue, endValue;
 
     if (!currentFilter || currentFilter.length === 0) {
-        startValue = minValue;
-        endValue = maxValue;
+      startValue = minValue;
+      endValue = maxValue;
     } else {
-        startValue = currentFilter[0];
-        endValue = currentFilter[1];
+      startValue = currentFilter[0];
+      endValue = currentFilter[1];
     }
 
     // Initialize noUiSlider
     noUiSlider.create(slider, {
-        start: [startValue, endValue],
-        connect: true,
-        step: 1, // Integer steps
-        range: {
-            'min': minValue,
-            'max': maxValue
-        },
-        format: {
-            to: (value) => Math.round(value),
-            from: (value) => parseInt(value, 10)
-        }
+      start: [startValue, endValue],
+      connect: true,
+      step: 1, // Integer steps
+      range: {
+        'min': minValue,
+        'max': maxValue
+      },
+      format: {
+        to: (value) => Math.round(value),
+        from: (value) => parseInt(value, 10)
+      }
     });
 
     // Update inputs when slider changes
     slider.noUiSlider.on('update', (values) => {
-        minInput.value = Math.round(Number(values[0]));
-        maxInput.value = Math.round(Number(values[1]));
+      minInput.value = Math.round(Number(values[0]));
+      maxInput.value = Math.round(Number(values[1]));
     });
 
     // Handle slider changes
     slider.noUiSlider.on('change', (values) => {
-        const [start, end] = values.map(val => Math.round(Number(val)));
+      const [start, end] = values.map(val => Math.round(Number(val)));
 
-        if (!isNaN(start) && !isNaN(end)) {
-            this.state.filters[facetKey] = [start, end];
-            this.performSearch();
-            this.fetchAggregations();
-            
-            // Update the highlighted range in the chart
-            this.updateChartHighlight(chartElement, buckets, start, end);
-        }
+      if (!isNaN(start) && !isNaN(end)) {
+        this.state.filters[facetKey] = [start, end];
+        this.performSearch();
+        this.fetchAggregations();
+
+        // Update the highlighted range in the chart
+        this.updateChartHighlight(chartElement, buckets, start, end);
+      }
     });
 
     // Handle input changes
     const handleInputChange = this.debounce((evt) => {
-        const isMin = evt.target === minInput;
-        const inputValue = parseInt(evt.target.value, 10);
-        const [currentMin, currentMax] = slider.noUiSlider.get().map(Number);
+      const isMin = evt.target === minInput;
+      const inputValue = parseInt(evt.target.value, 10);
+      const [currentMin, currentMax] = slider.noUiSlider.get().map(Number);
 
-        if (!isNaN(inputValue)) {
-            slider.noUiSlider.set([
-                isMin ? inputValue : currentMin,
-                isMin ? currentMax : inputValue
-            ]);
-        }
+      if (!isNaN(inputValue)) {
+        slider.noUiSlider.set([
+          isMin ? inputValue : currentMin,
+          isMin ? currentMax : inputValue
+        ]);
+      }
     }, 200);
 
     minInput.addEventListener('input', handleInputChange);

@@ -35,13 +35,12 @@ export class UIManager {
 
   showNotification(message, type = 'info') {
     const notification = document.createElement('div');
-    notification.className = `fixed top-4 right-4 z-50 p-3 rounded-lg shadow-lg max-w-sm text-white transition-all duration-300 ${
-      type === 'error' ? 'bg-red-500' : type === 'warning' ? 'bg-yellow-500' : 'bg-blue-500'
-    }`;
+    notification.className = `fixed top-4 right-4 z-50 p-3 rounded-lg shadow-lg max-w-sm text-white transition-all duration-300 ${type === 'error' ? 'bg-red-500' : type === 'warning' ? 'bg-yellow-500' : 'bg-blue-500'
+      }`;
     notification.textContent = message;
-    
+
     document.body.appendChild(notification);
-    
+
     setTimeout(() => {
       notification.style.opacity = '0';
       setTimeout(() => notification.remove(), 300);
@@ -65,14 +64,14 @@ export class UIManager {
         </button>
       </div>
     `;
-    
+
     document.body.appendChild(notification);
-    
+
     // Animazione di entrata
     setTimeout(() => {
       notification.style.transform = 'translateX(0)';
     }, 100);
-    
+
     // Auto-rimozione dopo 5 secondi
     setTimeout(() => {
       notification.style.transform = 'translateX(100%)';

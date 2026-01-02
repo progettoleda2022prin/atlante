@@ -9,7 +9,7 @@ export class UniversalFooter {
         this.carouselInterval = null;
         this.currentSlide = 0;
         this.logos = [];
-        
+
         this.initLogos();
     }
 
@@ -17,17 +17,17 @@ export class UniversalFooter {
         try {
             const basePath = window.location.pathname.match(/^\/[^\/]+\//)?.[0] || '/';
             const manifestPath = `${basePath}imgs/institutional_logos/manifest.json`;
-            
+
             const response = await fetch(manifestPath);
             if (!response.ok) throw new Error(`Manifest not found: ${response.status}`);
-            
+
             const logoFilenames = await response.json();
-            
+
             this.logos = logoFilenames.map(filename => ({
                 filename: filename,
                 path: `${basePath}imgs/institutional_logos/${filename}`
             })).sort((a, b) => a.filename.localeCompare(b.filename));
-            
+
             if (this.footerElement && this.logos.length > 0) {
                 this.updateCarousel();
             }
@@ -59,7 +59,7 @@ export class UniversalFooter {
     relative(from, to) {
         const fromParts = from.split('/').filter(part => part);
         const toParts = to.split('/').filter(part => part);
-        
+
         let commonLength = 0;
         for (let i = 0; i < Math.min(fromParts.length, toParts.length); i++) {
             if (fromParts[i] === toParts[i]) {
@@ -68,10 +68,10 @@ export class UniversalFooter {
                 break;
             }
         }
-        
+
         const upLevels = fromParts.length - commonLength;
         const downPath = toParts.slice(commonLength);
-        
+
         const result = '../'.repeat(upLevels) + downPath.join('/');
         return result || './';
     }
@@ -86,9 +86,9 @@ export class UniversalFooter {
         const currentDir = this.dirname(this.currentPath);
         const projectShortTitle = this.config?.project?.projectShortTitle?.toLowerCase() || 'leda';
         const rootDir = '/' + projectShortTitle;
-        
+
         const relativePath = this.relative(currentDir, rootDir);
-        
+
         if (relativePath === '' || relativePath === '.') return './';
         return relativePath || './';
     }
@@ -140,7 +140,7 @@ export class UniversalFooter {
         const currentYear = new Date().getFullYear();
         const projectTitle = this.config?.project?.projectTitle || 'Storia dell\'Alpinismo';
         const projectShortTitle = this.config?.project?.projectShortTitle || 'SASSI';
-        
+
         const navigationLinks = this.getNavigationLinks().map(item => {
             const isExternal = this.isExternalLink(item.path);
             const href = isExternal ? item.path : this.getRelativePath(item.path);
@@ -162,7 +162,7 @@ export class UniversalFooter {
                 </div>
             `).join('');
 
-            const carouselDots = this.logos.map((_, index) => 
+            const carouselDots = this.logos.map((_, index) =>
                 `<span class="footer-carousel-dot ${index === 0 ? 'active' : ''}" data-index="${index}"></span>`
             ).join('');
 
@@ -273,7 +273,7 @@ export class UniversalFooter {
 
     startCarousel() {
         if (this.logos.length <= 1) return;
-        
+
         this.stopCarousel();
         this.carouselInterval = setInterval(() => {
             this.goToNextSlide();
@@ -290,7 +290,7 @@ export class UniversalFooter {
     goToSlide(index) {
         const track = this.footerElement?.querySelector('.footer-logo-carousel-track');
         const dots = this.footerElement?.querySelectorAll('.footer-carousel-dot');
-        
+
         if (!track || !dots) return;
 
         this.currentSlide = index;
@@ -315,7 +315,7 @@ export class UniversalFooter {
         this.isOpen = !this.isOpen;
         if (this.footerElement) {
             this.footerElement.classList.toggle('open', this.isOpen);
-            
+
             if (this.isOpen && this.logos.length > 0) {
                 this.startCarousel();
             } else {
@@ -341,7 +341,7 @@ export class UniversalFooter {
             if (link && link.dataset.section) {
                 const section = link.dataset.section;
                 const href = link.getAttribute('href');
-                
+
                 if (href && href.includes('index.html')) {
                     e.preventDefault();
                     const baseUrl = href.split('#')[0];

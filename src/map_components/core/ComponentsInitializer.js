@@ -23,14 +23,14 @@ export class ComponentsInitializer {
     this.components.renderMarkers = mapResult.renderMarkers;
     this.components.setFocusResultCallback = mapResult.setFocusResultCallback;
     this.components.mapInstance = mapResult;
-    
+
     // Make map instance globally accessible for navigation bar
     if (!window.ledaSearch) {
       window.ledaSearch = {};
     }
     window.ledaSearch.config = this.config;
     window.ledaSearch.mapInstance = this.components.mapInstance;
-    
+
     // Make the switchMarkerType function globally accessible
     window.switchMarkerType = (markerType) => {
       if (this.components.mapInstance && this.components.mapInstance.switchMarkerType) {
@@ -44,14 +44,14 @@ export class ComponentsInitializer {
     this.components.taxonomyRenderer = new TaxonomyRenderer();
     this.components.searchHandler = new SearchHandler(this.searchEngine, this.config);
     this.components.resultsRenderer = new ResultsRenderer((lat, lng, locationName) => {
-  if (this.components.mapInstance && this.components.mapInstance.focusOnLocation) {
-    this.components.mapInstance.focusOnLocation(lat, lng, locationName);
-  }
-});
-    
+      if (this.components.mapInstance && this.components.mapInstance.focusOnLocation) {
+        this.components.mapInstance.focusOnLocation(lat, lng, locationName);
+      }
+    });
+
     // Setup map navbar 
     this.components.navBar = navBarRenderer;
-    
+
     return this.components;
   }
 

@@ -9,29 +9,29 @@ export class ResultsRenderer {
   }
 
   updateResultsList(items, config, searchState = {}) {
-  const resultsContainer = document.getElementById('results');
-  if (!resultsContainer) {
-    console.error('Results container not found');
-    return;
-  }
+    const resultsContainer = document.getElementById('results');
+    if (!resultsContainer) {
+      console.error('Results container not found');
+      return;
+    }
 
-  this.items = items;
-  this.searchState = searchState;
+    this.items = items;
+    this.searchState = searchState;
 
-  const groupedItems = this._groupByIdOpera(items);
-  this.allWorks = Object.values(groupedItems);
-  
-  // AGGIUNGI QUESTO: Riordina allWorks in base all'ordine di items
-  const itemsOrder = items.map(item => item.pivot_ID);
-  this.allWorks.sort((a, b) => {
-    return itemsOrder.indexOf(a.pivot_ID) - itemsOrder.indexOf(b.pivot_ID);
-  });
-    
+    const groupedItems = this._groupByIdOpera(items);
+    this.allWorks = Object.values(groupedItems);
+
+    // AGGIUNGI QUESTO: Riordina allWorks in base all'ordine di items
+    const itemsOrder = items.map(item => item.pivot_ID);
+    this.allWorks.sort((a, b) => {
+      return itemsOrder.indexOf(a.pivot_ID) - itemsOrder.indexOf(b.pivot_ID);
+    });
+
     // Set data, config, and search state for modal renderer
     this.modalRenderer.setData(this.allWorks, this.items);
     this.modalRenderer.setConfig(config);
     this.modalRenderer.setSearchState(searchState);
-    
+
     resultsContainer.innerHTML = this.allWorks
       .map((work, index) => this._renderResultItem(work, index))
       .join('');
@@ -48,14 +48,14 @@ export class ResultsRenderer {
     const resultElement = document.querySelector(`[data-result-id="${idOpera}"]`);
     if (resultElement) {
       this._openFiltersPanel();
-      
-      resultElement.scrollIntoView({ 
-        behavior: 'smooth', 
-        block: 'center' 
+
+      resultElement.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center'
       });
-      
+
       this._highlightResult(resultElement);
-      
+
       console.log(`Focused on result with pivot_ID: ${idOpera}`);
       return true;
     } else {
@@ -80,19 +80,19 @@ export class ResultsRenderer {
     if (previouslyHighlighted) {
       previouslyHighlighted.classList.remove('result-highlighted');
     }
-    
+
     // Add highlight class
     element.classList.add('result-highlighted');
-    
+
     // Add temporary glow effect
     element.style.transition = 'all 0.3s ease';
     element.style.transform = 'scale(1.02)';
-    
+
     // Remove glow effect after animation
     setTimeout(() => {
       element.style.transform = '';
     }, 1000);
-    
+
     // Remove highlight class after a longer period
     setTimeout(() => {
       element.classList.remove('result-highlighted');
@@ -101,10 +101,10 @@ export class ResultsRenderer {
 
   _groupByIdOpera(items) {
     const grouped = {};
-    
+
     items.forEach(item => {
       const idOpera = item.pivot_ID;
-      
+
       if (!grouped[idOpera]) {
         grouped[idOpera] = {
           pivot_ID: idOpera,
@@ -116,23 +116,23 @@ export class ResultsRenderer {
           coordinates: []
         };
       }
-      
+
       if (item["Location"]) {
-        const spaces = Array.isArray(item["Location"]) 
-          ? item["Location"] 
+        const spaces = Array.isArray(item["Location"])
+          ? item["Location"]
           : [item["Location"]];
-        
+
         spaces.forEach((space, spaceIndex) => {
           if (!grouped[idOpera]["Location"].includes(space)) {
             grouped[idOpera]["Location"].push(space);
-            
+
             const coords = this._extractCoordinatesFromItem(item, spaceIndex);
             grouped[idOpera].coordinates.push(coords);
           }
         });
       }
     });
-    
+
     return grouped;
   }
 
@@ -141,7 +141,7 @@ export class ResultsRenderer {
     const spacesButtons = work["Location"].map((space, spaceIndex) => {
       const coordinates = work.coordinates[spaceIndex];
       const hasCoords = coordinates && coordinates.lat && coordinates.lng;
-      
+
       return `
         <button class="focus-map-btn inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 hover:shadow-sm hover:scale-105 active:scale-95 cursor-pointer transform 
                        ${hasCoords ? 'bg-secondary-100 hover:bg-secondary-200 text-secondary-700 border border-secondary-200' : 'bg-gray-100 text-gray-500 border border-gray-200'}" 
@@ -156,7 +156,7 @@ export class ResultsRenderer {
       `;
     }).join('');
 
-return `
+    return `
   <div class="result-card bg-white rounded-lg shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300 p-6" 
        data-result-id="${work.pivot_ID}">
     <!-- Header with Title, Subtitles and Button -->
@@ -212,7 +212,7 @@ return `
 
   _extractCoordinatesFromItem(item, index) {
     let coordinates = { lat: null, lng: null };
-    
+
     if (Array.isArray(item.lat_long) && item.lat_long.length > index) {
       const coordString = item.lat_long[index];
       if (coordString && typeof coordString === 'string') {
@@ -237,23 +237,23 @@ return `
         }
       }
     }
-    
+
     return coordinates;
   }
 
-_addMapFocusListeners() {
-  document.querySelectorAll('.focus-map-btn').forEach(button => {
-    button.addEventListener('click', (e) => {
-      const lat = button.getAttribute('data-lat');
-      const lng = button.getAttribute('data-lng');
-      const space = decodeURIComponent(button.getAttribute('data-space'));
-            
-      if (lat && lng && this.mapFocusCallback) {
-        this.mapFocusCallback(parseFloat(lat), parseFloat(lng), space);
-      } else {
-        console.warn('Coordinate non disponibili per questo luogo:', space);
-      }
+  _addMapFocusListeners() {
+    document.querySelectorAll('.focus-map-btn').forEach(button => {
+      button.addEventListener('click', (e) => {
+        const lat = button.getAttribute('data-lat');
+        const lng = button.getAttribute('data-lng');
+        const space = decodeURIComponent(button.getAttribute('data-space'));
+
+        if (lat && lng && this.mapFocusCallback) {
+          this.mapFocusCallback(parseFloat(lat), parseFloat(lng), space);
+        } else {
+          console.warn('Coordinate non disponibili per questo luogo:', space);
+        }
+      });
     });
-  });
-}
+  }
 }

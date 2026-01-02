@@ -1,6 +1,6 @@
 // facetsUtilities.js
 export class Utilities {
-  
+
   /**
    * Debounce function to limit the frequency of function calls
    * @param {Function} func - The function to debounce
@@ -10,7 +10,7 @@ export class Utilities {
   static debounce(func, delay) {
     let timer;
     return function () {
-      clearTimeout(timer);  
+      clearTimeout(timer);
       timer = setTimeout(() => func.apply(this, arguments), delay);
     };
   }
@@ -24,7 +24,7 @@ export class Utilities {
     if (!coordString || typeof coordString !== 'string') {
       return { lat: null, lng: null };
     }
-    
+
     const parts = coordString.split(',');
     if (parts.length === 2) {
       return {
@@ -32,7 +32,7 @@ export class Utilities {
         lng: parseFloat(parts[1].trim())
       };
     }
-    
+
     return { lat: null, lng: null };
   }
 

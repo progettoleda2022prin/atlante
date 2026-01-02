@@ -15,18 +15,18 @@ export class SimpleView {
 
   aggregateData(data, indexKey) {
     const aggregated = {};
-    
+
     data.forEach(item => {
       const value = item[indexKey];
       const values = Array.isArray(value) ? value : [value];
-      
+
       values.forEach(val => {
         const key = val || 'Non specificato';
         if (!aggregated[key]) aggregated[key] = [];
         aggregated[key].push(item);
       });
     });
-    
+
     return aggregated;
   }
 
@@ -54,33 +54,33 @@ export class SimpleView {
     this.refreshList();
   }
 
-filterBySearch(searchTerm) {
-  this.currentSearchTerm = searchTerm.toLowerCase().trim();
-  
-  if (!this.currentSearchTerm) {
-    // Se vuoto, ripristina tutto
-    this.filteredData = { ...this.aggregatedData };
-  } else {
-    // Altrimenti cerca
-    this.applySearch();
+  filterBySearch(searchTerm) {
+    this.currentSearchTerm = searchTerm.toLowerCase().trim();
+
+    if (!this.currentSearchTerm) {
+      // Se vuoto, ripristina tutto
+      this.filteredData = { ...this.aggregatedData };
+    } else {
+      // Altrimenti cerca
+      this.applySearch();
+    }
+
+    this.refreshList();
   }
-  
-  this.refreshList();
-}
 
   applySearch() {
     if (!this.currentSearchTerm) {
       return; // Non fa nulla se non c'è termine di ricerca
     }
-    
+
     const filtered = {};
     // filtra da this.aggregatedData
     Object.entries(this.aggregatedData).forEach(([key, items]) => {
       if (key.toLowerCase().includes(this.currentSearchTerm) ||
-          items.some(item => 
-            (item.Name && item.Name.toLowerCase().includes(this.currentSearchTerm)) ||
-            (item.Location && item.Location.toLowerCase().includes(this.currentSearchTerm))
-          )) {
+        items.some(item =>
+          (item.Name && item.Name.toLowerCase().includes(this.currentSearchTerm)) ||
+          (item.Location && item.Location.toLowerCase().includes(this.currentSearchTerm))
+        )) {
         filtered[key] = items;
       }
     });
@@ -121,17 +121,17 @@ filterBySearch(searchTerm) {
   generateSearchBar() {
     const container = document.createElement('div');
     container.className = 'mb-6';
-    
+
     const input = document.createElement('input');
     input.placeholder = 'Cerca...';
     input.className = 'w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500';
-    
+
     let timeout;
     input.addEventListener('input', (e) => {
       clearTimeout(timeout);
       timeout = setTimeout(() => this.filterBySearch(e.target.value), 300);
     });
-    
+
     container.appendChild(input);
     return container;
   }
@@ -139,35 +139,35 @@ filterBySearch(searchTerm) {
   generateSortMenu() {
     const container = document.createElement('div');
     container.className = 'mb-6';
-    
+
     const title = document.createElement('h3');
     title.className = 'text-sm font-medium text-slate-700 mb-2';
     title.textContent = 'Ordinamento';
-    
+
     const buttons = document.createElement('div');
     buttons.className = 'flex gap-2';
-    
+
     const alphabetical = this.createButton(
-      'Alfabetico', 
+      'Alfabetico',
       this.sortOrder === 'alphabetical',
       () => {
         this.changeSortOrder('alphabetical');
         this.setActiveButton(alphabetical, [alphabetical, occurrences]);
       }
     );
-    
+
     const occurrences = this.createButton(
-      'Occorrenze', 
+      'Occorrenze',
       this.sortOrder === 'occurrences',
       () => {
         this.changeSortOrder('occurrences');
         this.setActiveButton(occurrences, [alphabetical, occurrences]);
       }
     );
-    
+
     buttons.appendChild(alphabetical);
     buttons.appendChild(occurrences);
-    
+
     container.appendChild(title);
     container.appendChild(buttons);
     return container;
@@ -176,20 +176,20 @@ filterBySearch(searchTerm) {
   generateInitialsFilter() {
     const container = document.createElement('div');
     container.className = 'mb-6';
-    
+
     const title = document.createElement('h3');
     title.className = 'text-sm font-medium text-slate-700 mb-2';
     title.textContent = 'Filtri';
-    
+
     const buttons = document.createElement('div');
     buttons.className = 'flex flex-wrap gap-1';
-    
+
     const allButton = this.createButton('Tutti', true, () => {
       this.filterByInitial('Tutti');
       this.setActiveButton(allButton, buttons.children);
     });
     buttons.appendChild(allButton);
-    
+
     this.getInitials().forEach(initial => {
       const button = this.createButton(initial, false, () => {
         this.filterByInitial(initial);
@@ -197,7 +197,7 @@ filterBySearch(searchTerm) {
       });
       buttons.appendChild(button);
     });
-    
+
     container.appendChild(title);
     container.appendChild(buttons);
     return container;
@@ -209,7 +209,7 @@ filterBySearch(searchTerm) {
 
   generateList() {
     const entries = Object.entries(this.filteredData);
-    
+
     if (entries.length === 0) {
       return ViewComponents.createEmptyState('Nessun risultato trovato');
     }
@@ -235,7 +235,7 @@ filterBySearch(searchTerm) {
         isExpanded: false,
         hasExpandableContent: false, // Nessun contenuto espandibile
         items: items, // Passa gli items per estrarre le descrizioni
-        onToggle: () => {} // Nessuna azione al toggle
+        onToggle: () => { } // Nessuna azione al toggle
       });
 
       container.appendChild(header);
@@ -248,7 +248,7 @@ filterBySearch(searchTerm) {
   createButton(text, active, onClick) {
     const button = document.createElement('button');
     button.textContent = text;
-    button.className = active 
+    button.className = active
       ? 'px-3 py-1 text-sm bg-primary-600 text-white rounded hover:bg-primary-700'
       : 'px-3 py-1 text-sm bg-slate-200 text-slate-700 rounded hover:bg-slate-300';
     button.onclick = onClick;
@@ -266,7 +266,7 @@ filterBySearch(searchTerm) {
     const contentWrapper = document.createElement('div');
     contentWrapper.className = 'simple-view-wrapper';
     contentWrapper.appendChild(this.generateList());
-    
+
     return {
       sidebar: [
         this.generateHeader(),

@@ -75,7 +75,7 @@ class BasePopupManager {
     bindEvents(popup) {
         // Unified event handler per chiusura
         const closeHandler = (e) => {
-            if (e.key === 'Escape' || 
+            if (e.key === 'Escape' ||
                 (e.type === 'click' && !popup.contains(e.target) && !this.trigger.contains(e.target))) {
                 this.hide();
             }
@@ -83,7 +83,7 @@ class BasePopupManager {
 
         document.addEventListener('keydown', closeHandler);
         document.addEventListener('click', closeHandler);
-        
+
         const closeBtn = popup.querySelector(`#close-${this.popupId}`);
         closeBtn?.addEventListener('click', () => this.hide());
 
@@ -109,7 +109,7 @@ class BasePopupManager {
                 ${ICONS.close}
             </button>
         `;
-        
+
         popup.appendChild(header);
         return popup;
     }
@@ -142,22 +142,22 @@ export class ActiveFiltersPopupManager extends BasePopupManager {
 
     createPopup() {
         const popup = this.createBasePopup('Filtri Attivi');
-        
+
         const content = document.createElement('div');
         content.className = `space-y-1 ${POPUP_CONFIG.contentMaxHeight} overflow-y-auto overflow-x-hidden`;
-        
+
         // Recupera il searchState nello stesso modo della modale
         const searchState = this.getSearchState();
-        
+
         const renderer = new FilterBadgesRenderer(this.navBar.config);
         const filterBadgesHtml = renderer.render(searchState);
-        
+
         if (!filterBadgesHtml || filterBadgesHtml.trim() === '') {
             content.innerHTML = '<div class="p-3 text-sm text-gray-500 italic">Nessun filtro applicato</div>';
         } else {
             content.innerHTML = filterBadgesHtml;
         }
-        
+
         popup.appendChild(content);
         return popup;
     }
@@ -170,7 +170,7 @@ export class ActiveFiltersPopupManager extends BasePopupManager {
         if (window.ledaSearch?.state) {
             return window.ledaSearch.state;
         }
-        
+
         // Fallback: costruisci manualmente
         return {
             query: this.navBar.currentQuery || '',
@@ -200,11 +200,11 @@ export class LayerSelectionPopupManager extends BasePopupManager {
 
     createPopup() {
         const popup = this.createBasePopup('Seleziona uno strato cartografico');
-        
+
         const content = document.createElement('div');
         content.className = `space-y-1 ${POPUP_CONFIG.contentMaxHeight} overflow-y-auto overflow-x-hidden mb-3 p-3`;
         content.innerHTML = this.buildLayersHTML();
-        
+
         // Bind selection events
         content.querySelectorAll('.layer-item').forEach(item => {
             item.addEventListener('click', () => {
@@ -213,7 +213,7 @@ export class LayerSelectionPopupManager extends BasePopupManager {
                 this.hide();
             });
         });
-        
+
         popup.appendChild(content);
         return popup;
     }
@@ -234,7 +234,7 @@ export class LayerSelectionPopupManager extends BasePopupManager {
         if (this.currentTileLayer && window.map) {
             window.map.removeLayer(this.currentTileLayer);
         }
-        
+
         if (window.L && window.map) {
             this.currentTileLayer = window.L.tileLayer(layerUrl, {
                 attribution,
@@ -242,9 +242,9 @@ export class LayerSelectionPopupManager extends BasePopupManager {
             });
             this.currentTileLayer.addTo(window.map);
         }
-        
+
         this.currentLayerName = layerName;
-        
+
         document.dispatchEvent(new CustomEvent('layerChanged', {
             detail: { layerName, layerUrl, attribution }
         }));
@@ -288,18 +288,18 @@ export class MarkersSelectionPopupManager extends BasePopupManager {
 
     createPopup() {
         const popup = this.createBasePopup('Seleziona un tipo di marcatore');
-        
+
         const content = document.createElement('div');
         content.className = `space-y-1 ${POPUP_CONFIG.contentMaxHeight} overflow-y-auto overflow-x-hidden`;
         content.innerHTML = this.buildMarkersHTML();
-        
+
         content.querySelectorAll('.marker-item').forEach(item => {
             item.addEventListener('click', () => {
                 this.selectMarkerType(item.dataset.markerType);
                 this.hide();
             });
         });
-        
+
         popup.appendChild(content);
         return popup;
     }
@@ -322,7 +322,7 @@ export class MarkersSelectionPopupManager extends BasePopupManager {
 
     selectMarkerType(markerType) {
         this.currentMarkerType = markerType;
-        
+
         const switchFn = window.switchMarkerType || this.mapInstance?.switchMarkerType;
         if (switchFn) {
             if (typeof switchFn === 'function') {
@@ -331,7 +331,7 @@ export class MarkersSelectionPopupManager extends BasePopupManager {
                 switchFn.call(this.mapInstance, markerType);
             }
         }
-        
+
         document.dispatchEvent(new CustomEvent('markerTypeChanged', {
             detail: { markerType, markerName: this.markerTypes[markerType].name }
         }));

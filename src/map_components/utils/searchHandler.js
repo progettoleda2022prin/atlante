@@ -12,7 +12,7 @@ export class SearchHandler {
     }
 
     const { filters } = state;
-    
+
     // Separate filters by type to handle them differently
     const { regularFilters, dateFilters, taxonomyFilters } = this._separateFilters(filters);
 
@@ -32,11 +32,11 @@ export class SearchHandler {
     if (callbacks.onMarkersUpdate) {
       callbacks.onMarkersUpdate(results.data.items);
     }
-    
+
     if (callbacks.onResultsUpdate) {
       callbacks.onResultsUpdate(results.data.items);
     }
-    
+
     if (callbacks.onAggregationsUpdate) {
       const aggregations = this._formatAggregations(results.data.aggregations);
       callbacks.onAggregationsUpdate(aggregations);
@@ -56,7 +56,7 @@ export class SearchHandler {
 
     Object.entries(filters).forEach(([key, values]) => {
       if (!values || values.length === 0) return;
-      
+
       const config = this.config.aggregations[key];
       if (!config) return;
 
@@ -90,10 +90,10 @@ export class SearchHandler {
     // Check taxonomy filters
     for (const [field, paths] of Object.entries(taxonomyFilters)) {
       if (!item[field]) return false;
-      
+
       // Check if any of the selected paths match the item's taxonomy
       const itemValue = item[field];
-      
+
       // Handle different data types for itemValue
       let itemValueStr;
       if (Array.isArray(itemValue)) {
@@ -105,11 +105,11 @@ export class SearchHandler {
         // Convert to string for other types (null, undefined, objects, etc.)
         itemValueStr = String(itemValue || '');
       }
-      
+
       const matches = paths.some(path => {
         return itemValueStr === path || itemValueStr.startsWith(path + ' > ');
       });
-      
+
       if (!matches) return false;
     }
 
@@ -119,7 +119,7 @@ export class SearchHandler {
   _extractCoordinates(items) {
     return items
       .filter(item => item.lat_long && item.lat_long.length > 0)
-      .map(item => {  
+      .map(item => {
         // Get the string from the array's first element
         const coordString = item.lat_long[0];
         const [latitude, longitude] = coordString.split(",");

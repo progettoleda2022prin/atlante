@@ -7,7 +7,7 @@ export class NavBarState {
         this.uniqueResultsCount = 0; // riferimenti 
         this.isFiltersOpen = true;   // pannello filtri
         this.isResultsOpen = true;   // pannello riferimenti
-        this.listeners = new Map();  
+        this.listeners = new Map();
     }
 
     update(updates) {
@@ -18,7 +18,7 @@ export class NavBarState {
                 this[key] = value;
             }
         });
-        
+
         if (Object.keys(changed).length > 0) {
             this.notify(changed);
         }
@@ -47,7 +47,7 @@ export class NavBarState {
     reset() {
         this.update({
             activeFiltersCount: 0,
-            mentionsCount: 0,              
+            mentionsCount: 0,
             resultsCount: 0,
             uniqueResultsCount: 0,
             isFiltersOpen: true,

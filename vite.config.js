@@ -7,22 +7,22 @@ export default defineConfig(({ mode }) => {
   const BASE_PATH = env.VITE_BASE_PATH || '/';
 
   return {
-    base: BASE_PATH,  
-    
+    base: BASE_PATH,
+
     define: {
       __APP_ID__: JSON.stringify(BASE_PATH.replace(/\//g, '') || 'root')
     },
-    
+
     resolve: {
       alias: {
         '@imgs': resolve(__dirname, 'src/styles/imgs')
       }
     },
-    
+
     build: {
       outDir: 'dist',
       assetsDir: 'assets',
-      
+
       rollupOptions: {
         input: {
           main: resolve(__dirname, 'index.html'),

@@ -18,14 +18,14 @@ export class EventCoordinator {
         this.callbacks.onClearAllFilters();
       }
     });
-    
+
     navBar.addEventListener('removeFilter', (event) => {
       const { facetKey, value } = event.detail;
       if (this.callbacks.onRemoveFilter) {
         this.callbacks.onRemoveFilter(facetKey, value);
       }
     });
-    
+
     navBar.addEventListener('clearSearchQuery', () => {
       if (this.callbacks.onClearSearchQuery) {
         this.callbacks.onClearSearchQuery();
@@ -40,7 +40,7 @@ export class EventCoordinator {
         const state = this.stateManager.getState();
         state.query = searchInput.value;
         this.stateManager.setState(state);
-        
+
         if (this.callbacks.onSearch) {
           this.callbacks.onSearch();
         }
@@ -54,12 +54,12 @@ export class EventCoordinator {
       sortSelect.innerHTML = this.config.searchConfig.sortOptions
         .map(option => `<option value="${option.value}">${option.label}</option>`)
         .join('');
-      
+
       sortSelect.addEventListener('change', (e) => {
         const state = this.stateManager.getState();
         state.sort = e.target.value;
         this.stateManager.setState(state);
-        
+
         if (this.callbacks.onSortChange) {
           this.callbacks.onSortChange();
         }

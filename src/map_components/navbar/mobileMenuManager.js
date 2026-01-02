@@ -30,7 +30,7 @@ export class MobileMenuManager {
         this.mobileMenu = null;
         this.resizeHandler = null;
         this.clickHandler = null;
-        
+
         this.init();
     }
 
@@ -70,10 +70,10 @@ export class MobileMenuManager {
                 <line x1="5" y1="17" x2="19" y2="17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
             </svg>
         `;
-        
+
         this.clickHandler = () => this.toggleMenu();
         this.hamburgerBtn.addEventListener('click', this.clickHandler);
-        
+
         const bottomNav = this.elements.bottomNav || document.querySelector('nav') || document.body;
         bottomNav.appendChild(this.hamburgerBtn);
     }
@@ -90,17 +90,17 @@ export class MobileMenuManager {
         this.mobileMenu.id = CONFIG.MOBILE_MENU_ID;
         this.mobileMenu.className = 'md:hidden fixed bottom-14 left-4 right-4 bg-white shadow-lg p-3 rounded-lg flex-col gap-2 z-50';
         this.mobileMenu.setAttribute('data-open', 'false');
-        
+
         document.body.appendChild(this.mobileMenu);
     }
 
     toggleMenu() {
         this.isOpen = !this.isOpen;
-        
+
         if (this.mobileMenu) {
             this.mobileMenu.setAttribute('data-open', this.isOpen ? 'true' : 'false');
         }
-        
+
         if (this.hamburgerBtn) {
             this.hamburgerBtn.setAttribute('aria-expanded', this.isOpen ? 'true' : 'false');
         }
@@ -108,7 +108,7 @@ export class MobileMenuManager {
 
     handleResize() {
         const isMobile = window.innerWidth < CONFIG.MOBILE_BREAKPOINT;
-        
+
         if (isMobile) {
             this.switchToMobile();
         } else {
@@ -199,20 +199,20 @@ export class MobileMenuManager {
         if (this.resizeHandler) {
             window.removeEventListener('resize', this.resizeHandler);
         }
-        
+
         if (this.clickHandler && this.hamburgerBtn) {
             this.hamburgerBtn.removeEventListener('click', this.clickHandler);
         }
-        
+
         // Rimuovi elementi dal DOM
         if (this.hamburgerBtn && this.hamburgerBtn.parentNode) {
             this.hamburgerBtn.remove();
         }
-        
+
         if (this.mobileMenu && this.mobileMenu.parentNode) {
             this.mobileMenu.remove();
         }
-        
+
         // Pulisci riferimenti
         this.hamburgerBtn = null;
         this.mobileMenu = null;

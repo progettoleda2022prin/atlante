@@ -27,10 +27,10 @@ export class ModalRenderer {
     if (!this.config?.modal_information) {
       return {};
     }
-    
+
     const geodata = this.config?.modal_information?.fields?.geodata || {};
     const catalogue = this.config?.modal_information?.fields?.catalogue || {};
-    
+
     return {
       ...this.config.modal_information,
       ...geodata,
@@ -39,8 +39,8 @@ export class ModalRenderer {
   }
 
   _getFieldLabel(fieldName) {
-      const modalFields = this._getModalFields();
-      return modalFields[fieldName] || fieldName;
+    const modalFields = this._getModalFields();
+    return modalFields[fieldName] || fieldName;
   }
 
   setSearchState(searchState) {
@@ -66,15 +66,15 @@ export class ModalRenderer {
     const spaceCoordMap = new Map();
     allEntriesForWork.forEach(item => {
       if (item["Location"]) {
-        const spaces = Array.isArray(item["Location"]) 
-          ? item["Location"] 
+        const spaces = Array.isArray(item["Location"])
+          ? item["Location"]
           : [item["Location"]];
-        
+
         spaces.forEach((space, spaceIndex) => {
           if (!spaceCoordMap.has(space)) {
             const coords = this._extractCoordinates(item, spaceIndex);
             spaceCoordMap.set(space, coords);
-            
+
             const geodataFields = this._getGeodataFields();
             const spaceGeodata = {};
             geodataFields.forEach(field => {
@@ -113,12 +113,12 @@ export class ModalRenderer {
   _renderSelectedFilters() {
     const renderer = new FilterBadgesRenderer(this.config);
     const filterBadgesHtml = renderer.render(this.searchState);
-    
+
     // If no filters, return empty state
     if (!filterBadgesHtml || filterBadgesHtml.trim() === '') {
       return '<div class="text-sm text-gray-500 italic">Nessun filtro applicato</div>';
     }
-    
+
     // Wrap badges in a container with overflow handling
     return `
       <div class="flex items-center gap-2">
@@ -134,7 +134,7 @@ export class ModalRenderer {
 
   async toggleModal(centralWorkIndex) {
     if (this.isAnimating) return; // Prevent multiple rapid clicks
-    
+
     if (this.isModalOpen) {
       await this._closeModal();
     } else {
@@ -145,7 +145,7 @@ export class ModalRenderer {
 
   async _openModal() {
     this.isAnimating = true;
-    
+
     let modal = document.getElementById('works-modal');
     if (!modal) {
       modal = this._createModal();
@@ -155,7 +155,7 @@ export class ModalRenderer {
     // Set initial state
     modal.classList.remove('hidden');
     modal.style.opacity = '0';
-    
+
     // Get the modal content container
     const modalContainer = modal.querySelector('.modal-container');
     if (modalContainer) {
@@ -189,17 +189,17 @@ export class ModalRenderer {
 
   async _closeModal() {
     if (!this.isModalOpen) return;
-    
+
     this.isAnimating = true;
     const modal = document.getElementById('works-modal');
-    
+
     if (modal) {
       const modalContainer = modal.querySelector('.modal-container');
-      
+
       // Animate out
       modal.style.transition = 'opacity 250ms cubic-bezier(0.4, 0, 1, 1)';
       modal.style.opacity = '0';
-      
+
       if (modalContainer) {
         modalContainer.style.transition = 'all 250ms cubic-bezier(0.4, 0, 1, 1)';
         modalContainer.style.transform = 'scale(0.95) translateY(-10px)';
@@ -208,7 +208,7 @@ export class ModalRenderer {
 
       // Wait for animation to complete
       await new Promise(resolve => setTimeout(resolve, 250));
-      
+
       modal.classList.add('hidden');
       modal.style.opacity = '';
       if (modalContainer) {
@@ -216,7 +216,7 @@ export class ModalRenderer {
         modalContainer.style.opacity = '';
       }
     }
-    
+
     this.isModalOpen = false;
     document.body.style.overflow = 'auto';
     this.isAnimating = false;
@@ -229,7 +229,7 @@ export class ModalRenderer {
       header.style.opacity = '0';
       header.style.transform = 'translateY(-20px)';
       header.style.transition = 'all 500ms cubic-bezier(0.4, 0, 0.2, 1)';
-      
+
       setTimeout(() => {
         header.style.opacity = '1';
         header.style.transform = 'translateY(0)';
@@ -242,7 +242,7 @@ export class ModalRenderer {
       filtersSection.style.opacity = '0';
       filtersSection.style.transform = 'translateY(-10px)';
       filtersSection.style.transition = 'all 400ms cubic-bezier(0.4, 0, 0.2, 1)';
-      
+
       setTimeout(() => {
         filtersSection.style.opacity = '1';
         filtersSection.style.transform = 'translateY(0)';
@@ -255,7 +255,7 @@ export class ModalRenderer {
       card.style.opacity = '0';
       card.style.transform = 'translateY(20px)';
       card.style.transition = 'all 400ms cubic-bezier(0.4, 0, 0.2, 1)';
-      
+
       setTimeout(() => {
         card.style.opacity = '1';
         card.style.transform = 'translateY(0)';
@@ -268,7 +268,7 @@ export class ModalRenderer {
       card.style.opacity = '0';
       card.style.transform = 'translateX(-20px)';
       card.style.transition = 'all 500ms cubic-bezier(0.4, 0, 0.2, 1)';
-      
+
       setTimeout(() => {
         card.style.opacity = '1';
         card.style.transform = 'translateX(0)';
@@ -280,7 +280,7 @@ export class ModalRenderer {
     const modal = document.createElement('div');
     modal.id = 'works-modal';
     modal.className = 'fixed inset-0 bg-gradient-to-br from-slate-900/90 to-gray-900/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4';
-    
+
     modal.innerHTML = `
       <div class="modal-container relative w-full max-w-7xl h-[90vh] overflow-hidden">
         <!-- Enhanced Header with Close Button and Filters -->
@@ -338,7 +338,7 @@ export class ModalRenderer {
 
     document.addEventListener('keydown', (e) => {
       if (!this.isModalOpen || this.isAnimating) return;
-      
+
       if (e.key === 'Escape') {
         this._closeModal();
       } else if (e.key === 'ArrowLeft') {
@@ -353,82 +353,82 @@ export class ModalRenderer {
 
   async _navigateModal(direction) {
     if (this.isAnimating) return;
-    
+
     const newIndex = this.currentModalIndex + direction;
     if (newIndex >= 0 && newIndex < this.allWorks.length) {
       this.isAnimating = true;
-      
+
       const modalContent = document.getElementById('modal-content');
       if (!modalContent) return;
-      
+
       // Get the main content area (the center panel with the actual content)
       const mainContentArea = modalContent.querySelector('.main-content-panel');
       if (!mainContentArea) return;
-      
+
       // Create a container for the sliding effect only for the main content
       const slideContainer = document.createElement('div');
       slideContainer.className = 'relative w-full h-full overflow-hidden';
-      
+
       // Create current content wrapper
       const currentContent = document.createElement('div');
       currentContent.className = 'absolute inset-0 w-full h-full transition-transform duration-500 ease-out overflow-y-auto bg-white/95 backdrop-blur-sm rounded-xl shadow-xl border border-gray-200/50 ring-1 ring-white/20';
       currentContent.innerHTML = mainContentArea.innerHTML;
-      
+
       // Create next content wrapper
       const nextContent = document.createElement('div');
       nextContent.className = 'absolute inset-0 w-full h-full transition-transform duration-500 ease-out overflow-y-auto bg-white/95 backdrop-blur-sm rounded-xl shadow-xl border border-gray-200/50 ring-1 ring-white/20';
-      
+
       // Position next content off-screen in the appropriate direction
       const slideDistance = '100%';
       nextContent.style.transform = `translateX(${direction > 0 ? slideDistance : `-${slideDistance}`})`;
-      
+
       // Update data and render new content for next slide
       this.currentModalIndex = newIndex;
       const currentWork = this.allWorks[this.currentModalIndex];
       const workData = this._getCompleteWorkData(currentWork.pivot_ID);
-      
+
       if (workData) {
         nextContent.innerHTML = this._renderMainCard(workData);
       }
-      
+
       // Replace only the main content area with slide container
       mainContentArea.parentNode.replaceChild(slideContainer, mainContentArea);
       slideContainer.appendChild(currentContent);
       slideContainer.appendChild(nextContent);
-      
+
       // Update navigation buttons state immediately
       this._updateNavigationButtons();
-      
+
       // Force reflow
       slideContainer.offsetHeight;
-      
+
       // Start the slide animation
       currentContent.style.transform = `translateX(${direction > 0 ? `-${slideDistance}` : slideDistance})`;
       nextContent.style.transform = 'translateX(0)';
-      
+
       // Add a subtle fade effect during transition
       currentContent.style.opacity = '0.8';
       nextContent.style.opacity = '1';
-      
+
       // Wait for slide animation to complete
       await new Promise(resolve => setTimeout(resolve, 500));
-      
+
       // Clean up and restore the main content area
       const newMainContentArea = document.createElement('div');
       newMainContentArea.className = 'main-content-panel flex-1 min-w-0 overflow-y-auto bg-white/95 backdrop-blur-sm rounded-xl shadow-xl hover:shadow-2xl transition-all duration-500 border border-gray-200/50 ring-1 ring-white/20 lg:mx-0 mx-2';
       newMainContentArea.innerHTML = nextContent.innerHTML;
-      
+
       slideContainer.parentNode.replaceChild(newMainContentArea, slideContainer);
-      
+
       // Update progress indicator
       const progressIndicator = document.getElementById('modal-progress');
       if (progressIndicator) {
         progressIndicator.textContent = `${this.currentModalIndex + 1} di ${this.allWorks.length}`;
       }
-      
+
       // Re-add map focus listeners for the new content
       this._addMapFocusListeners();
-      
+
       // Animate in the new content elements with stagger
       setTimeout(() => {
         this._animateContentItems();
@@ -442,7 +442,7 @@ export class ModalRenderer {
     const nextBtn = document.getElementById('next-work-btn');
     const mobilePrevBtn = document.getElementById('mobile-prev-work-btn');
     const mobileNextBtn = document.getElementById('mobile-next-work-btn');
-    
+
     // Update desktop buttons
     if (prevBtn) {
       if (this.currentModalIndex === 0) {
@@ -453,7 +453,7 @@ export class ModalRenderer {
         prevBtn.className = prevBtn.className.replace('opacity-40 cursor-not-allowed', 'hover:scale-110 hover:-translate-y-1');
       }
     }
-    
+
     if (nextBtn) {
       if (this.currentModalIndex === this.allWorks.length - 1) {
         nextBtn.disabled = true;
@@ -463,16 +463,16 @@ export class ModalRenderer {
         nextBtn.className = nextBtn.className.replace('opacity-40 cursor-not-allowed', 'hover:scale-110 hover:-translate-y-1');
       }
     }
-    
+
     // Update mobile buttons
     if (mobilePrevBtn) {
       mobilePrevBtn.disabled = this.currentModalIndex === 0;
     }
-    
+
     if (mobileNextBtn) {
       mobileNextBtn.disabled = this.currentModalIndex === this.allWorks.length - 1;
     }
-    
+
     // Update preview cards
     this._updatePreviewCards();
   }
@@ -482,7 +482,7 @@ export class ModalRenderer {
     const nextWork = this.currentModalIndex < this.allWorks.length - 1 ? this.allWorks[this.currentModalIndex + 1] : null;
     const prevWorkData = prevWork ? this._getCompleteWorkData(prevWork.pivot_ID) : null;
     const nextWorkData = nextWork ? this._getCompleteWorkData(nextWork.pivot_ID) : null;
-    
+
     // Update left preview
     const leftPanel = document.querySelector('.left-nav-panel .preview-card');
     if (leftPanel) {
@@ -499,7 +499,7 @@ export class ModalRenderer {
         leftPanel.innerHTML = '<div class="text-sm text-gray-400 font-medium">Nessuna opera precedente</div>';
       }
     }
-    
+
     // Update right preview
     const rightPanel = document.querySelector('.right-nav-panel .preview-card');
     if (rightPanel) {
@@ -523,19 +523,19 @@ export class ModalRenderer {
     const nextBtn = document.getElementById('next-work-btn');
     const mobilePrevBtn = document.getElementById('mobile-prev-work-btn');
     const mobileNextBtn = document.getElementById('mobile-next-work-btn');
-    
+
     if (prevBtn && this.currentModalIndex > 0) {
       prevBtn.addEventListener('click', () => this._navigateModal(-1));
     }
-    
+
     if (nextBtn && this.currentModalIndex < this.allWorks.length - 1) {
       nextBtn.addEventListener('click', () => this._navigateModal(1));
     }
-    
+
     if (mobilePrevBtn && this.currentModalIndex > 0) {
       mobilePrevBtn.addEventListener('click', () => this._navigateModal(-1));
     }
-    
+
     if (mobileNextBtn && this.currentModalIndex < this.allWorks.length - 1) {
       mobileNextBtn.addEventListener('click', () => this._navigateModal(1));
     }
@@ -545,7 +545,7 @@ export class ModalRenderer {
     const modalContent = document.getElementById('modal-content');
     const progressIndicator = document.getElementById('modal-progress');
     const filtersSection = document.querySelector('.filters-section');
-    
+
     if (!modalContent) return;
 
     // Update filters section
@@ -557,12 +557,12 @@ export class ModalRenderer {
 
     const currentWork = this.allWorks[this.currentModalIndex];
     const workData = this._getCompleteWorkData(currentWork.pivot_ID);
-    
+
     const prevWork = this.currentModalIndex > 0 ? this.allWorks[this.currentModalIndex - 1] : null;
     const nextWork = this.currentModalIndex < this.allWorks.length - 1 ? this.allWorks[this.currentModalIndex + 1] : null;
     const prevWorkData = prevWork ? this._getCompleteWorkData(prevWork.pivot_ID) : null;
     const nextWorkData = nextWork ? this._getCompleteWorkData(nextWork.pivot_ID) : null;
-    
+
     if (!workData) {
       modalContent.innerHTML = '<div class="flex items-center justify-center h-full text-gray-500 text-lg">Dati non disponibili</div>';
       return;
@@ -664,38 +664,38 @@ export class ModalRenderer {
   }
 
   _renderCombinedMetadata(firstEntry) {
-      const modalFields = this._getModalFields();
-      
-      if (!modalFields || Object.keys(modalFields).length === 0) {
-          return '';
-      }
+    const modalFields = this._getModalFields();
 
-      const metadataData = Object.keys(modalFields)
-          .filter(field => {
-              const value = firstEntry[field];
-              return value != null && value !== '';
-          })
-          .map(field => {
-              const value = firstEntry[field];
-              const label = this._getFieldLabel(field);
-              let displayValue = value;
+    if (!modalFields || Object.keys(modalFields).length === 0) {
+      return '';
+    }
 
-              if (Array.isArray(value)) {
-                  displayValue = value.join(', ');
-              } 
+    const metadataData = Object.keys(modalFields)
+      .filter(field => {
+        const value = firstEntry[field];
+        return value != null && value !== '';
+      })
+      .map(field => {
+        const value = firstEntry[field];
+        const label = this._getFieldLabel(field);
+        let displayValue = value;
 
-              return `<div class="metadata-card group bg-white/90 hover:bg-white backdrop-blur-sm hover:shadow-lg rounded-xl p-5 ring-1 ring-gray-200/50 hover:ring-gray-300/70 transition-all duration-300 border border-gray-200/30 hover:border-gray-300/50 hover:-translate-y-0.5">
+        if (Array.isArray(value)) {
+          displayValue = value.join(', ');
+        }
+
+        return `<div class="metadata-card group bg-white/90 hover:bg-white backdrop-blur-sm hover:shadow-lg rounded-xl p-5 ring-1 ring-gray-200/50 hover:ring-gray-300/70 transition-all duration-300 border border-gray-200/30 hover:border-gray-300/50 hover:-translate-y-0.5">
                   <div class="flex items-center gap-3 mb-3">
                       <div class="w-2 h-2 bg-gradient-to-r from-primary-400 to-primary-600 rounded-full group-hover:scale-125 transition-transform duration-300 shadow-sm"></div>
                       <h4 class="text-sm font-semibold text-gray-800 uppercase tracking-wide">${label}</h4>
                   </div>
                   <div class="text-base text-gray-700 leading-relaxed pl-5">${displayValue}</div>
               </div>`;
-          }).join('');
+      }).join('');
 
-      if (!metadataData) return '';
+    if (!metadataData) return '';
 
-      return `<div>
+    return `<div>
           <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-primary-600">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0-1.125.504-1.125 1.125V11.25a9 9 0 0 0-9-9Z" />
@@ -708,9 +708,9 @@ export class ModalRenderer {
       </div>`;
   }
 
-_renderGeographicalSpaces(work) {
-  if (!work["Location"] || work["Location"].length === 0) {
-    return `
+  _renderGeographicalSpaces(work) {
+    if (!work["Location"] || work["Location"].length === 0) {
+      return `
       <div class="bg-gradient-to-r from-secondary-50/90 to-indigo-50/90 backdrop-blur-sm rounded-2xl p-8 ring-1 ring-secondary-200/50 border border-secondary-200/30">
         <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-secondary-600">
@@ -722,29 +722,29 @@ _renderGeographicalSpaces(work) {
         <div class="text-gray-500 italic">Nessun spazio geografico disponibile</div>
       </div>
     `;
-  }
+    }
 
-  const spacesHtml = work["Location"].map((space, index) => {
-    const coordinates = work.coordinates[index];
-    const geodata = work.geodataBySpace.get(space) || {};
-    
-    const catalogueFields = this._getCatalogueFields();
-    const modalFields = this._getModalFields();
-    const geodataFields = this._getGeodataFields();
+    const spacesHtml = work["Location"].map((space, index) => {
+      const coordinates = work.coordinates[index];
+      const geodata = work.geodataBySpace.get(space) || {};
 
-    const metadataHtml = Object.keys(modalFields)
-    .filter(field => {
-        return !catalogueFields.includes(field) &&
-              geodataFields.includes(field) && 
-              geodata[field] != null && 
-              geodata[field] !== '';
-    })
-    .map(field => {
-        const value = geodata[field];
-        const label = modalFields[field]; 
-        let displayValue = value;
+      const catalogueFields = this._getCatalogueFields();
+      const modalFields = this._getModalFields();
+      const geodataFields = this._getGeodataFields();
 
-        return `<div class="flex items-start gap-3 py-2">
+      const metadataHtml = Object.keys(modalFields)
+        .filter(field => {
+          return !catalogueFields.includes(field) &&
+            geodataFields.includes(field) &&
+            geodata[field] != null &&
+            geodata[field] !== '';
+        })
+        .map(field => {
+          const value = geodata[field];
+          const label = modalFields[field];
+          let displayValue = value;
+
+          return `<div class="flex items-start gap-3 py-2">
             <div class="w-1.5 h-1.5 bg-secondary-400 rounded-full mt-2 flex-shrink-0"></div>
             <div class="min-w-0 flex-1">
                 <div class="flex items-center gap-2 mb-1">
@@ -753,11 +753,11 @@ _renderGeographicalSpaces(work) {
                 <span class="text-sm text-gray-800 break-words">${displayValue}</span>
             </div>
         </div>`;
-    }).filter(Boolean).join('');
+        }).filter(Boolean).join('');
 
-    const hasCoordinates = coordinates && coordinates.lat && coordinates.lng;
-    
-    return `
+      const hasCoordinates = coordinates && coordinates.lat && coordinates.lng;
+
+      return `
       <div class="space-card bg-white/90 backdrop-blur-sm rounded-xl p-4 sm:p-6 ring-1 ring-gray-200/50 hover:ring-secondary-300/70 transition-all duration-300 hover:shadow-lg border border-gray-200/30 hover:border-secondary-300/50 hover:-translate-y-1">
         <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-4">
           <div class="flex items-start gap-3 min-w-0 flex-1">
@@ -797,9 +797,9 @@ _renderGeographicalSpaces(work) {
         `}
       </div>
     `;
-  }).join('');
+    }).join('');
 
-  return `
+    return `
     <div class="bg-gradient-to-r from-secondary-50/90 to-indigo-50/90 backdrop-blur-sm rounded-2xl p-4 sm:p-8 ring-1 ring-secondary-200/50 border border-secondary-200/30">
       <h2 class="text-lg sm:text-xl font-bold text-gray-900 mb-4 sm:mb-6 flex items-center gap-3">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 sm:w-6 sm:h-6 text-secondary-600 flex-shrink-0">
@@ -819,26 +819,26 @@ _renderGeographicalSpaces(work) {
       </div>
     </div>
   `;
-}
+  }
 
   _handleFilterOverflow() {
     const container = document.getElementById('filter-badges-container');
     const indicator = document.getElementById('more-filters-indicator');
-    
+
     if (!container || !indicator) return;
-    
+
     const badges = Array.from(container.children);
     if (badges.length === 0) return;
-    
+
     // Check if content is overflowing
     const containerHeight = container.clientHeight;
     let visibleBadges = 0;
     let hiddenCount = 0;
-    
+
     badges.forEach((badge, index) => {
       const badgeRect = badge.getBoundingClientRect();
       const containerRect = container.getBoundingClientRect();
-      
+
       // Check if badge is within the container's visible area
       if (badgeRect.top >= containerRect.top && badgeRect.bottom <= containerRect.bottom) {
         visibleBadges++;
@@ -848,17 +848,17 @@ _renderGeographicalSpaces(work) {
         badge.classList.add('hidden');
       }
     });
-    
+
     // Show indicator if there are hidden badges
     if (hiddenCount > 0) {
       indicator.textContent = `+${hiddenCount} ${hiddenCount === 1 ? 'altro filtro' : 'altri filtri'}`;
       indicator.classList.remove('hidden');
-      
+
       // Add click handler to expand/collapse
       indicator.style.cursor = 'pointer';
       indicator.onclick = () => {
         const isExpanded = container.classList.contains('max-h-none');
-        
+
         if (isExpanded) {
           // Collapse
           container.classList.remove('max-h-none');
@@ -889,7 +889,7 @@ _renderGeographicalSpaces(work) {
       button.addEventListener('click', () => {
         const lat = parseFloat(button.getAttribute('data-lat'));
         const lng = parseFloat(button.getAttribute('data-lng'));
-        
+
         if (lat && lng && this.mapFocusCallback) {
           this.mapFocusCallback(lat, lng, 8);
           this._closeModal();
@@ -900,7 +900,7 @@ _renderGeographicalSpaces(work) {
 
   _extractCoordinates(item, index) {
     let coordinates = { lat: null, lng: null };
-    
+
     if (Array.isArray(item.lat_long) && item.lat_long.length > index) {
       const coordString = item.lat_long[index];
       if (coordString && typeof coordString === 'string') {
@@ -923,7 +923,7 @@ _renderGeographicalSpaces(work) {
         }
       }
     }
-    
+
     return coordinates;
   }
 }

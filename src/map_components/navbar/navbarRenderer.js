@@ -7,10 +7,10 @@ import '../../styles/tailwind.css';
 import { NavBarState } from './navbarState.js';
 import { MobileMenuManager } from './mobileMenuManager.js';
 import { DOMUtils, FilterUtils, NotificationUtils, ResetUtils } from './navbarUtils.js';
-import { 
-    ActiveFiltersPopupManager, 
-    LayerSelectionPopupManager, 
-    MarkersSelectionPopupManager, 
+import {
+    ActiveFiltersPopupManager,
+    LayerSelectionPopupManager,
+    MarkersSelectionPopupManager,
 } from './functionalitiesManager.js';
 
 const ELEMENT_IDS = {
@@ -41,30 +41,30 @@ export class NavBarRenderer {
         this.popups = {};
         this.mobileMenu = null;
         this.cleanupFns = [];
-        
+
         this.init();
     }
 
     // Getters per accesso globale
-    get config() { 
-        return window.ledaSearch?.config; 
+    get config() {
+        return window.ledaSearch?.config;
     }
 
-    get mapInstance() { 
-        return window.ledaSearch?.mapInstance; 
+    get mapInstance() {
+        return window.ledaSearch?.mapInstance;
     }
 
-    get currentFilters() { 
-        const state = window.ledaSearch?.stateManager?.state || 
-                    window.ledaSearch?.filterManager?.stateManager?.state;
-        
+    get currentFilters() {
+        const state = window.ledaSearch?.stateManager?.state ||
+            window.ledaSearch?.filterManager?.stateManager?.state;
+
         return state?.filters || {};
     }
 
-    get currentQuery() { 
-        const state = window.ledaSearch?.stateManager?.state || 
-                    window.ledaSearch?.filterManager?.stateManager?.state;
-        return state?.query || ''; 
+    get currentQuery() {
+        const state = window.ledaSearch?.stateManager?.state ||
+            window.ledaSearch?.filterManager?.stateManager?.state;
+        return state?.query || '';
     }
 
     init() {
@@ -74,7 +74,7 @@ export class NavBarRenderer {
             this.bindEvents();
             this.initPopups();
             this.initMobileMenu();
-            this.initTooltip(); 
+            this.initTooltip();
         } catch (error) {
             console.error('NavBarRenderer: Initialization error', error);
         }
@@ -83,7 +83,7 @@ export class NavBarRenderer {
     initElements() {
         this.elements = Object.fromEntries(
             Object.entries(ELEMENT_IDS).map(([key, id]) => [
-                key, 
+                key,
                 document.getElementById(id)
             ])
         );
@@ -99,7 +99,7 @@ export class NavBarRenderer {
         this.elements.resultsPanel?.setAttribute('data-open', 'true');
         this.elements.toggleFilters?.setAttribute('data-active', 'true');
         this.elements.toggleResults?.setAttribute('data-active', 'true');
-        
+
         // se non ci sono filtri attivi non mostra il badge "attivi" e "cancella"
         if (this.state.activeFiltersCount === 0) {
             this.elements.activeFiltersBadge?.classList.add('hidden');
@@ -135,7 +135,7 @@ export class NavBarRenderer {
         if (this.elements.activeFiltersCount) {
             this.elements.activeFiltersCount.textContent = count;
         }
-        
+
         // Mostra/nascondi badge e bottone "cancella"
         if (count > 0) {
             this.elements.activeFiltersBadge?.classList.remove('hidden');
@@ -144,7 +144,7 @@ export class NavBarRenderer {
             this.elements.activeFiltersBadge?.classList.add('hidden');
             this.elements.clearAllBtn?.classList.add('hidden');
         }
-        
+
         this.elements.activeFiltersBadge?.setAttribute('data-visible', count > 0);
         this.elements.clearAllBtn?.setAttribute('data-visible', count > 0);
     }
@@ -157,7 +157,7 @@ export class NavBarRenderer {
         if (this.elements.mentionsCounter) {
             this.elements.mentionsCounter.style.display = mentionsCount > 0 ? '' : 'none';
         }
-        
+
         // 2. LUOGHI (locations uniche)
         if (this.elements.resultsCount) {
             this.elements.resultsCount.textContent = locationsCount;
@@ -165,7 +165,7 @@ export class NavBarRenderer {
         if (this.elements.resultsCounter) {
             this.elements.resultsCounter.style.display = locationsCount > 0 ? '' : 'none';
         }
-        
+
         // 3. RIFERIMENTI (pivot_IDs unici)
         if (this.elements.uniqueResultsCount) {
             this.elements.uniqueResultsCount.textContent = pivotIdsCount;
@@ -195,9 +195,9 @@ export class NavBarRenderer {
             const eventName = eventMap[key];
             if (eventName) {
                 document.dispatchEvent(new CustomEvent(`navbar:${eventName}`, {
-                    detail: { 
+                    detail: {
                         type: key.replace('is', '').replace('Open', '').toLowerCase(),
-                        ...change 
+                        ...change
                     }
                 }));
             }
@@ -212,7 +212,7 @@ export class NavBarRenderer {
 
     bindElement(element, handler) {
         if (!element) return;
-        
+
         element.addEventListener('click', handler);
         this.cleanupFns.push(() => element.removeEventListener('click', handler));
     }
@@ -270,10 +270,10 @@ export class NavBarRenderer {
      */
     calculateUniqueCounts(results) {
         if (!Array.isArray(results) || results.length === 0) {
-            return { 
-                uniquePivotIds: 0, 
+            return {
+                uniquePivotIds: 0,
                 uniqueLocations: 0,
-                totalMentions: 0 
+                totalMentions: 0
             };
         }
 
@@ -369,7 +369,7 @@ export class NavBarRenderer {
      * @param {number} locationsCount - Numero di locations uniche (Luoghi)
      */
     updateResults(pivotIdsCount, locationsCount = 0) {
-        this.state.update({ 
+        this.state.update({
             resultsCount: pivotIdsCount,        // Riferimenti
             uniqueResultsCount: locationsCount  // Luoghi
         });
@@ -382,13 +382,13 @@ export class NavBarRenderer {
 
     getPanelConfig(panelType) {
         const configs = {
-            filters: { 
-                panel: this.elements.filtersPanel, 
-                button: this.elements.toggleFilters 
+            filters: {
+                panel: this.elements.filtersPanel,
+                button: this.elements.toggleFilters
             },
-            results: { 
-                panel: this.elements.resultsPanel, 
-                button: this.elements.toggleResults 
+            results: {
+                panel: this.elements.resultsPanel,
+                button: this.elements.toggleResults
             }
         };
         return configs[panelType];
@@ -445,7 +445,7 @@ export class NavBarRenderer {
 
     setState(updates) {
         const stateUpdates = {};
-        
+
         Object.entries(updates).forEach(([key, value]) => {
             if (this.state.hasOwnProperty(key)) {
                 stateUpdates[key] = value;
@@ -482,7 +482,7 @@ export class NavBarRenderer {
         // Cleanup di tutti i listener e risorse
         this.cleanupFns.forEach(cleanup => cleanup());
         Object.values(this.popups).forEach(popup => popup?.destroy());
-        
+
         this.cleanupFns = [];
         this.elements = {};
         this.popups = {};

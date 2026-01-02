@@ -16,7 +16,7 @@ export class TaxonomyRenderer {
     }
 
     // Usa i dati originali specifici per questo facetKey
-    const effectiveFacetData = checkedPaths.length > 0 
+    const effectiveFacetData = checkedPaths.length > 0
       ? this.originalFacetData.get(facetKey)
       : facetData;
 
@@ -25,7 +25,7 @@ export class TaxonomyRenderer {
 
     container.className = 'taxonomy-container max-w-full overflow-x-auto max-h-80 overflow-y-auto';
     container.innerHTML = this._createTaxonomyHTML(hierarchy, [], 0, facetKey, checkedPaths);
-    
+
     this._setCheckboxStates(container, hierarchy, checkedPaths);
     this._addEventListeners(container, hierarchy, facetKey);
   }
@@ -47,7 +47,7 @@ export class TaxonomyRenderer {
     facetData.forEach(bucket => {
       const parts = bucket.key.split(' > ');
       let currentLevel = hierarchy;
-      
+
       parts.forEach((part, index) => {
         if (!currentLevel[part]) {
           currentLevel[part] = { children: {}, docCount: 0, selfCount: 0 };
@@ -84,7 +84,7 @@ export class TaxonomyRenderer {
         if (!checkbox) return;
 
         checkbox.checked = checkedPaths.includes(fullPath);
-        
+
         const childPaths = this._getAllChildPaths(value.children || {}, [...path, key]);
         const hasCheckedChild = childPaths.some(p => checkedPaths.includes(p));
         checkbox.indeterminate = hasCheckedChild && !checkbox.checked;
@@ -129,7 +129,7 @@ export class TaxonomyRenderer {
   }
 
   _createToggleButton(hasChildren, fullPath, shouldExpand) {
-    return hasChildren ? 
+    return hasChildren ?
       `<button class="toggle-btn flex-shrink-0 w-5 h-5 flex items-center justify-center rounded hover:bg-gray-200 transition-colors" data-path="${fullPath}">
         <svg class="w-3 h-3 text-gray-600 transform transition-transform duration-200 ${shouldExpand ? 'rotate-90' : ''}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -138,7 +138,7 @@ export class TaxonomyRenderer {
   }
 
   _createChildrenContainer(hasChildren, fullPath, shouldExpand, children, currentPath, level, facetKey, checkedPaths) {
-    return hasChildren ? 
+    return hasChildren ?
       `<div class="children ${shouldExpand ? '' : 'hidden'}" data-parent="${fullPath}">
         ${this._createTaxonomyHTML(children, currentPath, level, facetKey, checkedPaths)}
       </div>` : '';
@@ -187,7 +187,7 @@ export class TaxonomyRenderer {
   _getChildPathsForNode(hierarchy, fullPath) {
     const parts = fullPath.split(' > ');
     let currentNode = hierarchy;
-    
+
     for (const part of parts) {
       if (currentNode[part]) {
         currentNode = currentNode[part];
@@ -226,7 +226,7 @@ export class TaxonomyRenderer {
       if (e.target.type !== 'checkbox') return;
 
       const checkbox = e.target;
-      
+
       if (checkbox.disabled) {
         e.preventDefault();
         return;
@@ -279,7 +279,7 @@ export class TaxonomyRenderer {
         const childCheckbox = container.querySelector(`input[value="${childPath}"]`);
         return childCheckbox?.checked;
       });
-      
+
       if (!hasCheckedChildren) {
         parentCheckbox.checked = false;
         this._updateCheckboxVisuals(parentCheckbox, false);
@@ -297,7 +297,7 @@ export class TaxonomyRenderer {
     }
   }
 
-  _renderTaxonomyFacet(facetGroup, facetKey, facetConfig, aggregations, checkedState, state, onStateChange) {    
+  _renderTaxonomyFacet(facetGroup, facetKey, facetConfig, aggregations, checkedState, state, onStateChange) {
     const taxonomyContainer = document.createElement('div');
     const facetData = aggregations[facetKey] || [];
 

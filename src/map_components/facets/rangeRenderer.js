@@ -4,15 +4,15 @@ import 'nouislider/dist/nouislider.css';
 import '../../styles/tailwind.css'
 
 export class RangeRenderer {
-  
+
   constructor() {
     this.playIntervals = new Map(); // Track play intervals for each facet
     this.playStates = new Map(); // Track play states for each facet
   }
-  
+
   /* ----------------------------------------------------------------------------------------- */
   /* ----------------------------    INITILIASE THE RANGE FACET    --------------------------- */
-  /* ----------------------------------------------------------------------------------------- */  
+  /* ----------------------------------------------------------------------------------------- */
 
   /* Process and validate raw bucket data - NOW HANDLES BOTH RAW AND FILTERED BUCKETS */
   _processRangeData(rawBuckets, filteredBuckets, currentFilter) {
@@ -41,14 +41,14 @@ export class RangeRenderer {
     // Get all possible values and available values
     const allValues = allBuckets.map(b => b.value);
     const availableValues = availableBuckets.map(b => b.value);
-    
+
     // Range extremes come from ALL data
     const minValue = allValues[0];
     const maxValue = allValues[allValues.length - 1];
-    
+
     // Available values for slider operation
     const sortedAvailableValues = [...new Set(availableValues)];
-    
+
     // Current filter - allow full range selection, not constrained to available values
     let startValue, endValue;
     if (currentFilter && currentFilter.length === 2) {
@@ -150,7 +150,7 @@ export class RangeRenderer {
     };
   }
 
-/* Initialize the noUiSlider - SLIDER RANGE ALWAYS USES ABSOLUTE EXTREMES */
+  /* Initialize the noUiSlider - SLIDER RANGE ALWAYS USES ABSOLUTE EXTREMES */
   _initializeSlider(slider, config) {
     // Slider range is always the absolute min/max, and user can select freely
     noUiSlider.create(slider, {
@@ -177,7 +177,7 @@ export class RangeRenderer {
       const [min, max] = values.map(val => Math.round(Number(val)));
       elements.minDisplay.textContent = min.toString();
       elements.maxDisplay.textContent = max.toString();
-      
+
       // Update inputs if they don't have focus
       if (document.activeElement !== elements.minInput) {
         elements.minInput.value = min;
@@ -190,7 +190,7 @@ export class RangeRenderer {
     // Slider change handler (user interaction) - NOW ALLOWS FREE MOVEMENT
     elements.slider.noUiSlider.on('change', (values) => {
       const [startVal, endVal] = values.map(val => Math.round(Number(val)));
-      
+
       // Allow any values within the absolute range
       if (!isNaN(startVal) && !isNaN(endVal) && startVal >= config.minValue && endVal <= config.maxValue) {
         this._updateRange(facetKey, [startVal, endVal], onStateChange, elements.chartElement, config.allBuckets, config);
@@ -201,7 +201,7 @@ export class RangeRenderer {
     elements.minInput.addEventListener('change', (e) => {
       this._handleInputChange(e.target, true, facetKey, elements, config, onStateChange);
     });
-    
+
     elements.maxInput.addEventListener('change', (e) => {
       this._handleInputChange(e.target, false, facetKey, elements, config, onStateChange);
     });
@@ -216,15 +216,15 @@ export class RangeRenderer {
     });
 
     // Play controls - USES AVAILABLE VALUES FOR ANIMATION
-    this.setupPlayControls(facetKey, elements.playBtn, elements.pauseBtn, elements.slider, 
-                          config.sortedAvailableValues, onStateChange, elements.chartElement, config.allBuckets);
+    this.setupPlayControls(facetKey, elements.playBtn, elements.pauseBtn, elements.slider,
+      config.sortedAvailableValues, onStateChange, elements.chartElement, config.allBuckets);
   }
 
   /* Validate and clamp input values - ALWAYS USE ABSOLUTE EXTREMES */
   _validateAndClampInput(value, minValue, maxValue) {
     const parsed = parseInt(value, 10);
     if (isNaN(parsed)) return null;
-    
+
     return Math.max(minValue, Math.min(maxValue, parsed));
   }
 
@@ -234,7 +234,7 @@ export class RangeRenderer {
     container.slider = elements.slider;
     container.sortedValues = config.sortedAvailableValues; // Use available values
     Object.assign(container, elements);
-    
+
     // Store cleanup function
     container.cleanup = () => {
       if (elements.slider.noUiSlider) {
@@ -272,14 +272,14 @@ export class RangeRenderer {
 
     // Get current slider values as starting point
     const [currentSliderMin, currentSliderMax] = slider.noUiSlider.get().map(Number);
-    
+
     // For play animation, snap to closest available values
     const currentSliderMinSnapped = this._findClosestDatasetValue(sortedAvailableValues, currentSliderMin);
     const currentSliderMaxSnapped = this._findClosestDatasetValue(sortedAvailableValues, currentSliderMax);
 
     // Check if we're resuming from a pause or starting fresh
     let playState = this.playStates.get(facetKey);
-    
+
     if (!playState) {
       // Starting fresh - find the current min and max indices in available values
       const startMinIndex = sortedAvailableValues.indexOf(currentSliderMinSnapped);
@@ -301,7 +301,7 @@ export class RangeRenderer {
         this.playStates.set(facetKey, playState);
       }
     }
-    
+
     // Start the animation interval
     const playInterval = setInterval(() => {
       const currentPlayState = this.playStates.get(facetKey);
@@ -312,31 +312,31 @@ export class RangeRenderer {
       }
 
       let { startMinIndex, currentMaxIndex, maxLimitIndex } = currentPlayState;
-      
+
       // Move to next available dataset value
       currentMaxIndex = Math.min(currentMaxIndex + 1, maxLimitIndex);
-      
+
       // If we've reached the user-set maximum, stop
       if (currentMaxIndex >= maxLimitIndex) {
         // Set final position to exact limit and then stop
         const startValue = sortedAvailableValues[startMinIndex];
         const endValue = sortedAvailableValues[maxLimitIndex];
         slider.noUiSlider.set([startValue, endValue]);
-        
+
         // For play controls, we need to pass the config - get it from stored references
         const container = slider.closest('.facet-slider');
         const storedConfig = {
           minValue: container.minValue || startValue,
           maxValue: container.maxValue || endValue
         };
-        
-        onStateChange({ 
-          type: 'RANGE_CHANGE', 
-          facetKey, 
-          value: [startValue, endValue] 
+
+        onStateChange({
+          type: 'RANGE_CHANGE',
+          facetKey,
+          value: [startValue, endValue]
         });
         this.updateChartHighlight(chartElement, allBuckets, startValue, endValue);
-        
+
         // Clear the play state so next play starts fresh
         this.playStates.delete(facetKey);
         this.pausePlay(facetKey, playBtn, pauseBtn);
@@ -344,9 +344,9 @@ export class RangeRenderer {
       }
 
       // Update play state
-      this.playStates.set(facetKey, { 
-        ...currentPlayState, 
-        currentMaxIndex 
+      this.playStates.set(facetKey, {
+        ...currentPlayState,
+        currentMaxIndex
       });
 
       // Get actual available dataset values
@@ -355,10 +355,10 @@ export class RangeRenderer {
 
       // Update slider and trigger changes
       slider.noUiSlider.set([startValue, endValue]);
-      onStateChange({ 
-        type: 'RANGE_CHANGE', 
-        facetKey, 
-        value: [startValue, endValue] 
+      onStateChange({
+        type: 'RANGE_CHANGE',
+        facetKey,
+        value: [startValue, endValue]
       });
       this.updateChartHighlight(chartElement, allBuckets, startValue, endValue);
 
@@ -381,11 +381,11 @@ export class RangeRenderer {
   /* --------------------     COMPUTATIONS AND UPDATES ON DATA CHANGE ------------------------ */
   /* ----------------------------------------------------------------------------------------- */
 
-    /* Centralized range update logic to make the facet compliant with items.js logic */
+  /* Centralized range update logic to make the facet compliant with items.js logic */
   _updateRange(facetKey, [newMin, newMax], onStateChange, chartElement, allBuckets, config) {
     // Clear play state when user manually changes range
     this.playStates.delete(facetKey);
-    
+
     // Check if the selected range covers the entire absolute range
     // If so, remove the filter (equivalent to no selection)
     let filterValue;
@@ -396,52 +396,52 @@ export class RangeRenderer {
       // User selected a specific range - apply filter
       filterValue = [newMin, newMax];
     }
-    
+
     // Trigger state change
-    onStateChange({ 
-      type: 'RANGE_CHANGE', 
-      facetKey, 
+    onStateChange({
+      type: 'RANGE_CHANGE',
+      facetKey,
       value: filterValue
     });
-    
+
     // Update chart highlight (uses ALL buckets for display)
     this.updateChartHighlight(chartElement, allBuckets, newMin, newMax);
   }
 
-    /* Handle input field changes - ALLOW FREE MOVEMENT IN ABSOLUTE RANGE */
+  /* Handle input field changes - ALLOW FREE MOVEMENT IN ABSOLUTE RANGE */
   _handleInputChange(inputElement, isMin, facetKey, elements, config, onStateChange) {
     const value = this._validateAndClampInput(inputElement.value, config.minValue, config.maxValue);
     if (value === null) return;
 
     // Don't snap to available values - allow free movement
     const [currentMin, currentMax] = elements.slider.noUiSlider.get().map(Number);
-    
-    const newRange = isMin 
+
+    const newRange = isMin
       ? [Math.max(config.minValue, Math.min(value, currentMax)), currentMax]
       : [currentMin, Math.min(config.maxValue, Math.max(value, currentMin))];
-      
+
     this._updateRange(facetKey, newRange, onStateChange, elements.chartElement, config.allBuckets, config);
     elements.slider.noUiSlider.set(newRange);
   }
-  
+
   // Find the closest value in the available dataset - ONLY USED FOR PLAY CONTROLS
   _findClosestDatasetValue(sortedAvailableValues, targetValue) {
     if (sortedAvailableValues.length === 0) return targetValue;
-    
+
     // If target is smaller than the smallest available value, return the smallest available
     if (targetValue <= sortedAvailableValues[0]) return sortedAvailableValues[0];
-    
+
     // If target is larger than the largest available value, return the largest available
     if (targetValue >= sortedAvailableValues[sortedAvailableValues.length - 1]) return sortedAvailableValues[sortedAvailableValues.length - 1];
-    
+
     // Binary search for the closest available value
     let left = 0;
     let right = sortedAvailableValues.length - 1;
-    
+
     while (left <= right) {
       const mid = Math.floor((left + right) / 2);
       const midValue = sortedAvailableValues[mid];
-      
+
       if (midValue === targetValue) {
         return midValue;
       } else if (midValue < targetValue) {
@@ -450,16 +450,16 @@ export class RangeRenderer {
         right = mid - 1;
       }
     }
-    
+
     // At this point, right is the largest available value smaller than target
     // and left is the smallest available value larger than target
     if (right < 0) return sortedAvailableValues[0];
     if (left >= sortedAvailableValues.length) return sortedAvailableValues[sortedAvailableValues.length - 1];
-    
+
     // Return the closer of the two available values
     const leftDiff = Math.abs(sortedAvailableValues[left] - targetValue);
     const rightDiff = Math.abs(sortedAvailableValues[right] - targetValue);
-    
+
     return leftDiff <= rightDiff ? sortedAvailableValues[left] : sortedAvailableValues[right];
   }
 
@@ -474,12 +474,12 @@ export class RangeRenderer {
 
     // Get all existing bars (these represent ALL buckets, including zero-count ones)
     const allBars = barsContainer.querySelectorAll('[data-value]');
-    
+
     // Update colors based on selection and data availability
     allBars.forEach(bar => {
       const barValue = parseInt(bar.dataset.value);
       const barCount = parseInt(bar.dataset.count);
-      
+
       if (barValue >= startValue && barValue <= endValue) {
         // Bars within slider selection
         if (barCount > 0) {
@@ -504,42 +504,42 @@ export class RangeRenderer {
   renderBarChart(element, allBuckets, availableBuckets, minValue, maxValue, onRangeChange = null) {
     // Clear any existing content
     element.innerHTML = '';
-    
+
     // Find the maximum count for scaling (from available buckets only)
     const maxCount = Math.max(...availableBuckets.map(bucket => bucket.count), 1);
-    
+
     // Sort ALL buckets by value to ensure bars are in order
     this.sortedAllBuckets = [...allBuckets].sort((a, b) => a.value - b.value);
-    
+
     // Create main container
     const mainContainer = document.createElement('div');
     mainContainer.className = 'w-full h-full flex flex-col';
     element.appendChild(mainContainer);
-    
+
     // Create chart container
     const chartContainer = document.createElement('div');
     chartContainer.className = 'w-full flex-1 rounded px-1 overflow-hidden';
     chartContainer.style.height = '150px';
     mainContainer.appendChild(chartContainer);
-    
+
     // Create a container for the bars
     const barsContainer = document.createElement('div');
     barsContainer.className = 'flex items-end w-full h-full';
     chartContainer.appendChild(barsContainer);
-    
+
     // Create and append bar elements for ALL buckets
     this.sortedAllBuckets.forEach(bucket => {
       const barHeight = bucket.count > 0 ? (bucket.count / maxCount) * 90 : 2; // Minimum 2% for zero-count bars
-      
+
       const bar = document.createElement('div');
       bar.className = 'flex-1 mx-px transition-colors duration-200';
-      
+
       // Set proper height in percentage
       bar.style.height = `${Math.max(barHeight, 1)}%`;
-      
+
       bar.dataset.value = bucket.value;
       bar.dataset.count = bucket.count;
-      
+
       // Color based on data availability: BLUE for data, GREY for no data
       if (bucket.count > 0) {
         bar.title = `Value: ${bucket.value}, Count: ${bucket.count}`;
@@ -548,7 +548,7 @@ export class RangeRenderer {
         bar.title = `Value: ${bucket.value}, No data available`;
         bar.style.backgroundColor = '#d1d5db'; // Grey for no data
       }
-      
+
       barsContainer.appendChild(bar);
     });
   }
@@ -565,14 +565,14 @@ export class RangeRenderer {
   /* Renders the RANGE type facet in the DOM - MODIFIED TO HANDLE BOTH RAW AND FILTERED */
   _renderRangeFacet(facetGroup, facetKey, facetConfig, aggregations, checkedState, state, onStateChange) {
 
-    
+
     const rawBuckets = aggregations[facetKey] || [];
 
-      console.log(`=== RangeRenderer for ${facetKey} ===`);
-  console.log('Received state:', state);
-  console.log('state.filters:', state?.filters);
-  console.log('state.filters[facetKey]:', state?.filters?.[facetKey]);
-  console.log('=====================================');
+    console.log(`=== RangeRenderer for ${facetKey} ===`);
+    console.log('Received state:', state);
+    console.log('state.filters:', state?.filters);
+    console.log('state.filters[facetKey]:', state?.filters?.[facetKey]);
+    console.log('=====================================');
 
     // Filter only buckets that have count > 0 (documents after filters)
     const filteredBuckets = rawBuckets.filter(bucket => bucket.doc_count > 0);
@@ -601,7 +601,7 @@ export class RangeRenderer {
     // Handle case where available min === max (only one available value)
     const availableMin = config.sortedAvailableValues[0];
     const availableMax = config.sortedAvailableValues[config.sortedAvailableValues.length - 1];
-    
+
     if (availableMin === availableMax) {
       // Create a small artificial range for the slider but keep real values
       const artificialMax = availableMin + 1;
@@ -616,19 +616,19 @@ export class RangeRenderer {
     facetGroup.appendChild(sliderContainer);
 
     const elements = this._getSliderElements(sliderContainer, facetKey);
-    
+
     // Initialize components - pass both raw and filtered buckets
-    this.renderBarChart(elements.chartElement, config.allBuckets, config.availableBuckets, 
-                       config.minValue, config.maxValue);
+    this.renderBarChart(elements.chartElement, config.allBuckets, config.availableBuckets,
+      config.minValue, config.maxValue);
     this._initializeSlider(elements.slider, config);
     this._setupEventHandlers(facetKey, elements, config, onStateChange);
-    
+
     // Initial state - highlight based on current selection
     this.updateChartHighlight(elements.chartElement, config.allBuckets, config.startValue, config.endValue);
-    
+
     // Store references and cleanup
     this._storeSliderReferences(sliderContainer, elements, config);
-    
+
     return sliderContainer;
   }
 }

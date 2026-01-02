@@ -5,7 +5,7 @@ import { createMapUrlWithFilter } from './urlHelper.js';
  * Componenti UI riutilizzabili per le viste
  */
 export class ViewComponents {
-  
+
   /**
    * Crea un badge con conteggio
    */
@@ -81,7 +81,7 @@ export class ViewComponents {
 
     const info = document.createElement('div');
     info.className = 'min-w-0 flex-1';
-    
+
     info.innerHTML = `
       <div class="${titleClasses}">${title}</div>
       ${subtitle ? `<div class="text-sm text-slate-600">${subtitle}</div>` : ''}
@@ -97,14 +97,14 @@ export class ViewComponents {
     const mapButton = this.createMapButton(indexKey, filterValue, onMapClick);
 
     right.appendChild(badge);
-    
+
     // Aggiungi chevron SOLO se c'è contenuto espandibile
     let chevron = null;
     if (hasExpandableContent) {
       chevron = this.createChevron(isExpanded);
       right.appendChild(chevron);
     }
-    
+
     right.appendChild(mapButton);
 
     header.appendChild(left);
@@ -179,7 +179,7 @@ export class ViewComponents {
    */
   static createTabButton(text, icon, isActive, onClick) {
     const button = document.createElement('button');
-    button.className = isActive 
+    button.className = isActive
       ? 'flex items-center gap-2 w-full px-3 py-2 text-sm bg-primary-600 text-white rounded hover:bg-primary-700'
       : 'flex items-center gap-2 w-full px-3 py-2 text-sm bg-slate-200 text-slate-700 rounded hover:bg-slate-300';
     button.innerHTML = `<span>${icon}</span><span>${text}</span>`;

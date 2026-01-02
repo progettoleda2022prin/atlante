@@ -19,15 +19,15 @@ export class PolygonManager {
    */
   isValidGeometry(geojson) {
     if (!geojson?.type) return false;
-    
+
     if (geojson.type === 'FeatureCollection') {
       return geojson.features?.some(f => this.isValidGeometry(f));
     }
-    
+
     if (geojson.type === 'Feature') {
       return this.isValidGeometry(geojson.geometry);
     }
-    
+
     return ['Polygon', 'MultiPolygon', 'LineString', 'MultiLineString'].includes(geojson.type);
   }
 
@@ -41,7 +41,7 @@ export class PolygonManager {
       const validFeatures = geojson.features.filter(f => this.isValidGeometry(f));
       return validFeatures.length > 0 ? { ...geojson, features: validFeatures } : null;
     }
-    
+
     return this.isValidGeometry(geojson) ? geojson : null;
   }
 
@@ -53,18 +53,18 @@ export class PolygonManager {
 
     try {
       console.log('Loading polygon repository...');
-      
+
       const baseUrl = import.meta.env.BASE_URL || '/';
       const url = `${baseUrl}data/polygons.json`.replace(/\/+/g, '/'); // Rimuovi doppie slash
-      
+
       console.log('Fetching from:', url);
-      
+
       const response = await fetch(url);
       if (!response.ok) throw new Error(`Failed to load: ${response.status}`);
-      
+
       const rawData = await response.json();
       this.polygonRepository = {};
-      
+
       // Clean data - only keep valid polygons
       for (const [key, info] of Object.entries(rawData)) {
         if ((info?.osm_id || info?.osm_id === 0) && this.isValidGeometry(info.geojson)) {
@@ -74,7 +74,7 @@ export class PolygonManager {
           }
         }
       }
-      
+
       console.log(`Loaded ${Object.keys(this.polygonRepository).length} valid polygons`);
       return this.polygonRepository;
     } catch (error) {
@@ -91,21 +91,21 @@ export class PolygonManager {
     if (!this.polygonRepository || !locationName) return null;
 
     const searchName = locationName.toLowerCase().trim();
-    
+
     // First try exact match
     for (const [key, info] of Object.entries(this.polygonRepository)) {
       if (key.toLowerCase() === searchName) {
         return info.geojson;
       }
     }
-    
+
     // Then try partial match
     for (const [key, info] of Object.entries(this.polygonRepository)) {
       if (key.toLowerCase().includes(searchName) || searchName.includes(key.toLowerCase())) {
         return info.geojson;
       }
     }
-    
+
     return null;
   }
 
@@ -141,10 +141,10 @@ export class PolygonManager {
     try {
       const layers = Array.from(this.polygonLayers.values()).map(p => p.layer);
       if (layers.length === 0) return;
-      
+
       const group = new L.featureGroup(layers);
       const bounds = group.getBounds();
-      
+
       if (bounds.isValid()) {
         this.map.fitBounds(bounds, { padding: [20, 20], maxZoom: 12 });
         console.log(`Fitted map bounds to ${layers.length} polygons`);

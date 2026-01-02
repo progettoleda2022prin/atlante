@@ -48,7 +48,7 @@ function closeSidePanel() {
     sidePanel.style.overflow = 'hidden';
     contentDiv.style.flex = '1';
     sidePanelContent.innerHTML = '';
-    
+
     // Reset del colore di tutti i link Titolo
     const titoloLinks = contentDiv.querySelectorAll('a[href*="?filter=Titolo&"]');
     titoloLinks.forEach(link => {
@@ -131,7 +131,7 @@ async function loadContent() {
 
         // Mammoth converte il DOCX in HTML
         const result = await mammoth.convertToHtml({ arrayBuffer });
-        
+
         // Aggiungi titolo della pagina
         if (currentDocument) {
             pageTitle.textContent = currentDocument.title;
@@ -139,11 +139,11 @@ async function loadContent() {
 
         // Componi il contenuto con metadati + documento
         let fullContent = '';
-        
+
         if (currentDocument) {
             fullContent += renderDocumentMetadata(currentDocument);
         }
-        
+
         fullContent += result.value;
         contentDiv.innerHTML = fullContent;
 
@@ -167,7 +167,7 @@ async function loadContent() {
                 link.style.textDecoration = 'none';
                 link.style.cursor = 'default';
                 link.style.pointerEvents = 'none';
-                
+
                 // Aggiungi SVG cliccabile (icona mappa)
                 const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
                 svg.setAttribute('width', '16');
@@ -182,25 +182,25 @@ async function loadContent() {
                 svg.style.verticalAlign = 'super';
                 svg.style.fontSize = '0.5em';
                 svg.classList.add('text-secondary-500');
-                
+
                 const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
                 path.setAttribute('stroke-linecap', 'round');
                 path.setAttribute('stroke-linejoin', 'round');
                 path.setAttribute('d', 'M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7');
                 svg.appendChild(path);
-                
+
                 // L'SVG apre il link
                 svg.addEventListener('click', (e) => {
                     e.stopPropagation();
                     window.open(href, '_blank', 'noopener,noreferrer');
                 });
-                
+
                 link.parentNode.insertBefore(svg, link.nextSibling);
             }
         });
 
         if (titoloLinks.length > 0) {
-            const modal = new ModalRenderer(() => {});
+            const modal = new ModalRenderer(() => { });
             modal.setData(allWorks, items);
             modal.setConfig(config || null);
 
@@ -209,11 +209,11 @@ async function loadContent() {
             // Gestione speciale per link con ?filter=Titolo
             titoloLinks.forEach(link => {
                 const originalHref = link.getAttribute('href');
-                
+
                 // Mantieni sottolineatura
                 link.style.textDecoration = 'underline';
                 link.style.cursor = 'pointer';
-                
+
                 // Aggiungi SVG per navigazione esterna (icona mappa)
                 const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
                 svg.setAttribute('width', '16');
@@ -228,22 +228,22 @@ async function loadContent() {
                 svg.style.verticalAlign = 'super';
                 svg.style.fontSize = '0.5em';
                 svg.classList.add('text-secondary-500');
-                
+
                 const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
                 path.setAttribute('stroke-linecap', 'round');
                 path.setAttribute('stroke-linejoin', 'round');
                 path.setAttribute('d', 'M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7');
                 svg.appendChild(path);
-                
+
                 // L'SVG apre il link originale
                 svg.addEventListener('click', (e) => {
                     e.stopPropagation();
                     e.preventDefault();
                     window.open(originalHref, '_blank', 'noopener,noreferrer');
                 });
-                
+
                 link.parentNode.insertBefore(svg, link.nextSibling);
-                
+
                 // Il link apre la modale
                 link.addEventListener('click', event => {
                     event.preventDefault();
@@ -264,13 +264,13 @@ async function loadContent() {
                     const wrapper = document.createElement('div');
                     wrapper.innerHTML = cardHTML;
                     sidePanelContent.appendChild(wrapper);
-                    
+
                     // Gestisci i bottoni mappa nel side panel
                     handleMapButtonsInSidePanel();
-                    
+
                     // Apri il side panel
                     openSidePanel();
-                    
+
                     // Cambia colore a secondary quando modale è aperta
                     titoloLinks.forEach(l => {
                         l.style.color = '';
@@ -295,7 +295,7 @@ function setupFootnotePopups() {
     // Trova tutti i link alle footnote (mammoth usa anchor links)
     const footnoteLinks = contentDiv.querySelectorAll('a[href^="#footnote-"]');
     const footnoteRefs = contentDiv.querySelectorAll('[id^="footnote-"]');
-    
+
     // Crea un map delle footnote
     const footnoteMap = new Map();
     footnoteRefs.forEach(ref => {
@@ -303,7 +303,7 @@ function setupFootnotePopups() {
         const text = ref.textContent.trim();
         footnoteMap.set(id, text);
     });
-    
+
     // Nascondi la sezione delle footnote originali se esiste
     footnoteRefs.forEach(ref => {
         const parent = ref.closest('p');
@@ -311,29 +311,29 @@ function setupFootnotePopups() {
             parent.style.display = 'none';
         }
     });
-    
+
     // Gestisci ogni link alla footnote
     footnoteLinks.forEach(link => {
         const href = link.getAttribute('href');
         const footnoteId = href.substring(1); // Rimuovi il #
         const footnoteText = footnoteMap.get(footnoteId);
-        
+
         if (!footnoteText) return;
-        
+
         // Styling del link - stesso style del badge nel popup
         link.style.position = 'relative';
         link.style.cursor = 'pointer';
         link.style.textDecoration = 'none';
         link.classList.add('footnote-ref');
-        
+
         // Aggiungi classi Tailwind per lo stesso style del badge
         link.className = 'footnote-ref inline-flex items-center justify-center w-5 h-5 text-xs font-semibold text-white bg-secondary-500 rounded-full ml-1 hover:bg-secondary-600 transition-colors duration-200';
         link.style.position = 'relative';
         link.style.cursor = 'pointer';
-        
+
         // Rimuovi le parentesi quadre dal numero
         link.textContent = link.textContent.replace(/[\[\]]/g, '');
-        
+
         // Crea il popup
         const popup = document.createElement('div');
         popup.className = 'footnote-popup hidden absolute z-50 bg-white border-2 border-secondary-300 rounded-lg shadow-2xl p-4 w-80';
@@ -343,7 +343,7 @@ function setupFootnotePopups() {
             transform: translateX(-50%) translateY(-8px);
             animation: fadeIn 0.2s ease-out;
         `;
-        
+
         // Freccia del popup
         const arrow = document.createElement('div');
         arrow.className = 'absolute bg-white border-r-2 border-b-2 border-secondary-300';
@@ -356,7 +356,7 @@ function setupFootnotePopups() {
             transition: left 0.2s, right 0.2s;
         `;
         popup.appendChild(arrow);
-        
+
         // Contenuto del popup
         const content = document.createElement('div');
         content.className = 'text-sm text-gray-700 leading-relaxed';
@@ -364,33 +364,33 @@ function setupFootnotePopups() {
         content.style.zIndex = '1';
         content.textContent = footnoteText.replace(/^\[\d+\]\s*/, '');
         popup.appendChild(content);
-        
+
         // Badge con numero della footnote
         const badge = document.createElement('span');
         badge.className = 'inline-flex items-center justify-center w-5 h-5 text-xs font-semibold text-white bg-secondary-500 rounded-full mb-2';
         badge.textContent = link.textContent.replace(/[\[\]]/g, '');
         popup.insertBefore(badge, content);
-        
+
         link.appendChild(popup);
-        
+
         // Eventi
         let hideTimeout;
-        
+
         link.addEventListener('mouseenter', () => {
             clearTimeout(hideTimeout);
             popup.classList.remove('hidden');
-            
+
             // Verifica se il popup esce dallo schermo e riposiziona
             requestAnimationFrame(() => {
                 const rect = popup.getBoundingClientRect();
                 const viewportWidth = window.innerWidth;
                 const margin = 16; // Margine dai bordi
-                
+
                 // Reset transform
                 popup.style.left = '50%';
                 popup.style.right = 'auto';
                 popup.style.transform = 'translateX(-50%) translateY(-8px)';
-                
+
                 // Se esce a sinistra
                 if (rect.left < margin) {
                     const linkRect = link.getBoundingClientRect();
@@ -415,21 +415,21 @@ function setupFootnotePopups() {
                 }
             });
         });
-        
+
         link.addEventListener('mouseleave', () => {
             hideTimeout = setTimeout(() => {
                 popup.classList.add('hidden');
             }, 200);
         });
-        
+
         popup.addEventListener('mouseenter', () => {
             clearTimeout(hideTimeout);
         });
-        
+
         popup.addEventListener('mouseleave', () => {
             popup.classList.add('hidden');
         });
-        
+
         // Previeni il click default
         link.addEventListener('click', (e) => {
             e.preventDefault();
@@ -454,11 +454,11 @@ function handleMapButtons() {
     mapButtons.forEach(button => {
         // Nascondi il bottone originale
         button.style.display = 'none';
-        
+
         // Trova il valore Location
         const card = button.closest('[data-location]');
         const locationValue = card ? card.getAttribute('data-location') : null;
-        
+
         if (locationValue) {
             // Crea l'icona SVG della mappa
             const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -473,13 +473,13 @@ function handleMapButtons() {
             svg.style.cursor = 'pointer';
             svg.style.verticalAlign = 'middle';
             svg.classList.add('text-secondary-500');
-            
+
             const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
             path.setAttribute('stroke-linecap', 'round');
             path.setAttribute('stroke-linejoin', 'round');
             path.setAttribute('d', 'M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7');
             svg.appendChild(path);
-            
+
             // Aggiungi click handler per aprire la mappa
             svg.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -507,7 +507,7 @@ function showError(title, message) {
     const errorContainer = document.getElementById('errorContainer');
     const errorTitle = document.getElementById('errorTitle');
     const errorMessage = document.getElementById('errorMessage');
-    
+
     if (errorContainer && errorTitle && errorMessage) {
         errorTitle.textContent = title;
         errorMessage.innerHTML = `<p class="text-lg mb-2">${escapeHtml(message)}</p>`;

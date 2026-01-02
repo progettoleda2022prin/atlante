@@ -1,6 +1,6 @@
 // Enhanced initMap.js with polygon toggle system integrated
 
-import 'leaflet/dist/leaflet.css'; 
+import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
@@ -17,13 +17,13 @@ function initMap(config) {
     const map = L.map('map').setView(initialView, initialZoom);
     L.tileLayer(tileLayer, { attribution }).addTo(map);
 
-    window.map = map; 
+    window.map = map;
 
     const panToMarkerWithOffset = (coords) => {
-    const point = map.project(coords, map.getZoom());
-    const newPoint = L.point(point.x, point.y - map.getSize().y * 0.25);
-    const newLatLng = map.unproject(newPoint, map.getZoom());
-    map.panTo(newLatLng);
+        const point = map.project(coords, map.getZoom());
+        const newPoint = L.point(point.x, point.y - map.getSize().y * 0.25);
+        const newLatLng = map.unproject(newPoint, map.getZoom());
+        map.panTo(newLatLng);
     };
 
     // Special coordinates that get unique treatment
@@ -36,12 +36,12 @@ function initMap(config) {
 
     polygonManager = new PolygonManager(map);
     polygonManager.loadPolygonRepository();
-    
+
 
     // ===========================================
     // POLYGON TOGGLE SYSTEM - INTEGRATED
     // ===========================================
-    
+
     // Variabile globale per tracciare lo stato dei poligoni
     window.polygonState = {
         visiblePolygons: new Set(),
@@ -60,45 +60,45 @@ function initMap(config) {
 
     // Create a custom icon using Lucide MapPin
     const createCustomIcon = (count, isSpecial = false) => {
-      const svg = `
+        const svg = `
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="${isSpecial ? 'fill-red-500' : 'fill-secondary-700'} stroke-white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
           <circle cx="12" cy="10" r="3"></circle>
         </svg>
       `;
 
-      return L.divIcon({
-        html: svg,
-        className: isSpecial ? 'custom-marker special-marker' : 'custom-marker',
-        iconSize: [24, 24],
-        iconAnchor: [12, 24],
-        popupAnchor: [0, -24]
-      });
+        return L.divIcon({
+            html: svg,
+            className: isSpecial ? 'custom-marker special-marker' : 'custom-marker',
+            iconSize: [24, 24],
+            iconAnchor: [12, 24],
+            popupAnchor: [0, -24]
+        });
     };
-    
+
     // Initialize marker cluster group
     const markers = L.markerClusterGroup({
-      disableClusteringAtZoom: 15,
-      showCoverageOnHover: true,
-      zoomToBoundsOnClick: true,
-      spiderfyOnMaxZoom: true,
-      removeOutsideVisibleBounds: false,
-      iconCreateFunction: (cluster) => {
-        const count = cluster.getChildCount();
-        const svg = `
+        disableClusteringAtZoom: 15,
+        showCoverageOnHover: true,
+        zoomToBoundsOnClick: true,
+        spiderfyOnMaxZoom: true,
+        removeOutsideVisibleBounds: false,
+        iconCreateFunction: (cluster) => {
+            const count = cluster.getChildCount();
+            const svg = `
           <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
             <circle cx="20" cy="20" r="18" class="fill-secondary-700 stroke-white" stroke-width="2"/>
             <text x="20" y="20" text-anchor="middle" dy=".3em" class="fill-secondary-200 text-sm font-sans" font-size="14">${count}</text>
           </svg>
         `;
 
-        return L.divIcon({
-          html: svg,
-          className: 'custom-cluster',
-          iconSize: [40, 40],
-          iconAnchor: [20, 20]
-        });
-      }
+            return L.divIcon({
+                html: svg,
+                className: 'custom-cluster',
+                iconSize: [40, 40],
+                iconAnchor: [20, 20]
+            });
+        }
     }).addTo(map);
 
     // Add custom CSS
@@ -107,7 +107,7 @@ function initMap(config) {
 
     // Store reference to special circle for cleanup
     let specialCircle = null;
-    
+
     // Storage for different marker types
     let pinMarkers = [];
     let circleMarkers = [];
@@ -115,53 +115,53 @@ function initMap(config) {
 
     // FIXED: Function to load polygon for a specific location 
     const loadPolygonForLocation = async (lat, lon, locationName) => {
-      if (!polygonManager) {
-        console.warn('PolygonManager not initialized');
-        return;
-      }
-
-      // Clear existing polygons
-      polygonManager.clearAllPolygons();
-
-      // Create location data with coordinates only (no OSM data needed)
-      const locationData = {
-        display_name: locationName,
-        lat: lat,
-        lon: lon
-      };
-
-      try {
-        console.log(`Loading polygon for ${locationName} at ${lat}, ${lon}`);
-        
-        // Try to find polygon by location name in the repository
-        await polygonManager.loadPolygonRepository();
-        const polygon = polygonManager.findPolygonByName(locationName);
-        
-        if (polygon) {
-          const layer = polygonManager.createPolygonLayer(polygon, locationData);
-          polygonManager.polygonLayers.set(polygonManager.getLocationId(locationData), {
-            layer,
-            data: locationData,
-            highlighted: false
-          });
-          polygonManager.polygonLayerGroup.addLayer(layer);
-          
-          // Fit map to show the polygon
-          setTimeout(() => {
-            polygonManager.fitBoundsToAll();
-          }, 100);
-          console.log(`Successfully loaded polygon for ${locationName}`);
-        } else {
-          console.log(`No polygon found for ${locationName}`);
+        if (!polygonManager) {
+            console.warn('PolygonManager not initialized');
+            return;
         }
-      } catch (error) {
-        console.error(`Error loading polygon for ${locationName}:`, error);
-      }
+
+        // Clear existing polygons
+        polygonManager.clearAllPolygons();
+
+        // Create location data with coordinates only (no OSM data needed)
+        const locationData = {
+            display_name: locationName,
+            lat: lat,
+            lon: lon
+        };
+
+        try {
+            console.log(`Loading polygon for ${locationName} at ${lat}, ${lon}`);
+
+            // Try to find polygon by location name in the repository
+            await polygonManager.loadPolygonRepository();
+            const polygon = polygonManager.findPolygonByName(locationName);
+
+            if (polygon) {
+                const layer = polygonManager.createPolygonLayer(polygon, locationData);
+                polygonManager.polygonLayers.set(polygonManager.getLocationId(locationData), {
+                    layer,
+                    data: locationData,
+                    highlighted: false
+                });
+                polygonManager.polygonLayerGroup.addLayer(layer);
+
+                // Fit map to show the polygon
+                setTimeout(() => {
+                    polygonManager.fitBoundsToAll();
+                }, 100);
+                console.log(`Successfully loaded polygon for ${locationName}`);
+            } else {
+                console.log(`No polygon found for ${locationName}`);
+            }
+        } catch (error) {
+            console.error(`Error loading polygon for ${locationName}:`, error);
+        }
     };
 
     // Function to create focus button for an item
     const createFocusButton = (item) => {
-      return `
+        return `
         <button class="focus-result-btn w-full text-left p-1 rounded text-xs" 
                 data-item-id="${item.pivot_ID}"
                 onclick="window.focusOnResult('${item.pivot_ID}')"
@@ -183,7 +183,7 @@ function initMap(config) {
     // Function to clear all markers from map
     const clearAllMarkers = () => {
         console.log('Clearing all markers...');
-        
+
         // Clear cluster markers (remove from map and clear the group)
         if (markers) {
             map.removeLayer(markers);
@@ -191,7 +191,7 @@ function initMap(config) {
             // Re-add the empty cluster group to the map
             markers.addTo(map);
         }
-        
+
         // Clear pin markers
         pinMarkers.forEach(marker => {
             if (map.hasLayer(marker)) {
@@ -199,7 +199,7 @@ function initMap(config) {
             }
         });
         pinMarkers.length = 0; // Clear array completely
-        
+
         // Clear circle markers and labels
         circleMarkers.forEach(circle => {
             if (map.hasLayer(circle)) {
@@ -213,13 +213,13 @@ function initMap(config) {
         });
         circleMarkers.length = 0; // Clear array completely
         circleLabels.length = 0; // Clear array completely
-        
+
         // Clear special circle
         if (specialCircle && map.hasLayer(specialCircle)) {
             map.removeLayer(specialCircle);
             specialCircle = null;
         }
-        
+
         console.log('All markers cleared. Arrays reset.');
     };
 
@@ -227,42 +227,42 @@ function initMap(config) {
     const showClusters = () => {
         // Group filtered items by coordinates
         const locationGroups = {};
-        
-        currentFilteredItems.forEach(item => {    
+
+        currentFilteredItems.forEach(item => {
             if (!item.lat_long) return;
-            
+
             const coords = item.lat_long.split(',').map(coord => parseFloat(coord.trim()));
             if (coords.length !== 2 || isNaN(coords[0]) || isNaN(coords[1])) {
                 console.error('Invalid coordinates:', item.lat_long);
                 return;
             }
-            
+
             const [latitude, longitude] = coords;
             const key = `${latitude},${longitude}`;
             const locationName = item["Location"] || "Unknown Location";
-            
+
             if (!locationGroups[key]) {
                 locationGroups[key] = {
-                    name: locationName, 
+                    name: locationName,
                     items: [],
                     coords: [latitude, longitude]
                 };
             }
-            
+
             locationGroups[key].items.push(item);
         });
 
         // Create clustered markers
         Object.values(locationGroups).forEach(group => {
-          const { name, items, coords } = group;
-          const coordsKey = `${coords[0]},${coords[1]}`;
-          const isSpecial = coordsKey === SPECIAL_COORDS_KEY;
+            const { name, items, coords } = group;
+            const coordsKey = `${coords[0]},${coords[1]}`;
+            const isSpecial = coordsKey === SPECIAL_COORDS_KEY;
 
-          const marker = L.marker(coords, {
-            icon: createCustomIcon(items.length, isSpecial)
-          });
+            const marker = L.marker(coords, {
+                icon: createCustomIcon(items.length, isSpecial)
+            });
 
-          if (isSpecial) {
+            if (isSpecial) {
                 specialCircle = L.circle(coords, {
                     className: 'special',
                     fillOpacity: 0.15,
@@ -271,38 +271,38 @@ function initMap(config) {
                 }).addTo(map);
             }
 
-          marker.bindPopup(() => createPopupContent(group.name, group.items, group.coords, isSpecial, config));
-          // it handles the centering of the popup (focus) in the map
-          marker.on('click', () => panToMarkerWithOffset(coords));
+            marker.bindPopup(() => createPopupContent(group.name, group.items, group.coords, isSpecial, config));
+            // it handles the centering of the popup (focus) in the map
+            marker.on('click', () => panToMarkerWithOffset(coords));
 
-          markers.addLayer(marker);
+            markers.addLayer(marker);
         });
 
     };
 
     const showPinsWithNumbers = () => {
         const locationGroups = {};
-        
-        currentFilteredItems.forEach(item => {    
+
+        currentFilteredItems.forEach(item => {
             if (!item.lat_long) return;
-            
+
             const coords = item.lat_long.split(',').map(coord => parseFloat(coord.trim()));
             if (coords.length !== 2 || isNaN(coords[0]) || isNaN(coords[1])) {
                 return;
             }
-            
+
             const [latitude, longitude] = coords;
             const key = `${latitude},${longitude}`;
             const locationName = item["Location"] || "Unknown Location";
-            
+
             if (!locationGroups[key]) {
                 locationGroups[key] = {
-                    name: locationName, 
+                    name: locationName,
                     items: [],
                     coords: [latitude, longitude]
                 };
             }
-            
+
             locationGroups[key].items.push(item);
         });
 
@@ -316,17 +316,17 @@ function initMap(config) {
             if (maxCount === minCount) {
                 return { bg: 'bg-secondary-500', text: 'text-white' }; // Default shade if all counts are the same
             }
-            
+
             // Normalize count to 0-1 range
             const normalized = (count - minCount) / (maxCount - minCount);
-            
+
             // Map to shade range (100-900, where 100 is lightest for lowest count, 900 is darkest for highest count)
             const shadeValue = 1 + Math.round(normalized * 8); // 1-9 range
             const shade = shadeValue * 100; // 100-900
-            
+
             // Determine text color based on shade (light backgrounds get dark text, dark backgrounds get light text)
             const textColor = shade <= 400 ? 'text-secondary-900' : 'text-white';
-            
+
             return { bg: `bg-secondary-${shade}`, text: textColor };
         };
 
@@ -338,8 +338,8 @@ function initMap(config) {
             const count = items.length;
 
             // Get the appropriate color classes
-            const colorClasses = isSpecial ? 
-                { bg: '', text: '' } : 
+            const colorClasses = isSpecial ?
+                { bg: '', text: '' } :
                 getPrimaryShade(count);
 
             // Create a numbered pin icon
@@ -385,44 +385,44 @@ function initMap(config) {
     // Function to show proportional circles without displaying counts
     const showProportionalCircles = () => {
         const locationGroups = {};
-        
-        currentFilteredItems.forEach(item => {    
+
+        currentFilteredItems.forEach(item => {
             if (!item.lat_long) return;
-            
+
             const coords = item.lat_long.split(',').map(coord => parseFloat(coord.trim()));
             if (coords.length !== 2 || isNaN(coords[0]) || isNaN(coords[1])) {
                 return;
             }
-            
+
             const [latitude, longitude] = coords;
             const key = `${latitude},${longitude}`;
             const locationName = item["Location"] || "Unknown Location";
-            
+
             if (!locationGroups[key]) {
                 locationGroups[key] = {
-                    name: locationName, 
+                    name: locationName,
                     items: [],
                     coords: [latitude, longitude]
                 };
             }
-            
+
             locationGroups[key].items.push(item);
         });
 
         // Find max count for proportional sizing
         const maxCount = Math.max(...Object.values(locationGroups).map(g => g.items.length));
-        
+
         Object.values(locationGroups).forEach(group => {
             const { name, items, coords } = group;
             const coordsKey = `${coords[0]},${coords[1]}`;
             const isSpecial = coordsKey === SPECIAL_COORDS_KEY;
-            
+
             // Calculate proportional radius based on square root for better visual scaling
             const minRadius = 800;
             const maxRadius = 5000;
             const normalizedCount = Math.sqrt(items.length / maxCount); // Square root for better visual proportion
             const radius = minRadius + (maxRadius - minRadius) * normalizedCount;
-            
+
             // Get colors from Tailwind classes
             const getTailwindColor = (className) => {
                 const element = document.createElement('div');
@@ -433,15 +433,15 @@ function initMap(config) {
                 document.body.removeChild(element);
                 return color;
             };
-            
+
             const specialColor = getTailwindColor('bg-primary-500');
             const normalColor = getTailwindColor('bg-secondary-500');
-            
+
             const circleColors = {
                 color: isSpecial ? specialColor : normalColor,
                 fillColor: isSpecial ? specialColor : normalColor
             };
-            
+
             // Create proportional circle without count display
             const circle = L.circle(coords, {
                 color: circleColors.color,
@@ -479,12 +479,12 @@ function initMap(config) {
     var renderMarkers = (filteredItems) => {
         // Store current filtered items for marker type switching
         currentFilteredItems = filteredItems;
-        
+
         // Clear previous markers and special circle
         clearAllMarkers();
-        
+
         // Delegate to appropriate marker rendering function
-        switch(currentMarkerType) {
+        switch (currentMarkerType) {
             case 'clusters':
                 showClusters();
                 break;
@@ -514,84 +514,84 @@ function initMap(config) {
         renderMarkers(currentFilteredItems);
     };
 
-// Function to focus on a location and open its popup
-const focusOnLocation = (lat, lng, locationName) => {
-    // Chiudi eventuali popup aperti
-    map.closePopup();
-    
-    const currentZoom = map.getZoom();
-    const targetZoom = 15;
-    
-    // Se siamo già zoomati, facciamo zoom out prima
-    if (currentZoom >= 10) {
-        // Zoom out fluido
-        map.flyTo(map.getCenter(), 8, {
-            animate: true,
-            duration: 0.5
-        });
-        
-        // Dopo lo zoom out, vola verso la nuova location
-        setTimeout(() => {
+    // Function to focus on a location and open its popup
+    const focusOnLocation = (lat, lng, locationName) => {
+        // Chiudi eventuali popup aperti
+        map.closePopup();
+
+        const currentZoom = map.getZoom();
+        const targetZoom = 15;
+
+        // Se siamo già zoomati, facciamo zoom out prima
+        if (currentZoom >= 10) {
+            // Zoom out fluido
+            map.flyTo(map.getCenter(), 8, {
+                animate: true,
+                duration: 0.5
+            });
+
+            // Dopo lo zoom out, vola verso la nuova location
+            setTimeout(() => {
+                map.flyTo([lat, lng], targetZoom, {
+                    animate: true,
+                    duration: 1
+                });
+                openMarkerPopup(lat, lng, locationName, 1100);
+            }, 600);
+        } else {
+            // Se siamo già lontani, vola direttamente alla location
             map.flyTo([lat, lng], targetZoom, {
                 animate: true,
                 duration: 1
             });
             openMarkerPopup(lat, lng, locationName, 1100);
-        }, 600);
-    } else {
-        // Se siamo già lontani, vola direttamente alla location
-        map.flyTo([lat, lng], targetZoom, {
-            animate: true,
-            duration: 1
-        });
-        openMarkerPopup(lat, lng, locationName, 1100);
-    }
-};
+        }
+    };
 
-// Helper function per aprire il popup del marker
-const openMarkerPopup = (lat, lng, locationName, delay = 600) => {
-    setTimeout(() => {
-        let markerFound = false;
-        
-        // Helper per verificare coordinate
-        const coordsMatch = (markerLatLng) => {
-            return Math.abs(markerLatLng.lat - lat) < 0.0001 && 
-                   Math.abs(markerLatLng.lng - lng) < 0.0001;
-        };
-        
-        // Helper per aprire popup e aggiustare vista
-        const openAndAdjust = (marker) => {
-            marker.openPopup();
-            markerFound = true;
-            setTimeout(() => panToMarkerWithOffset([lat, lng]), 150);
-        };
-        
-        // Cerca nei diversi tipi di marker
-        if (currentMarkerType === 'clusters') {
-            markers.eachLayer((marker) => {
-                if (marker instanceof L.Marker && coordsMatch(marker.getLatLng())) {
-                    openAndAdjust(marker);
-                }
-            });
-        } else if (currentMarkerType === 'pins') {
-            pinMarkers.forEach((marker) => {
-                if (coordsMatch(marker.getLatLng())) {
-                    openAndAdjust(marker);
-                }
-            });
-        } else if (currentMarkerType === 'circles') {
-            circleMarkers.forEach((circle) => {
-                if (coordsMatch(circle.getLatLng())) {
-                    openAndAdjust(circle);
-                }
-            });
-        }
-        
-        if (!markerFound) {
-            console.warn(`Marker not found for: ${locationName} at [${lat}, ${lng}]`);
-        }
-    }, delay);
-};
+    // Helper function per aprire il popup del marker
+    const openMarkerPopup = (lat, lng, locationName, delay = 600) => {
+        setTimeout(() => {
+            let markerFound = false;
+
+            // Helper per verificare coordinate
+            const coordsMatch = (markerLatLng) => {
+                return Math.abs(markerLatLng.lat - lat) < 0.0001 &&
+                    Math.abs(markerLatLng.lng - lng) < 0.0001;
+            };
+
+            // Helper per aprire popup e aggiustare vista
+            const openAndAdjust = (marker) => {
+                marker.openPopup();
+                markerFound = true;
+                setTimeout(() => panToMarkerWithOffset([lat, lng]), 150);
+            };
+
+            // Cerca nei diversi tipi di marker
+            if (currentMarkerType === 'clusters') {
+                markers.eachLayer((marker) => {
+                    if (marker instanceof L.Marker && coordsMatch(marker.getLatLng())) {
+                        openAndAdjust(marker);
+                    }
+                });
+            } else if (currentMarkerType === 'pins') {
+                pinMarkers.forEach((marker) => {
+                    if (coordsMatch(marker.getLatLng())) {
+                        openAndAdjust(marker);
+                    }
+                });
+            } else if (currentMarkerType === 'circles') {
+                circleMarkers.forEach((circle) => {
+                    if (coordsMatch(circle.getLatLng())) {
+                        openAndAdjust(circle);
+                    }
+                });
+            }
+
+            if (!markerFound) {
+                console.warn(`Marker not found for: ${locationName} at [${lat}, ${lng}]`);
+            }
+        }, delay);
+    };
 
 
     // Function to set the focus callback
@@ -610,15 +610,15 @@ const openMarkerPopup = (lat, lng, locationName, delay = 600) => {
     window.circleLabels = circleLabels;
     window.markerClusterGroup = markers;
 
-return {
-    map,
-    markers,
-    renderMarkers,
-    setFocusResultCallback,
-    switchMarkerType,
-    clearAllMarkers,
-    focusOnLocation  
-};
+    return {
+        map,
+        markers,
+        renderMarkers,
+        setFocusResultCallback,
+        switchMarkerType,
+        clearAllMarkers,
+        focusOnLocation
+    };
 }
 
 export { initMap };
