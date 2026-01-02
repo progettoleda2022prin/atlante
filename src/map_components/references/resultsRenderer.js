@@ -17,8 +17,9 @@ export class ResultsRenderer {
 
     this.items = items;
     this.searchState = searchState;
+    this.modalRenderer.setConfig(config);
 
-    const groupedItems = this._groupByIdOpera(items);
+    const groupedItems = this.modalRenderer.groupByIdOpera(items);
     this.allWorks = Object.values(groupedItems);
 
     // AGGIUNGI QUESTO: Riordina allWorks in base all'ordine di items
@@ -29,7 +30,6 @@ export class ResultsRenderer {
 
     // Set data, config, and search state for modal renderer
     this.modalRenderer.setData(this.allWorks, this.items);
-    this.modalRenderer.setConfig(config);
     this.modalRenderer.setSearchState(searchState);
 
     resultsContainer.innerHTML = this.allWorks
@@ -99,43 +99,6 @@ export class ResultsRenderer {
     }, 3000);
   }
 
-  _groupByIdOpera(items) {
-    const grouped = {};
-
-    items.forEach(item => {
-      const idOpera = item.pivot_ID;
-
-      if (!grouped[idOpera]) {
-        grouped[idOpera] = {
-          pivot_ID: idOpera,
-          Title: item[window.ledaSearch.config.result_cards.card_title],
-          Subtitle: item[window.ledaSearch.config.result_cards.card_subtitle] || "",
-          Subtitle2: item[window.ledaSearch.config.result_cards.card_subtitle_2] || "",
-          Description: item[window.ledaSearch.config.result_cards.card_description] || "",
-          Location: [],
-          coordinates: []
-        };
-      }
-
-      if (item["Location"]) {
-        const spaces = Array.isArray(item["Location"])
-          ? item["Location"]
-          : [item["Location"]];
-
-        spaces.forEach((space, spaceIndex) => {
-          if (!grouped[idOpera]["Location"].includes(space)) {
-            grouped[idOpera]["Location"].push(space);
-
-            const coords = this._extractCoordinatesFromItem(item, spaceIndex);
-            grouped[idOpera].coordinates.push(coords);
-          }
-        });
-      }
-    });
-
-    return grouped;
-  }
-
   _renderResultItem(work, index) {
     // Create space buttons with coordinates
     const spacesButtons = work["Location"].map((space, spaceIndex) => {
@@ -164,9 +127,9 @@ export class ResultsRenderer {
       <div class="min-w-0 flex-1">
         <h1 class="text-xl font-bold text-gray-900 leading-tight">${work.Title}</h1>
         <div class="flex items-center gap-4 mt-2">
-          ${work.Subtitle ? `<p class="text-lg text-gray-700 font-medium truncate">${work.Subtitle}</p>` : ''}
-          ${work.Subtitle && work.Subtitle2 ? `<span class="w-1.5 h-1.5 bg-gray-400 rounded-full flex-shrink-0"></span>` : ''}
-          ${work.Subtitle2 ? `<p class="text-lg text-gray-600 font-mono flex-shrink-0">${work.Subtitle2}</p>` : ''}
+          ${work.Author ? `<p class="text-lg text-gray-700 font-medium truncate">${work.Author}</p>` : ''}
+          ${work.Author && work.PublicationYear ? `<span class="w-1.5 h-1.5 bg-gray-400 rounded-full flex-shrink-0"></span>` : ''}
+          ${work.PublicationYear ? `<p class="text-lg text-gray-600 font-mono flex-shrink-0">${work.PublicationYear}</p>` : ''}
         </div>
       </div>
       
@@ -208,37 +171,6 @@ export class ResultsRenderer {
         this.modalRenderer.toggleModal(workIndex);
       });
     });
-  }
-
-  _extractCoordinatesFromItem(item, index) {
-    let coordinates = { lat: null, lng: null };
-
-    if (Array.isArray(item.lat_long) && item.lat_long.length > index) {
-      const coordString = item.lat_long[index];
-      if (coordString && typeof coordString === 'string') {
-        const parts = coordString.split(',');
-        if (parts.length === 2) {
-          const lat = parseFloat(parts[0].trim());
-          const lng = parseFloat(parts[1].trim());
-          if (!isNaN(lat) && !isNaN(lng)) {
-            coordinates.lat = lat;
-            coordinates.lng = lng;
-          }
-        }
-      }
-    } else if (item.lat_long && typeof item.lat_long === 'string') {
-      const parts = item.lat_long.split(',');
-      if (parts.length === 2) {
-        const lat = parseFloat(parts[0].trim());
-        const lng = parseFloat(parts[1].trim());
-        if (!isNaN(lat) && !isNaN(lng)) {
-          coordinates.lat = lat;
-          coordinates.lng = lng;
-        }
-      }
-    }
-
-    return coordinates;
   }
 
   _addMapFocusListeners() {

@@ -153,11 +153,6 @@ async function loadContent() {
         const allFilteredLinks = contentDiv.querySelectorAll('a[href*="?filter="]');
         const titoloLinks = contentDiv.querySelectorAll('a[href*="?filter=Titolo&"]');
 
-        const allWorks = jsonData || [];
-        const items = jsonData || [];
-
-        console.log(allWorks, items);
-
         // Stile per tutti i link con ?filter= (NON Titolo)
         allFilteredLinks.forEach(link => {
             const href = link.getAttribute('href');
@@ -201,8 +196,11 @@ async function loadContent() {
 
         if (titoloLinks.length > 0) {
             const modal = new ModalRenderer(() => { });
-            modal.setData(allWorks, items);
             modal.setConfig(config || null);
+            const items = jsonData || [];
+            const groupedItems = modal.groupByIdOpera(items);
+            const allWorks = Object.values(groupedItems);
+            modal.setData(allWorks, items);
 
             console.log(window);
 
@@ -251,7 +249,7 @@ async function loadContent() {
                     const url = new URL(link.href, window.location.href);
                     const titoloValue = url.searchParams.get('value');
                     console.log('titoloValue', titoloValue);
-                    const matchingItem = items.find(i => i.Titolo?.trim() === titoloValue?.trim());
+                    const matchingItem = allWorks.find(i => i.Title?.trim() === titoloValue?.trim());
 
                     console.log('matchingItem', matchingItem);
                     if (!matchingItem) return;
@@ -259,7 +257,7 @@ async function loadContent() {
                     const completeWork = modal._getCompleteWorkData(matchingItem.pivot_ID);
                     if (!completeWork) return;
 
-                    const cardHTML = modal._renderMainCard(completeWork);
+                    const cardHTML = modal._renderMainCard(matchingItem, completeWork);
                     sidePanelContent.innerHTML = '';
                     const wrapper = document.createElement('div');
                     wrapper.innerHTML = cardHTML;

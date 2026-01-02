@@ -183,13 +183,13 @@ const createPopupContent = (name, items, coords, isSpecial, config) => {
     // Group items by title and year, collecting unique locations
     const operaGroups = {};
     items.forEach(item => {
-      const key = `${item[cardConfig.card_title] || ''} (${item[cardConfig.card_subtitle] || ''})`;
+      const key = `${item[cardConfig.card_title] || ''} (${item[cardConfig.card_author] || ''})`;
       if (!operaGroups[key]) {
         operaGroups[key] = {
           title: item[cardConfig.card_title] || '',
-          year: item[cardConfig.card_subtitle] || '',
+          year: item[cardConfig.card_author] || '',
           locations: new Set(),
-          type: item[cardConfig.card_subtitle_2],
+          type: item[cardConfig.card_publication_year],
           description: item[cardConfig.popup_description] || '',
           item: item // Store reference to item for focus button
         };
@@ -402,9 +402,9 @@ const createPopupContent = (name, items, coords, isSpecial, config) => {
                         <div class="min-w-0 flex-1">
                             <h3 class="text-lg font-bold text-gray-800 leading-tight group-hover:text-gray-900 transition-colors">${item[config.result_cards.card_title] || 'Unnamed'}</h3>
                             <div class="flex items-center gap-3 mt-1">
-                                ${item[config.result_cards.card_subtitle] ? `<span class="text-sm text-gray-700 font-medium">${item[config.result_cards.card_subtitle]}</span>` : ''}
-                                ${item[config.result_cards.card_subtitle] && item[config.result_cards.card_subtitle_2] ? `<span class="w-1.5 h-1.5 bg-gray-400 rounded-full flex-shrink-0"></span>` : ''}
-                                ${item[config.result_cards.card_subtitle_2] ? `<span class="text-sm text-gray-600 font-mono">${item[config.result_cards.card_subtitle_2]}</span>` : ''}
+                                ${item[config.result_cards.card_author] ? `<span class="text-sm text-gray-700 font-medium">${item[config.result_cards.card_author]}</span>` : ''}
+                                ${item[config.result_cards.card_author] && item[config.result_cards.card_publication_year] ? `<span class="w-1.5 h-1.5 bg-gray-400 rounded-full flex-shrink-0"></span>` : ''}
+                                ${item[config.result_cards.card_publication_year] ? `<span class="text-sm text-gray-600 font-mono">${item[config.result_cards.card_publication_year]}</span>` : ''}
                             </div>
                         </div>
                         

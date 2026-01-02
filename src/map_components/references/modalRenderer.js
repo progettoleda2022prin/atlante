@@ -14,6 +14,47 @@ export class ModalRenderer {
     this.isAnimating = false; // Prevent multiple animations
   }
 
+  groupByIdOpera(items) {
+    const grouped = {};
+
+    items.forEach(item => {
+      const idOpera = item.pivot_ID;
+
+      if (!grouped[idOpera]) {
+        grouped[idOpera] = {
+          pivot_ID: idOpera,
+          Title: item[this.config.result_cards.card_title],
+          Author: item[this.config.result_cards.card_author] || "",
+          PublicationYear: item[this.config.result_cards.card_publication_year] || "",
+          Description: item[this.config.result_cards.card_description] || "",
+          Mode: item[this.config.result_cards.card_mode] || "",
+          Editor: item[this.config.result_cards.card_editor] || "",
+          EcoThemes: item[this.config.result_cards.card_eco_themes] || "",
+          Collection: item[this.config.result_cards.card_collection] || "",
+          Location: [],
+          coordinates: []
+        };
+      }
+
+      if (item["Location"]) {
+        const spaces = Array.isArray(item["Location"])
+          ? item["Location"]
+          : [item["Location"]];
+
+        spaces.forEach((space, spaceIndex) => {
+          if (!grouped[idOpera]["Location"].includes(space)) {
+            grouped[idOpera]["Location"].push(space);
+
+            const coords = this._extractCoordinatesFromItem(item, spaceIndex);
+            grouped[idOpera].coordinates.push(coords);
+          }
+        });
+      }
+    });
+
+    return grouped;
+  }
+
   setData(allWorks, items) {
     this.allWorks = allWorks;
     this.items = items;
@@ -23,23 +64,64 @@ export class ModalRenderer {
     this.config = config;
   }
 
+  _extractCoordinatesFromItem(item, index) {
+    let coordinates = { lat: null, lng: null };
+
+    if (Array.isArray(item.lat_long) && item.lat_long.length > index) {
+      const coordString = item.lat_long[index];
+      if (coordString && typeof coordString === 'string') {
+        const parts = coordString.split(',');
+        if (parts.length === 2) {
+          const lat = parseFloat(parts[0].trim());
+          const lng = parseFloat(parts[1].trim());
+          if (!isNaN(lat) && !isNaN(lng)) {
+            coordinates.lat = lat;
+            coordinates.lng = lng;
+          }
+        }
+      }
+    } else if (item.lat_long && typeof item.lat_long === 'string') {
+      const parts = item.lat_long.split(',');
+      if (parts.length === 2) {
+        const lat = parseFloat(parts[0].trim());
+        const lng = parseFloat(parts[1].trim());
+        if (!isNaN(lat) && !isNaN(lng)) {
+          coordinates.lat = lat;
+          coordinates.lng = lng;
+        }
+      }
+    }
+
+    return coordinates;
+  }
+
   _getModalFields() {
     if (!this.config?.modal_information) {
       return {};
     }
 
     const geodata = this.config?.modal_information?.fields?.geodata || {};
-    const catalogue = this.config?.modal_information?.fields?.catalogue || {};
 
     return {
       ...this.config.modal_information,
       ...geodata,
+    };
+  }
+
+  _getWorkFields() {
+    if (!this.config?.modal_information) {
+      return {};
+    }
+
+    const catalogue = this.config?.modal_information?.fields?.catalogue || {};
+
+    return {
       ...catalogue
     };
   }
 
   _getFieldLabel(fieldName) {
-    const modalFields = this._getModalFields();
+    const modalFields = this._getWorkFields();
     return modalFields[fieldName] || fieldName;
   }
 
@@ -51,15 +133,10 @@ export class ModalRenderer {
     const allEntriesForWork = this.items.filter(item => item.pivot_ID === idOpera);
     if (allEntriesForWork.length === 0) return null;
 
-    const firstEntry = allEntriesForWork[0];
     const completeWork = {
       pivot_ID: idOpera,
-      Title: firstEntry[this.config.result_cards.card_title],
-      Subtitle: firstEntry[this.config.result_cards.card_subtitle],
-      Subtitle2: firstEntry[this.config.result_cards.card_subtitle_2],
       "Location": [],
       coordinates: [],
-      allEntries: allEntriesForWork,
       geodataBySpace: new Map()
     };
 
@@ -95,11 +172,6 @@ export class ModalRenderer {
     completeWork["Location"] = Array.from(spaceCoordMap.keys());
     completeWork.coordinates = Array.from(spaceCoordMap.values());
     return completeWork;
-  }
-
-  _getCatalogueFields() {
-    const catalogue = this.config?.modal_information?.fields?.catalogue || {};
-    return Object.keys(catalogue)
   }
 
   _getGeodataFields() {
@@ -388,7 +460,7 @@ export class ModalRenderer {
       const workData = this._getCompleteWorkData(currentWork.pivot_ID);
 
       if (workData) {
-        nextContent.innerHTML = this._renderMainCard(workData);
+        nextContent.innerHTML = this._renderMainCard(currentWork, workData);
       }
 
       // Replace only the main content area with slide container
@@ -480,19 +552,17 @@ export class ModalRenderer {
   _updatePreviewCards() {
     const prevWork = this.currentModalIndex > 0 ? this.allWorks[this.currentModalIndex - 1] : null;
     const nextWork = this.currentModalIndex < this.allWorks.length - 1 ? this.allWorks[this.currentModalIndex + 1] : null;
-    const prevWorkData = prevWork ? this._getCompleteWorkData(prevWork.pivot_ID) : null;
-    const nextWorkData = nextWork ? this._getCompleteWorkData(nextWork.pivot_ID) : null;
 
     // Update left preview
     const leftPanel = document.querySelector('.left-nav-panel .preview-card');
     if (leftPanel) {
-      if (prevWorkData) {
+      if (prevWork) {
         leftPanel.className = 'preview-card text-center bg-white/90 backdrop-blur-sm rounded-xl shadow-lg ring-1 ring-gray-200/50 border border-gray-200/30 px-4 py-6 w-48 transition-all duration-300 hover:shadow-xl hover:-translate-y-1';
         leftPanel.innerHTML = `
           <div class="w-12 h-1 bg-gradient-to-r from-secondary-400 to-secondary-600 rounded-full mx-auto mb-4"></div>
-          <h4 class="text-sm font-semibold text-gray-800 leading-relaxed mb-2">${prevWorkData.Title}</h4>
-          <p class="text-xs text-gray-600 font-medium">${prevWorkData.Subtitle}</p>
-          <p class="text-xs text-gray-500">(${prevWorkData.Subtitle2})</p>
+          <h4 class="text-sm font-semibold text-gray-800 leading-relaxed mb-2">${prevWork.Title}</h4>
+          <p class="text-xs text-gray-600 font-medium">${prevWork.Author}</p>
+          <p class="text-xs text-gray-500">(${prevWork.PublicationYear})</p>
         `;
       } else {
         leftPanel.className = 'preview-card text-center px-4 py-6 bg-gray-50/80 backdrop-blur-sm rounded-xl border-2 border-dashed border-gray-300/50 w-48';
@@ -503,13 +573,13 @@ export class ModalRenderer {
     // Update right preview
     const rightPanel = document.querySelector('.right-nav-panel .preview-card');
     if (rightPanel) {
-      if (nextWorkData) {
+      if (nextWork) {
         rightPanel.className = 'preview-card text-center px-4 py-6 bg-white/90 backdrop-blur-sm rounded-xl shadow-lg ring-1 ring-gray-200/50 border border-gray-200/30 w-48 transition-all duration-300 hover:shadow-xl hover:-translate-y-1';
         rightPanel.innerHTML = `
           <div class="w-12 h-1 bg-gradient-to-r from-secondary-400 to-secondary-600 rounded-full mx-auto mb-4"></div>
-          <h4 class="text-sm font-semibold text-gray-800 leading-relaxed mb-2">${nextWorkData.Title}</h4>
-          <p class="text-xs text-gray-600 font-medium">${nextWorkData.Subtitle}</p>
-          <p class="text-xs text-gray-500">(${nextWorkData.Subtitle2})</p>
+          <h4 class="text-sm font-semibold text-gray-800 leading-relaxed mb-2">${nextWork.Title}</h4>
+          <p class="text-xs text-gray-600 font-medium">${nextWork.Author}</p>
+          <p class="text-xs text-gray-500">(${nextWork.PublicationYear})</p>
         `;
       } else {
         rightPanel.className = 'preview-card text-center px-4 py-6 bg-gray-50/80 backdrop-blur-sm rounded-xl border-2 border-dashed border-gray-300/50 w-48';
@@ -524,21 +594,12 @@ export class ModalRenderer {
     const mobilePrevBtn = document.getElementById('mobile-prev-work-btn');
     const mobileNextBtn = document.getElementById('mobile-next-work-btn');
 
-    if (prevBtn && this.currentModalIndex > 0) {
-      prevBtn.addEventListener('click', () => this._navigateModal(-1));
-    }
+    prevBtn.addEventListener('click', () => this._navigateModal(-1));
+    nextBtn.addEventListener('click', () => this._navigateModal(1));
 
-    if (nextBtn && this.currentModalIndex < this.allWorks.length - 1) {
-      nextBtn.addEventListener('click', () => this._navigateModal(1));
-    }
+    mobilePrevBtn.addEventListener('click', () => this._navigateModal(-1));
+    mobileNextBtn.addEventListener('click', () => this._navigateModal(1));
 
-    if (mobilePrevBtn && this.currentModalIndex > 0) {
-      mobilePrevBtn.addEventListener('click', () => this._navigateModal(-1));
-    }
-
-    if (mobileNextBtn && this.currentModalIndex < this.allWorks.length - 1) {
-      mobileNextBtn.addEventListener('click', () => this._navigateModal(1));
-    }
   }
 
   _populateModal() {
@@ -560,8 +621,6 @@ export class ModalRenderer {
 
     const prevWork = this.currentModalIndex > 0 ? this.allWorks[this.currentModalIndex - 1] : null;
     const nextWork = this.currentModalIndex < this.allWorks.length - 1 ? this.allWorks[this.currentModalIndex + 1] : null;
-    const prevWorkData = prevWork ? this._getCompleteWorkData(prevWork.pivot_ID) : null;
-    const nextWorkData = nextWork ? this._getCompleteWorkData(nextWork.pivot_ID) : null;
 
     if (!workData) {
       modalContent.innerHTML = '<div class="flex items-center justify-center h-full text-gray-500 text-lg">Dati non disponibili</div>';
@@ -578,12 +637,12 @@ export class ModalRenderer {
             </svg>
           </button>
           
-          ${prevWorkData ? `
+          ${prevWork ? `
             <div class="preview-card text-center bg-white/90 backdrop-blur-sm rounded-xl shadow-lg ring-1 ring-gray-200/50 border border-gray-200/30 px-4 py-6 w-48 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
               <div class="w-12 h-1 bg-gradient-to-r from-secondary-400 to-secondary-600 rounded-full mx-auto mb-4"></div>
-              <h4 class="text-sm font-semibold text-gray-800 leading-relaxed mb-2">${prevWorkData.Title}</h4>
-              <p class="text-xs text-gray-600 font-medium">${prevWorkData.Subtitle}</p>
-              <p class="text-xs text-gray-500">(${prevWorkData.Subtitle2})</p>
+              <h4 class="text-sm font-semibold text-gray-800 leading-relaxed mb-2">${prevWork.Title}</h4>
+              <p class="text-xs text-gray-600 font-medium">${prevWork.Author}</p>
+              <p class="text-xs text-gray-500">(${prevWork.PublicationYear})</p>
             </div>
           ` : `
             <div class="preview-card text-center px-4 py-6 bg-gray-50/80 backdrop-blur-sm rounded-xl border-2 border-dashed border-gray-300/50 w-48">
@@ -594,7 +653,7 @@ export class ModalRenderer {
 
         <!-- Enhanced Main Content Area with fixed flex properties (full width on mobile) -->
         <div class="main-content-panel flex-1 min-w-0 overflow-y-auto bg-white/95 backdrop-blur-sm rounded-xl shadow-xl hover:shadow-2xl transition-all duration-500 border border-gray-200/50 ring-1 ring-white/20 lg:mx-0 mx-2">
-          ${this._renderMainCard(workData)}
+          ${this._renderMainCard(currentWork, workData)}
         </div>
 
         <!-- Enhanced Right Navigation Panel with fixed width (hidden on mobile) -->
@@ -605,12 +664,12 @@ export class ModalRenderer {
             </svg>
           </button>
           
-          ${nextWorkData ? `
+          ${nextWork ? `
             <div class="preview-card text-center px-4 py-6 bg-white/90 backdrop-blur-sm rounded-xl shadow-lg ring-1 ring-gray-200/50 border border-gray-200/30 w-48 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
               <div class="w-12 h-1 bg-gradient-to-r from-secondary-400 to-secondary-600 rounded-full mx-auto mb-4"></div>
-              <h4 class="text-sm font-semibold text-gray-800 leading-relaxed mb-2">${nextWorkData.Title}</h4>
-              <p class="text-xs text-gray-600 font-medium">${nextWorkData.Subtitle}</p>
-              <p class="text-xs text-gray-500">(${nextWorkData.Subtitle2})</p>
+              <h4 class="text-sm font-semibold text-gray-800 leading-relaxed mb-2">${nextWork.Title}</h4>
+              <p class="text-xs text-gray-600 font-medium">${nextWork.Author}</p>
+              <p class="text-xs text-gray-500">(${nextWork.PublicationYear})</p>
             </div>
           ` : `
             <div class="preview-card text-center px-4 py-6 bg-gray-50/80 backdrop-blur-sm rounded-xl border-2 border-dashed border-gray-300/50 w-48">
@@ -631,10 +690,9 @@ export class ModalRenderer {
     this._addMapFocusListeners();
   }
 
-  _renderMainCard(work) {
-    const firstEntry = work.allEntries[0];
-    const metadataInfo = this._renderCombinedMetadata(firstEntry);
-    const spacesSection = this._renderGeographicalSpaces(work);
+  _renderMainCard(currentWork, workdata) {
+    const metadataInfo = this._renderCombinedMetadata(currentWork);
+    const spacesSection = this._renderGeographicalSpaces(workdata);
 
     return `
       <div class="p-8 space-y-8 w-full">
@@ -645,11 +703,11 @@ export class ModalRenderer {
               <div class="flex items-center gap-3 mb-4">
                 <div class="w-1 h-12 bg-gradient-to-b from-secondary-500 to-secondary-600 rounded-full shadow-sm flex-shrink-0"></div>
                 <div class="min-w-0 flex-1">
-                  <h1 class="text-3xl font-bold text-gray-900 leading-tight word-break">${work.Title}</h1>
+                  <h1 class="text-3xl font-bold text-gray-900 leading-tight word-break">${currentWork.Title}</h1>
                   <div class="flex items-center gap-4 mt-2">
-                    <p class="text-lg text-gray-700 font-medium">${work.Subtitle ? work.Subtitle : 'Non specificato'}</p>
+                    <p class="text-lg text-gray-700 font-medium">${currentWork.Author ? currentWork.Author : 'Non specificato'}</p>
                     <span class="w-1.5 h-1.5 bg-gray-400 rounded-full flex-shrink-0"></span>
-                    <p class="text-lg text-gray-600 font-mono flex-shrink-0">${work.Subtitle2 ? work.Subtitle2 : 'Non specificato'}</p>
+                    <p class="text-lg text-gray-600 font-mono flex-shrink-0">${currentWork.PublicationYear ? currentWork.PublicationYear : 'Non specificato'}</p>
                   </div>
                 </div>
               </div>
@@ -663,21 +721,23 @@ export class ModalRenderer {
     `;
   }
 
-  _renderCombinedMetadata(firstEntry) {
-    const modalFields = this._getModalFields();
-
+  _renderCombinedMetadata(currentWork) {
+    const modalFields = this._getWorkFields();
+    console.log(modalFields)
     if (!modalFields || Object.keys(modalFields).length === 0) {
       return '';
     }
 
     const metadataData = Object.keys(modalFields)
       .filter(field => {
-        const value = firstEntry[field];
+        const value = currentWork[field];
         return value != null && value !== '';
       })
       .map(field => {
-        const value = firstEntry[field];
+        const value = currentWork[field];
         const label = this._getFieldLabel(field);
+        console.log(label)
+        console.log(value)
         let displayValue = value;
 
         if (Array.isArray(value)) {
@@ -700,7 +760,7 @@ export class ModalRenderer {
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-primary-600">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0-1.125.504-1.125 1.125V11.25a9 9 0 0 0-9-9Z" />
               </svg>
-              Informazioni su su questa fonte
+              Informazioni su questa fonte
           </h2>
           <div class="grid gap-4">
               ${metadataData}
@@ -728,14 +788,12 @@ export class ModalRenderer {
       const coordinates = work.coordinates[index];
       const geodata = work.geodataBySpace.get(space) || {};
 
-      const catalogueFields = this._getCatalogueFields();
       const modalFields = this._getModalFields();
       const geodataFields = this._getGeodataFields();
 
       const metadataHtml = Object.keys(modalFields)
         .filter(field => {
-          return !catalogueFields.includes(field) &&
-            geodataFields.includes(field) &&
+          return geodataFields.includes(field) &&
             geodata[field] != null &&
             geodata[field] !== '';
         })

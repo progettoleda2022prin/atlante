@@ -144,7 +144,10 @@ function initializeScrollytelling() {
   // Funzione per navigare a una sezione specifica
   function goToSection(sectionIndex) {
     if (sectionIndex < 0 || sectionIndex >= sections.length || isScrolling) return;
-
+    if (sectionIndex == sections.length - 1)
+      scrollArrow.classList.remove("active")
+    else
+      scrollArrow.classList.add("active")
     isScrolling = true;
     isManualScroll = true;
     currentSection = sectionIndex;
@@ -195,7 +198,6 @@ function initializeScrollytelling() {
       }
     });
   }
-
 
   // Event listeners per gli indicatori
   indicators.forEach((indicator, index) => {
@@ -340,6 +342,17 @@ function initializeScrollytelling() {
     ensureContainerHeight();
   });
 
+  const scrollArrow = document.getElementById('scroll-down-arrow');
+  // Click sulla freccia
+  if (scrollArrow) {
+    scrollArrow.addEventListener('click', function (e) {
+      e.preventDefault();
+      if (currentSection < sections.length - 1) {
+        goToSection(currentSection + 1);
+      }
+    });
+  }
+
   // FIX: Inizializzazione con correzione dell'altezza
   ensureContainerHeight();
   updateIndicators();
@@ -351,102 +364,12 @@ function initializeScrollytelling() {
   }, 100);
 }
 
-// ========================================
-// CODICE FINALE DA AGGIUNGERE A index.js
-// Una sola freccia FIXED che legge la sezione corrente e va a +1
-// ========================================
-
-// Gestione freccia scroll down
-const scrollArrow = document.getElementById('scroll-down-arrow');
-
-function updateScrollArrow() {
-  const sections = document.querySelectorAll('.section-fullscreen[data-section-id]');
-
-  if (!scrollArrow || sections.length === 0) return;
-
-  // Trova la sezione corrente visibile usando getBoundingClientRect
-  const windowHeight = window.innerHeight;
-
-  let currentSectionId = null;
-  let maxVisibleArea = 0;
-
-  sections.forEach((section) => {
-    const rect = section.getBoundingClientRect();
-    const sectionId = section.getAttribute('data-section-id');
-
-    // Calcola quanta area della sezione è visibile nel viewport
-    const visibleTop = Math.max(0, rect.top);
-    const visibleBottom = Math.min(windowHeight, rect.bottom);
-    const visibleHeight = Math.max(0, visibleBottom - visibleTop);
-
-    // La sezione con più area visibile è quella corrente
-    if (visibleHeight > maxVisibleArea) {
-      maxVisibleArea = visibleHeight;
-      currentSectionId = sectionId;
-    }
-  });
-
-  console.log('Current Section ID:', currentSectionId);
-
-  // Se siamo nella sezione 3 (ultima), nascondi la freccia
-  if (currentSectionId === '3') {
-    scrollArrow.classList.remove('active');
-    return;
-  }
-
-  // Altrimenti mostra la freccia e imposta target = currentSectionId + 1
-  if (currentSectionId !== null) {
-    scrollArrow.classList.add('active');
-
-    // ⭐ LOGICA: PRENDE SEZIONE CORRENTE E AGGIUNGE 1
-    const targetSection = parseInt(currentSectionId) + 1;
-    scrollArrow.setAttribute('data-target-section', targetSection);
-    console.log('Target Section:', targetSection);
-  }
-}
-
-// Click sulla freccia
-if (scrollArrow) {
-  scrollArrow.addEventListener('click', function (e) {
-    e.preventDefault();
-
-    const targetSectionId = this.getAttribute('data-target-section');
-
-    if (targetSectionId) {
-      const targetSection = document.querySelector(`[data-section-id="${targetSectionId}"]`);
-
-      if (targetSection) {
-        // Usa la funzione goToSection esistente se disponibile
-        if (typeof goToSection === 'function') {
-          goToSection(parseInt(targetSectionId));
-        } else {
-          // Altrimenti scroll diretto
-          targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      }
-    }
-  });
-}
-
 // Previeni scroll orizzontale
 window.addEventListener('scroll', function () {
   if (window.scrollX !== 0) {
     window.scrollTo(0, window.scrollY);
   }
 });
-
-// Aggiorna al caricamento
-setTimeout(updateScrollArrow, 200);
-
-// Aggiorna durante scroll e resize
-window.addEventListener('scroll', updateScrollArrow);
-window.addEventListener('resize', updateScrollArrow);
-
-// Se usi sectionsContainer con scroll interno
-const sectionsContainer = document.querySelector('.sections-container');
-if (sectionsContainer) {
-  sectionsContainer.addEventListener('scroll', updateScrollArrow);
-}
 
 // Funzione principale asincrona per la mappa
 async function initializeMap(config, data) {

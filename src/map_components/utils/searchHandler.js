@@ -75,6 +75,19 @@ export class SearchHandler {
     return { regularFilters, dateFilters, taxonomyFilters };
   }
 
+  _normalizeToStringArray(value) {
+    if (Array.isArray(value)) {
+      return value.map(v => String(v)).filter(Boolean);
+    }
+    if (typeof value === 'string') {
+      return [value];
+    }
+    if (value == null) {
+      return [];
+    }
+    return [String(value)];
+  }
+
   _customFilter(item, dateFilters, taxonomyFilters) {
     // Check date filters
     for (const [field, range] of Object.entries(dateFilters)) {
@@ -92,24 +105,13 @@ export class SearchHandler {
       if (!item[field]) return false;
 
       // Check if any of the selected paths match the item's taxonomy
-      const itemValue = item[field];
-
-      // Handle different data types for itemValue
-      let itemValueStr;
-      if (Array.isArray(itemValue)) {
-        // If it's an array, join with comma or take first element
-        itemValueStr = itemValue.length > 0 ? String(itemValue[0]) : '';
-      } else if (typeof itemValue === 'string') {
-        itemValueStr = itemValue;
-      } else {
-        // Convert to string for other types (null, undefined, objects, etc.)
-        itemValueStr = String(itemValue || '');
-      }
-
-      const matches = paths.some(path => {
-        return itemValueStr === path || itemValueStr.startsWith(path + ' > ');
-      });
-
+      const itemValues = item[field];
+      const itemValueStrings = this._normalizeToStringArray(itemValues);
+      const matches = paths.some(path =>
+        itemValueStrings.some(itemStr =>
+          itemStr === path || itemStr.startsWith(path + ' > ')
+        )
+      );
       if (!matches) return false;
     }
 

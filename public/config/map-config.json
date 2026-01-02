@@ -12,33 +12,39 @@
     "multivalue_rows": {
       "Tipologia del luogo": ", ",
       "Tipologia dello Spazio": "; ",
-      "Modo": ","
+      "Modo": ",",
+      "Temi Ecologici" : ", "
     }
   },
   "result_cards": {
     "card_title": "Titolo",
-    "card_subtitle": "Autore",
-    "card_subtitle_2": "Anno",
+    "card_author": "Autore",
+    "card_publication_year": "Anno",
+    "card_editor": "Editore",
+    "card_mode": "Modo",
+    "card_eco_themes": "Temi Ecologici",
+    "card_collection": "Parte di",
     "card_description": "Descrizione Ecocritica",
     "popup_description": "Note sullo spazio"
   },
   "modal_information": {
     "fields": {
       "catalogue": {
-        "Titolo": "Titolo",
-        "Autore": "Autore",
-        "Anno": "Anno di prima pubblicazione",
-        "Editore": "Editore",
-        "Modo": "Modo",
-        "Temi Ecologici": "Temi Ecologici",
-        "Descrizione Ecocritica": "Descrizione dei Temi Ecocritici"
+        "Title": "Titolo",
+        "Author": "Autore",
+        "PublicationYear": "Anno di prima pubblicazione",
+        "Editor": "Editore",
+        "Mode": "Modo",
+        "EcoThemes": "Temi Ecologici",
+        "Collection": "Parte di", 
+        "Description": "Descrizione dei Temi Ecocritici"
       },
       "geodata": {
         "Note sullo spazio": "Note",
         "Tipologia del luogo": "Tipologia",
         "Temporalità dello Spazio": "Temporalità",
-        "Definizione dello spazio": "Definizione",
-        "Interpretazione": "Motivazione dello studioso"
+        "Definizione dello spazio": "Stati di realtà",
+        "Interpretazione": "Tipo di identificazione"
       }
     }
   },

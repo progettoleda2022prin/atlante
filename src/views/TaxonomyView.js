@@ -68,8 +68,8 @@ export class TaxonomyView {
 
     const tabs = [
       { id: 'nested-list', label: 'Lista Annidata', icon: '📋' },
-      { id: 'treemap', label: 'Treemap', icon: '🔲' },
-      { id: 'sunburst', label: 'Sunburst', icon: '☀️' }
+      // { id: 'treemap', label: 'Treemap', icon: '🔲' },
+      // { id: 'sunburst', label: 'Sunburst', icon: '☀️' }
     ];
 
     const tabButtons = [];

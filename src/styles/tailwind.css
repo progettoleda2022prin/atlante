@@ -1130,13 +1130,15 @@ header {
 }
 
 .footer-nav a {
-  color: #9ca3af;
+  color: #000;
   text-decoration: none;
   font-size: 14px;
   display: block;
-  padding: 4px 8px;
+  padding: 8px 12px;
   border-radius: 6px;
+  background: #f9fafb;
   transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .footer-nav a:hover {
@@ -1146,9 +1148,9 @@ header {
 
 .footer-logo-carousel-container {
   margin: 16px 0;
-  padding: 16px 0;
+  padding-top: 16px;
+  padding-bottom: 8px;
   border-top: 1px solid #374151;
-  border-bottom: 1px solid #374151;
 }
 
 .footer-logo-carousel-title {

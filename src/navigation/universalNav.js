@@ -53,7 +53,7 @@ export class UniversalNav {
             { text: 'Mappa', path: 'pages/mappa.html' },
             { text: 'Indici', path: 'pages/indici.html' },
             { text: 'Percorsi critici', path: 'pages/percorsi.html' },
-            { text: 'Progetto', path: 'https://ledaprin2022pnrr.altervista.org/' },
+            { text: 'Progetto', path: 'pages/progetto.html' },
         ];
 
         const navHTML = this.generateNavHTML(navItems);
