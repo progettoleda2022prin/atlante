@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 
 <head>
     <meta charset="UTF-8">
@@ -7,16 +7,503 @@
     <title>Progetto</title>
 </head>
 
-<body>
+<body class="bg-gray-50 overflow-hidden overflow-x-hidden" id="index-page">
 
-    <!-- Container principale per le visualizzazioni -->
-    <div data-content="index-content" class="h-screen w-screen">
-        <!-- Le visualizzazioni verranno inserite qui -->
+    <!-- Contenitore principale delle sezioni -->
+    <div class="sections-container">
+        <!-- Project presentation Section -->
+        <section class="relative bg-gradient-to-br from-primary-50 via-white to-secondary-50 overflow-hidden"
+            data-section-id="-1">
+            <!-- Decorative elements -->
+            <div
+                class="absolute top-0 left-0 w-72 h-72 bg-primary-200 rounded-full opacity-20 -translate-x-1/2 -translate-y-1/2">
+            </div>
+            <div
+                class="absolute bottom-0 right-0 w-96 h-96 bg-secondary-200 rounded-full opacity-10 translate-x-1/3 translate-y-1/3">
+            </div>
+
+            <!-- Main content wrapper -->
+            <div class="flex items-center justify-center h-full">
+                <div class="max-w-7xl mx-auto px-4 lg:px-8 relative z-10 w-full h-full flex items-center py-8 lg:py-0">
+                    <div class="lg:grid-cols-2 gap-6 lg:gap-16 items-center w-full">
+
+                        <div class="text-left">
+                            <!-- Badge con project title -->
+                            <h1
+                                class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-primary-900 leading-tight">
+                                <span class="expand_subdiv initiatives">Iniziative</span>
+                            </h1>
+                        </div>
+
+                        <!-- Right column - Project Description con scroll interno -->
+                        <div id="initiatives" class=" lg:h-auto"  style="display: none;">
+                            <!-- Container con scroll interno -->
+                            <div class="">
+                                <div class="">
+                                    <p class=" lg:text-sm text-gray-600 leading-tight" data-content="events"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <br><br>
+
+        <!-- Project presentation Section -->
+        <section class="relative bg-gradient-to-br from-primary-50 via-white to-secondary-50 overflow-hidden"
+            data-section-id="0">
+            <!-- Main content wrapper -->
+            <div class="flex items-center justify-center h-full">
+                <div class="max-w-7xl mx-auto px-4 lg:px-8 relative z-10 w-full h-full flex items-center py-8 lg:py-0">
+                    <div class="lg:grid-cols-2 gap-6 lg:gap-16 items-center w-full">
+
+                        <div class="text-left">
+                            <!-- Badge con project title -->
+                            <h1
+                                class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-primary-900 leading-tight">
+                                <span class="expand_subdiv publications">Pubblicazioni</span>
+                            </h1>
+                        </div>
+
+                        <!-- Right column - Project Description con scroll interno -->
+                        <div id="publications" class=" lg:h-auto"  style="display: none;">
+                            <!-- Container con scroll interno -->
+                            <div class="">
+                                <div class="">
+                                    <p class=" lg:text-sm text-gray-600 leading-tight" data-content="publications"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <br><br>
+
+        <section class="relative bg-gradient-to-br from-primary-50 via-white to-secondary-50 overflow-hidden"
+            data-section-id="1">
+            <!-- Main content wrapper -->
+            <div class="flex items-center justify-center h-full">
+                <div class="max-w-7xl mx-auto px-4 lg:px-8 relative z-10 w-full h-full flex items-center py-8 lg:py-0">
+                    <div class="lg:grid-cols-2 gap-6 lg:gap-16 items-center w-full">
+
+                        <div class="text-left">
+                            <!-- Badge con project title -->
+                            <h1
+                                class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-primary-900 leading-tight">
+                                <span class="expand_subdiv members">Chi siamo</span>
+                            </h1>
+                        </div>
+
+                        <div id="members" data-content="members"  style="display: none;">
+                            <br><br>
+                            <h2 class="text-2xl font-bold text-gray-900 mb-2">Università IULM di Milano
+                            </h2>
+                            <hr>
+                            <div
+                                class="max-w-7xl mx-auto px-4 lg:px-8 relative z-10 w-full h-full flex items-center py-8 lg:py-0">
+                                <div class="grid lg:grid-cols-2 gap-6 lg:gap-16 items-center w-full">
+                                    <!-- Left column - Project Title & Author -->
+                                    <div class="text-left">
+                                        <!-- Badge con project title -->
+                                        <div class="w-80 h-80 flex-shrink-0 overflow-hidden">
+                                            <img class="w-full h-full object-cover" decoding="async"
+                                                src="/imgs/members/pennacchio.jpg">
+                                        </div>
+                                        <span class="ml-2"></span>
+                                    </div>
+
+                                    <!-- Right column - Project Description con scroll interno -->
+                                    <div>
+                                        <p>
+                                            <a href="https://www.iulm.it/it/iulm/ateneo/docenti-e-collaboratori/pennacchio-filippo"
+                                                class="text-blue-600 underline hover:text-blue-800">Filippo
+                                                Pennacchio</a>&nbsp;Filippo Pennacchio è
+                                            ricercatore a tempo
+                                            determinato in Letteratura
+                                            italiana contemporanea. È Principal Investigator
+                                            del Progetto
+                                            PRIN
+                                            PNRR 2022 <em>For an
+                                                Atlas of Italian Ecological Literature: From
+                                                the Great
+                                                Acceleration to the Pandemic</em>
+                                            (LEDA). Nel 2020 ha fondato, insieme ad altri
+                                            studiosi
+                                            dell’Università IULM e
+                                            dell’Università Federico II di Napoli, il
+                                            Seminario Permanente
+                                            di
+                                            Narratologia. I suoi
+                                            interessi riguardano soprattutto la narrativa
+                                            fra Ottocento e
+                                            Duemila, la teoria del
+                                            racconto e l’intreccio fra letteratura e altri
+                                            media.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="max-w-7xl mx-auto px-4 lg:px-8 relative z-10 w-full h-full flex items-center py-8 lg:py-0">
+                                <div class="grid lg:grid-cols-2 gap-6 lg:gap-16 items-center w-full">
+                                    <div class="text-left">
+                                        <!-- Badge con project title -->
+                                        <div class="w-80 h-80 flex-shrink-0 overflow-hidden">
+                                            <img class="w-full h-full object-cover" decoding="async"
+                                                src="/imgs/members/beltrami.jpg">
+                                        </div>
+                                        <span class="ml-2"></span>
+                                    </div>
+
+                                    <div>
+                                        <p>
+                                            <a href="https://orcid.org/0000-0001-7589-0552/print">Marzia
+                                                Beltrami</a>&nbsp;è assegnista
+                                            di ricerca in Letteratura italiana contemporanea
+                                            presso lo IULM
+                                            di
+                                            Milano nell’ambito del
+                                            progetto PRIN 2022 PNRR&nbsp;<em>For an Atlas of
+                                                Italian
+                                                Ecological
+                                                Literature: From the
+                                                Great Acceleration to the
+                                                Pandemic&nbsp;</em>(LEDA). Si
+                                            occupa
+                                            di narratologia cognitiva
+                                            con particolare attenzione alla spazialità e dei
+                                            rapporti tra
+                                            etica
+                                            e narrativa nella
+                                            fantascienza. Oltre a diversi saggi su riviste e
+                                            in volume, ha
+                                            pubblicato nel 2021 la
+                                            monografia&nbsp;<em>Spatial Plots. Virtuality
+                                                and the Embodied
+                                                Mind
+                                                in Baricco, Camilleri
+                                                and Calvino</em>&nbsp;(Cambridge, Legenda).
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="max-w-7xl mx-auto px-4 lg:px-8 relative z-10 w-full h-full flex items-center py-8 lg:py-0">
+                                <div class="grid lg:grid-cols-2 gap-6 lg:gap-16 items-center w-full">
+                                    <div class="text-left">
+                                        <!-- Badge con project title -->
+                                        <div class="w-80 h-80 flex-shrink-0 overflow-hidden">
+                                            <img class="w-full h-full object-cover" decoding="async"
+                                                src="/imgs/members/giovannetti.jpg">
+                                        </div>
+                                        <span class="ml-2"></span>
+                                    </div>
+
+                                    <div>
+                                        <p>
+                                            <a
+                                                href="https://www.iulm.it/it/iulm/ateneo/docenti-e-collaboratori/giovannetti-paolo">Paolo
+                                                Giovannetti</a> (Milano 1958) è professore ordinario
+                                            di
+                                            Letteratura italiana
+                                            contemporanea all’Università IULM di Milano, dove dal
+                                            2017
+                                            al 2023 ha diretto il
+                                            dipartimento di Comunicazione, arti e media. Studioso di
+                                            poesia e metrica
+                                            (<em>Metrica del verso libero italiano</em>, 1994;
+                                            <em>Nordiche superstizioni</em>,
+                                            1999; <em>La metrica italiana contemporanea</em>, 2010 –
+                                            con
+                                            Gianfranca Lavezzi),
+                                            oggi si dedica soprattutto alla narratologia, in chiave
+                                            per
+                                            lo più transmediale:
+                                            <em>Il racconto</em> (2012), <em>Spettatori del romanzo
+                                            </em>(2015), <em>«The
+                                                Lunatic is in my Head» </em>(2021). Nel 2023 ha
+                                            pubblicato <em>I silenzi
+                                                dell’ascolto letterario</em>.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+                            <h2 class="text-2xl font-bold text-gray-900 mb-2">Università degli Studi di
+                                Bologna</h2>
+                            <div
+                                class="max-w-7xl mx-auto px-4 lg:px-8 relative z-10 w-full h-full flex items-center py-8 lg:py-0">
+                                <div class="grid lg:grid-cols-2 gap-6 lg:gap-16 items-center w-full">
+                                    <div class="text-left">
+                                        <!-- Badge con project title -->
+                                        <div class="w-80 h-80 flex-shrink-0 overflow-hidden">
+                                            <img class="w-full h-full object-cover" decoding="async"
+                                                src="/imgs/members/gasperina.jpg">
+                                        </div>
+                                        <span class="ml-2"></span>
+                                    </div>
+
+                                    <div>
+                                        <p><a href="https://www.unibo.it/sitoweb/riccardo.gasperina">Riccardo
+                                                Gasperina
+                                                Geroni</a>&nbsp;insegna Letteratura italiana contemporanea,
+                                            presso l’Università di
+                                            Bologna. I suoi interessi vertono principalmente sui rapporti
+                                            che la
+                                            letteratura italiana
+                                            del Novecento intrattiene con l’antropologia, la psicoanalisi e
+                                            la
+                                            filosofia.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="max-w-7xl mx-auto px-4 lg:px-8 relative z-10 w-full h-full flex items-center py-8 lg:py-0">
+                                <div class="grid lg:grid-cols-2 gap-6 lg:gap-16 items-center w-full">
+                                    <div class="text-left">
+                                        <!-- Badge con project title -->
+                                        <div class="w-80 h-80 flex-shrink-0 overflow-hidden">
+                                            <img class="w-full h-full object-cover" decoding="async"
+                                                src="/imgs/members/torti.jpg">
+                                        </div>
+                                        <span class="ml-2"></span>
+                                    </div>
+
+                                    <div>
+                                        <p><a href="https://www.unibo.it/sitoweb/lavinia.torti2">Lavinia
+                                                Torti</a>&nbsp;è assegnista di
+                                            ricerca presso l’Università di Bologna nell’ambito del PRIN
+                                            PNRR&nbsp;<em>For an Atlas of
+                                                Italian Ecological Literature: From the Great Acceleration
+                                                to
+                                                the
+                                                Pandemic&nbsp;</em>(LEDA)<em>.&nbsp;</em>Ha insegnato Lingua
+                                            e
+                                            Letteratura italiana
+                                            contemporanea alla Sorbonne Université e ha svolto un assegno di
+                                            ricerca presso l’Università
+                                            di Bologna nell’ambito del progetto&nbsp;<em>Silva.
+                                                Sostenibilità in
+                                                Italia, tra
+                                                Letteratura, Visualità e Architettura</em>.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="max-w-7xl mx-auto px-4 lg:px-8 relative z-10 w-full h-full flex items-center py-8 lg:py-0">
+                                <div class="grid lg:grid-cols-2 gap-6 lg:gap-16 items-center w-full">
+                                    <div class="text-left">
+                                        <!-- Badge con project title -->
+                                        <div class="w-80 h-80 flex-shrink-0 overflow-hidden">
+                                            <img class="w-full h-full object-cover" decoding="async"
+                                                src="/imgs/members/pasqual.jpg">
+                                        </div>
+                                        <span class="ml-2"></span>
+                                    </div>
+
+                                    <div>
+                                        <p><a href="https://www.unibo.it/sitoweb/valentina.pasqual2">Valentina
+                                                Pasqual</a> è assegnista
+                                            di ricerca presso il Dipartimento di Filologia Classica e
+                                            Italianistica (FICLIT), dove
+                                            attualmente lavora sulle applicazioni del&nbsp;<em>Semantic
+                                                Web&nbsp;</em>nel dominio dei
+                                            Beni Culturali. Nel contesto del progetto LEDA si occupa dello
+                                            sviluppo dell’applicazione
+                                            ospitante l’atlante digitale.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+                            <h2 class="text-2xl font-bold text-gray-900 mb-2">Università degli Studi di
+                                Siena</h2>
+                            <div
+                                class="max-w-7xl mx-auto px-4 lg:px-8 relative z-10 w-full h-full flex items-center py-8 lg:py-0">
+                                <div class="grid lg:grid-cols-2 gap-6 lg:gap-16 items-center w-full">
+                                    <div class="text-left">
+                                        <!-- Badge con project title -->
+                                        <div class="w-80 h-80 flex-shrink-0 overflow-hidden">
+                                            <img class="w-full h-full object-cover" decoding="async"
+                                                src="/imgs/members/scaffai.jpg">
+                                        </div>
+                                        <span class="ml-2"></span>
+                                    </div>
+
+                                    <div>
+                                        <p><a
+                                                href="https://www.dfclam.unisi.it/it/dipartimento/persone/docenti-ordinari-associati-ricercatori/scaffai-niccolo">Niccolò
+                                                Scaffai</a>&nbsp;è professore ordinario di Letteratura
+                                            italiana
+                                            contemporanea e
+                                            vicedirettore del Dipartimento di Filologia e critica delle
+                                            letterature antiche e moderne
+                                            dell’Università degli Studi di Siena, dove dirige il Centro di
+                                            ricerca Franco Fortini. Ha
+                                            insegnato dal 2010 al 2019 all’Université de Lausanne. È
+                                            segretario
+                                            di MOD-Società italiana
+                                            per lo studio della modernità letteraria e fa parte del
+                                            direttivo di
+                                            Compalit-Associazione
+                                            di teoria e storia comparata della letteratura. Fa parte dei
+                                            comitati direttivi e
+                                            scientifici di diverse riviste accademiche (tra cui “Between”,
+                                            “Italianistica”, “La
+                                            modernità letteraria”, “L’immagine riflessa”) e collabora con
+                                            testate di divulgazione
+                                            culturale, quali “Alias Domenica”, “Domenica del Sole 24 ore”,
+                                            “Doppiozero”, “Le parole e le
+                                            cose”.
+                                        </p>
+                                        <br>
+                                        <p>Tra i suoi libri: <em>Il lavoro del poeta. Montale, Sereni,
+                                                Caproni</em> (Carocci, 2015);
+                                            <em>Poesia e critica nel Novecento</em> (ivi, 2023); i commenti
+                                            alle
+                                            <em>Prose
+                                                narrative</em>, a <em>La bufera e altro</em> e a
+                                            <em>Farfalla di
+                                                Dinard</em> di Montale
+                                            (Mondadori, 2008, 2019 e 2021); la co-curatela delle
+                                            <em>Poesie</em>
+                                            di Pavese (Garzanti,
+                                            2023).
+                                        </p>
+                                        <br>
+                                        <p>Ha dedicato numerosi studi al rapporto tra letteratura e
+                                            ecologia,
+                                            tra cui: <em>Nature,
+                                                Ecology and Literature</em> (ed. by, Peter Lang, 2010),
+                                            <em>Letteratura e ecologia.
+                                                Forme e temi di una relazione narrativa</em> (Carocci, 2017,
+                                            20246) e <em>Racconti del
+                                                pianeta Terra</em> (a cura di, Einaudi, 2022).
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="max-w-7xl mx-auto px-4 lg:px-8 relative z-10 w-full h-full flex items-center py-8 lg:py-0">
+                                <div class="grid lg:grid-cols-2 gap-6 lg:gap-16 items-center w-full">
+                                    <div class="text-left">
+                                        <!-- Badge con project title -->
+                                        <div class="w-80 h-80 flex-shrink-0 overflow-hidden">
+                                            <img class="w-full h-full object-cover" decoding="async"
+                                                src="/imgs/members/tommasini.jpg">
+                                        </div>
+                                        <span class="ml-2"></span>
+                                    </div>
+
+                                    <div>
+                                        <p><a
+                                                href="https://www.dfclam.unisi.it/it/dipartimento/persone/assegnisti-di-ricerca/tommasini-lorenzo">Lorenzo
+                                                Tommasini</a>&nbsp;è assegnista di ricerca presso
+                                            l’Università
+                                            di Siena nell’ambito del
+                                            PRIN PNRR&nbsp;<em>For an Atlas of Italian Ecological
+                                                Literature:
+                                                From the Great
+                                                Acceleration to the Pandemic&nbsp;</em>(LEDA). In precedenza
+                                            è
+                                            stato assegnista di
+                                            ricerca presso la Scuola Normale Superiore di Pisa nell’ambito
+                                            del
+                                            progetto&nbsp;<em>Narrazioni dell’epidemia nella letteratura
+                                                italiana della modernità</em>.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="max-w-7xl mx-auto px-4 lg:px-8 relative z-10 w-full h-full flex items-center py-8 lg:py-0">
+                                <div class="grid lg:grid-cols-2 gap-6 lg:gap-16 items-center w-full">
+                                    <div class="text-left">
+                                        <!-- Badge con project title -->
+                                        <div class="w-80 h-80 flex-shrink-0 overflow-hidden">
+                                            <img class="w-full h-full object-cover" decoding="async"
+                                                src="/imgs/members/micali.jpg">
+                                        </div>
+                                        <span class="ml-2"></span>
+                                    </div>
+
+                                    <div>
+                                        <p>Simona Micali si è laureata a Pisa, dove ha ottenuto il diploma
+                                            della
+                                            Scuola Normale
+                                            Superiore; dopo il dottorato in Italianistica all’Università
+                                            ‘Ca’
+                                            Foscari’ di Venezia, ha
+                                            insegnato Letteratura italiana e Letterature comparate
+                                            all’Università di Bologna e alla
+                                            Brown University (Providence, USA). Attualmente è professore
+                                            ordinario di Letterature
+                                            comparate all’Università di Siena.</p>
+                                        <br>
+                                        <p>È stata membro del consiglio direttivo di Compalit (1997-2004), e
+                                            del
+                                            comitato esecutivo di
+                                            “Synapsis – European School for Comparative Studies”
+                                            (2001-2014). È
+                                            nel comitato di
+                                            redazione di «Contemporanea. Rivista di studi sulla letteratura
+                                            e
+                                            sulla comunicazione» e
+                                            della collana Extrema Ratio (nottetempo); è inoltre Area Advisor
+                                            per
+                                            la sezione “Literature
+                                            and Media” dell’opera&nbsp;<em><a
+                                                    href="https://www.oxfordbibliographies.com/page/Literary-and-Critical-Theory#editorialBoard">Oxford
+                                                    Bibliographies</a></em>, Oxford University Press. È
+                                            membro
+                                            docente del network
+                                            internazionale <a href="https://inch.princeton.edu/">INCH –
+                                                International Network for
+                                                Comparative Humanities</a> e delegata dell’Università di
+                                            Siena
+                                            nel consorzio
+                                            interuniversitario <a href="https://hermes.au.dk/">Hermes</a>.
+                                        </p>
+                                        <br>
+                                        <p>Ha pubblicato cinque volumi (<em>L’innamoramento</em>, Laterza
+                                            2001;&nbsp;<em>Miti e riti del
+                                                moderno</em>, Le Monnier 2002;&nbsp;<em>Ascesa e declino
+                                                dell’Uomo di lusso. Il romanzo
+                                                dell’intellettuale nella Nuova Italia e i suoi modelli
+                                                europei</em>, Le Monnier
+                                            2008;&nbsp;<em>Towards a Posthuman Imagination in Literature and
+                                                Media</em>, Peter Lang
+                                            2019;&nbsp;<em>Creature. La costruzione dell’immaginario
+                                                postumano</em>, Shake 2022) e
+                                            numerosi saggi in volume o rivista sulla letteratura moderna e
+                                            postmoderna e l’immaginario
+                                            intermediale; da alcuni anni si occupa di immaginario
+                                            speculativo,
+                                            ecocritica e teorie del
+                                            postumano.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Gradient fade indicator per mobile (indica che c'è più contenuto) -->
+                        <div
+                            class="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-primary-50 to-transparent pointer-events-none lg:hidden">
+                        </div>
+                    </div>
+                </div>
+        </section>
+
     </div>
 
-    <script type="module">
-        import '/src/progetto.js'; 
-    </script>
+    <!-- Il tuo script + gestione freccia -->
+    <script type="module" src="/src/progetto.js"></script>
 </body>
 
 </html>

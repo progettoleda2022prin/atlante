@@ -163,10 +163,10 @@ export class TaxonomyView {
   // NAVIGAZIONE ALLA MAPPA
   // ===============================
 
-  goToMapWithFilter(taxonomyValue) {
+  goToMapWithFilter(taxonomyValue, isLocation = false) {
     const filterAction = {
       type: "FACET_CHANGE",
-      facetType: this.indexKey,
+      facetType: isLocation ? "Location" : this.indexKey,
       value: taxonomyValue,
       checked: true
     };
@@ -175,7 +175,7 @@ export class TaxonomyView {
       window.handleStateChange(filterAction);
     }
 
-    const mapUrl = createMapUrlWithFilter(this.indexKey, taxonomyValue);
+    const mapUrl = createMapUrlWithFilter(isLocation ? "Location" : this.indexKey, taxonomyValue);
 
     if (typeof window.navigateToMap === 'function') {
       window.navigateToMap(filterAction);
@@ -201,34 +201,8 @@ export class TaxonomyView {
         if (!this.shouldShowItem(key, items, currentPath)) return;
 
         const count = this.countItems(value);
-        const hasChildren = Object.keys(value).some(k => k !== "_items");
         const hasDirectItems = items.length > 0;
         const itemId = `item-${level}-${key.replace(/\s+/g, '-')}`;
-
-        // LEAF NODE: only items, no children
-        if (hasDirectItems && !hasChildren) {
-          const itemContainer = document.createElement('div');
-          itemContainer.className = 'border-b border-slate-200 last:border-b-0';
-
-          const { header } = ViewComponents.createAccordionHeader({
-            title: key,
-            subtitle: null,
-            count: count,
-            indexKey: this.indexKey,
-            filterValue: currentPath,
-            onMapClick: (val) => this.goToMapWithFilter(val),
-            isExpanded: false,
-            hasExpandableContent: false, // Nessun contenuto espandibile
-            items: items, // Passa gli items per estrarre le descrizioni
-            customClasses: this.getListItemClasses(level),
-            titleClasses: this.getTitleSizeForLevel(level),
-            onToggle: () => { } // Nessuna azione al toggle
-          });
-
-          itemContainer.appendChild(header);
-          listContainer.appendChild(itemContainer);
-          return;
-        }
 
         // INTERMEDIATE/PARENT NODE: has children (and maybe items too)
         const itemContainer = document.createElement("div");
@@ -278,26 +252,35 @@ export class TaxonomyView {
 
         // Show direct items if any (SOLO HEADER)
         if (hasDirectItems) {
-          const directItemsContainer = document.createElement("div");
-          directItemsContainer.className = "ml-4 border-b border-slate-200";
+          const locations = ViewComponents.groupItemsByLocation(items);
 
-          const { header: directHeader } = ViewComponents.createAccordionHeader({
-            title: `${key} (direttamente)`,
-            subtitle: null,
-            count: items.length,
-            indexKey: this.indexKey,
-            filterValue: currentPath,
-            onMapClick: (val) => this.goToMapWithFilter(val),
-            isExpanded: false,
-            hasExpandableContent: false, // Nessun contenuto espandibile
-            items: items, // Passa gli items per estrarre le descrizioni
-            customClasses: this.getListItemClasses(level + 1),
-            titleClasses: this.getTitleSizeForLevel(level + 1),
-            onToggle: () => { } // Nessuna azione al toggle
-          });
+          // Wrap locations with same indentation as other child nodes
+          const locationsContainer = document.createElement('div');
+          locationsContainer.className = 'ml-4';
 
-          directItemsContainer.appendChild(directHeader);
-          childrenWrapper.appendChild(directItemsContainer);
+          Object.entries(locations)
+            .sort(([a], [b]) => a.localeCompare(b, 'it', { sensitivity: 'base' }))
+            .forEach(([location, locationItems]) => {
+
+              const { header: locationHeader } = ViewComponents.createAccordionHeader({
+                title: location,
+                subtitle: null,
+                count: locationItems.length,
+                indexKey: this.indexKey,
+                filterValue: location, // pass whatever filter string you need
+                onMapClick: (val) => this.goToMapWithFilter(val, true),
+                isExpanded: false,
+                hasExpandableContent: false, // locations don’t expand
+                items: locationItems,
+                customClasses: this.getListItemClasses(level + 1),
+                titleClasses: this.getTitleSizeForLevel(level), // + gets too light
+                onToggle: () => { } // no toggle behavior needed
+              });
+
+              locationsContainer.appendChild(locationHeader);
+            });
+
+          childrenWrapper.appendChild(locationsContainer);
         }
 
         // Recursive children

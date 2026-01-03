@@ -3,6 +3,11 @@ export class SearchHandler {
   constructor(searchEngine, config) {
     this.searchEngine = searchEngine;
     this.config = config;
+    this.multiFacetSearchNeededTags = [
+      "Location", "Tipologia del luogo",
+      "Tipologia dello Spazio", "Temporalità dello Spazio",
+      "Definizione dello spazio"
+    ]
   }
 
   performSearch(state, callbacks = {}) {
@@ -14,15 +19,35 @@ export class SearchHandler {
     const { filters } = state;
 
     // Separate filters by type to handle them differently
-    const { regularFilters, dateFilters, taxonomyFilters } = this._separateFilters(filters);
+    let { regularFilters, dateFilters, taxonomyFilters } = this._separateFilters(filters);
 
-    const results = this.searchEngine.search({
+    let results = this.searchEngine.search({
       query: state.query || '',
       filters: regularFilters,
       sort: state.sort || 'title_asc',
       per_page: 1000,
       filter: (item) => this._customFilter(item, dateFilters, taxonomyFilters)
     });
+    /* If filtering on a location attribute (i.e. location, Tipologia del luogo, Tipologia dello Spazio)
+     * the filter will remove data from the work (e.g., if filter "Bologna" it will show all work with this city as Location but will
+     * not show all other locations involved in that opera), so will need to run a double search
+     */
+    const hasAnyMultiFacetFilters = this.multiFacetSearchNeededTags.some(
+      tag => filters[tag] && filters[tag].length > 0
+    );
+    const initial_results = results;
+    if (hasAnyMultiFacetFilters) {
+      const filteredIds = results.data.items.map(hit => hit.pivot_ID);
+      regularFilters = {};
+      regularFilters["pivot_ID"] = filteredIds
+      // Get full facets for those items only
+      results = this.searchEngine.search({
+        query: state.query || '',
+        filters: regularFilters,
+        sort: state.sort || 'title_asc',
+        per_page: 1000
+      });
+    }
 
 
     // Extract coordinates for map
@@ -30,7 +55,12 @@ export class SearchHandler {
 
     // Execute callbacks
     if (callbacks.onMarkersUpdate) {
-      callbacks.onMarkersUpdate(results.data.items);
+      if (hasAnyMultiFacetFilters)
+        // To show only filtered location/others and not all 
+        // if click on other location on right will give a warning "marker not found"
+        callbacks.onMarkersUpdate(initial_results.data.items);
+      else
+        callbacks.onMarkersUpdate(results.data.items)
     }
 
     if (callbacks.onResultsUpdate) {

@@ -199,7 +199,7 @@ const createPopupContent = (name, items, coords, isSpecial, config) => {
       }
     });
 
-    return `<div class="max-w-sm bg-white rounded-xl shadow-2xl overflow-hidden border border-primary-100/50 backdrop-blur-sm">
+    return `<div class="w-full max-w-none h-full bg-white rounded-xl shadow-2xl overflow-hidden border border-primary-100/50 backdrop-blur-sm">
               <!-- Header con gradiente animato -->
               <div class="bg-gradient-to-r from-primary-500 via-primary-600 to-secondary-600 text-white p-3 relative overflow-hidden">
                   <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12"></div>
@@ -321,7 +321,7 @@ const createPopupContent = (name, items, coords, isSpecial, config) => {
   } else {
     // Regular popup format
     return `
-          <div class="max-w-sm bg-white rounded-xl shadow-2xl overflow-hidden border border-secondary-100/50 backdrop-blur-sm">
+          <div class="w-full max-w-none h-full bg-white rounded-xl shadow-2xl overflow-hidden border border-secondary-100/50 backdrop-blur-sm">
               <!-- Header con gradiente animato -->
               <div class="bg-gradient-to-r from-primary-500 via-primary-600 to-secondary-600 text-white p-3 relative overflow-hidden">
                   <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12"></div>

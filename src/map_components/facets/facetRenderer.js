@@ -30,13 +30,15 @@ export class FacetRenderer {
     const categorizedFacets = {};
 
     Object.entries(this.config.aggregations).forEach(([facetKey, facetConfig]) => {
-      const category = facetConfig.category || 'Other'; // Default category if none specified
+      if (!facetConfig["hide"]) {
+        const category = facetConfig.category || 'Other'; // Default category if none specified
 
-      if (!categorizedFacets[category]) {
-        categorizedFacets[category] = [];
+        if (!categorizedFacets[category]) {
+          categorizedFacets[category] = [];
+        }
+
+        categorizedFacets[category].push({ facetKey, facetConfig });
       }
-
-      categorizedFacets[category].push({ facetKey, facetConfig });
     });
 
     // Create category divs and render facets within them
@@ -130,10 +132,12 @@ export class FacetRenderer {
 
   _getCheckedState() {
     const checkedState = {};
-    Object.keys(this.config.aggregations).forEach(facetKey => {
-      const facetElement = document.getElementById(`${facetKey}-facet`);
-      if (facetElement) {
-        checkedState[facetKey] = Array.from(facetElement.querySelectorAll('input:checked')).map(input => input.value);
+    Object.entries(this.config.aggregations).forEach(([facetKey, facetConfig]) => {
+      if (!facetConfig["hide"]) {
+        const facetElement = document.getElementById(`${facetKey}-facet`);
+        if (facetElement) {
+          checkedState[facetKey] = Array.from(facetElement.querySelectorAll('input:checked')).map(input => input.value);
+        }
       }
     });
     return checkedState;
@@ -230,8 +234,8 @@ export class FacetRenderer {
       const countContainer = document.createElement('span');
       countContainer.textContent = bucket.doc_count;
       countContainer.className = `text-xs px-2 py-0.5 rounded-full flex-shrink-0 ml-auto ${isDisabled
-          ? 'text-gray-400 bg-gray-100'
-          : 'text-secondary-500 bg-secondary-100'
+        ? 'text-gray-400 bg-gray-100'
+        : 'text-secondary-500 bg-secondary-100'
         }`;
 
       leftContainer.appendChild(text);
@@ -250,15 +254,17 @@ export class FacetRenderer {
       return;
     }
 
-    Object.keys(this.config.aggregations).forEach(facetKey => {
-      const facetContainer = document.getElementById(`${facetKey}-facet`);
+    Object.entries(this.config.aggregations).forEach(([facetKey, facetConfig]) => {
+      if (!facetConfig["hide"]) {
+        const facetContainer = document.getElementById(`${facetKey}-facet`);
 
-      if (facetContainer) {
-        facetContainer.querySelectorAll('input[type="checkbox"]').forEach(input => {
-          input.addEventListener('change', (event) => {
-            this._onFacetChange(event, onStateChange);
+        if (facetContainer) {
+          facetContainer.querySelectorAll('input[type="checkbox"]').forEach(input => {
+            input.addEventListener('change', (event) => {
+              this._onFacetChange(event, onStateChange);
+            });
           });
-        });
+        }
       }
     });
   }
@@ -274,10 +280,12 @@ export class FacetRenderer {
     this.searchTerms = {};
 
     // Clear individual facet searches
-    Object.keys(this.config.aggregations).forEach(facetKey => {
-      const searchInput = document.getElementById(`search-${facetKey}`);
-      if (searchInput) {
-        searchInput.value = '';
+    Object.entries(this.config.aggregations).forEach(([facetKey, facetConfig]) => {
+      if (!facetConfig["hide"]) {
+        const searchInput = document.getElementById(`search-${facetKey}`);
+        if (searchInput) {
+          searchInput.value = '';
+        }
       }
     });
 

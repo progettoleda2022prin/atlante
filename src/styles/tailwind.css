@@ -34,6 +34,18 @@ h6 {
   @apply font-headings;
 }
 
+/* PROGETTO */
+hr {
+  border: none;
+  height: 1px;
+  /* Set the hr color */
+  background-color: #333;  /* Modern Browsers */
+}
+figure {
+  height: 200;
+  width: auto;
+}
+
 /* INDEX */
 
 .scroll-arrow-container {
@@ -646,6 +658,25 @@ header {
 .leaflet-popup-close-button {
   display: none;
 }
+
+.leaflet-popup.full-map-popup .leaflet-popup-content-wrapper {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    border-radius: 0;
+}
+
+.leaflet-popup.full-map-popup .leaflet-popup-content {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+.leaflet-popup.full-map-popup .leaflet-popup-tip {
+    display: none;
+}
+
 
 .custom-close-btn {
   cursor: pointer;

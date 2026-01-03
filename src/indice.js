@@ -25,6 +25,9 @@ class IndexPageManager {
       type: null,
       category: null
     };
+    this.showLocationsIndices = ["Tipologia del luogo"]
+    this.showWorkIndices = ["Titolo"]
+
   }
 
   clearContainer() {
@@ -175,7 +178,8 @@ class IndexPageManager {
       // Instanzia la vista appropriata passando indexInfo
       switch (viewType) {
         case 'simple':
-          this.currentView = new SimpleView(data, indexKey, this.indexInfo);
+          this.currentView = new SimpleView(data, indexKey, this.indexInfo, this.showLocationsIndices.includes(indexKey), this.showWorkIndices.includes(indexKey));
+          await this.currentView.loadContent();
           break;
         case 'taxonomy':
           this.currentView = new TaxonomyView(data, indexKey, this.indexInfo);
@@ -185,7 +189,8 @@ class IndexPageManager {
           break;
         default:
           console.warn(`Tipo di vista non riconosciuto: ${viewType}. Usando vista semplice.`);
-          this.currentView = new SimpleView(data, indexKey, this.indexInfo);
+          this.currentView = new SimpleView(data, indexKey, this.indexInfo, this.showLocationsIndices.includes(indexKey), this.showWorkIndices.includes(indexKey));
+          await this.currentView.loadContent();
           this.indexInfo.type = 'simple';
       }
 

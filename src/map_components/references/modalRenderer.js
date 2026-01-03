@@ -260,8 +260,6 @@ export class ModalRenderer {
   }
 
   async _closeModal() {
-    if (!this.isModalOpen) return;
-
     this.isAnimating = true;
     const modal = document.getElementById('works-modal');
 
@@ -736,8 +734,6 @@ export class ModalRenderer {
       .map(field => {
         const value = currentWork[field];
         const label = this._getFieldLabel(field);
-        console.log(label)
-        console.log(value)
         let displayValue = value;
 
         if (Array.isArray(value)) {

@@ -1,9 +1,11 @@
 // views/SimpleView.js
 import { ViewComponents } from '../utils/ViewComponents.js';
 import { createMapUrlWithFilter } from '../utils/urlHelper.js';
+import { ModalRenderer } from '.././map_components/references/modalRenderer.js';
+import { loadConfiguration } from '.././utils/configLoader.js';
 
 export class SimpleView {
-  constructor(data, indexKey, indexInfo) {
+  constructor(data, indexKey, indexInfo, showLocations, showWork) {
     this.data = data;
     this.indexKey = indexKey;
     this.indexInfo = indexInfo || {};
@@ -11,6 +13,11 @@ export class SimpleView {
     this.filteredData = { ...this.aggregatedData };
     this.currentSearchTerm = '';
     this.sortOrder = 'alphabetical';
+    this.showLocations = showLocations
+    this.showWork = showWork
+  }
+  async loadContent() {
+    this.config = await loadConfiguration();
   }
 
   aggregateData(data, indexKey) {
@@ -100,8 +107,8 @@ export class SimpleView {
     }
   }
 
-  goToMapWithFilter(value) {
-    window.open(createMapUrlWithFilter(this.indexKey, value), '_blank');
+  goToMapWithFilter(value, isLocation = false) {
+    window.open(createMapUrlWithFilter(isLocation ? "Location" : this.indexKey, value), '_blank');
   }
 
   // =====================================================
@@ -220,6 +227,16 @@ export class SimpleView {
     const sorted = this.sortOrder === 'alphabetical'
       ? entries.sort(([a], [b]) => a.localeCompare(b))
       : entries.sort(([a, itemsA], [b, itemsB]) => itemsB.length - itemsA.length);
+    let modal = null
+    if (this.showWork) {
+      modal = new ModalRenderer(() => { });
+      modal.setConfig(this.config || null);
+      const itemsRestored = sorted.flat(2).filter(i => typeof(i) === "object");
+      const groupedItems = modal.groupByIdOpera(itemsRestored);
+      const allWorks = Object.values(groupedItems);
+      // Keep same order (alphabetical)
+      modal.setData(allWorks.sort((a, b) => a.Title.localeCompare(b.Title)), itemsRestored)
+    }
 
     sorted.forEach(([key, items], index) => {
       // Crea solo l'header dell'accordion senza contenuto interno
@@ -233,12 +250,55 @@ export class SimpleView {
         filterValue: key,
         onMapClick: (val) => this.goToMapWithFilter(val),
         isExpanded: false,
-        hasExpandableContent: false, // Nessun contenuto espandibile
-        items: items, // Passa gli items per estrarre le descrizioni
-        onToggle: () => { } // Nessuna azione al toggle
+        hasExpandableContent: this.showLocations,
+        items: items,
+        onToggle: () => { },
+        showWorkModal: this.showWork ? modal : null,
+        showWorkIndex: index
       });
-
       container.appendChild(header);
+      if (this.showLocations) {
+        // Children wrapper for expandable content
+        const childrenWrapper = document.createElement("div");
+        childrenWrapper.className = 'hidden'; // start collapsed
+
+        // Locations container (indented)
+        const locationsContainer = document.createElement('div');
+        locationsContainer.className = 'ml-4';
+
+        const locations = ViewComponents.groupItemsByLocation(items);
+
+        Object.entries(locations)
+          .sort(([a], [b]) => a.localeCompare(b, 'it', { sensitivity: 'base' }))
+          .forEach(([location, locationItems]) => {
+
+            const { header: locationHeader } = ViewComponents.createAccordionHeader({
+              title: location,
+              subtitle: null,
+              count: locationItems.length,
+              indexKey: this.indexKey,
+              filterValue: location,
+              onMapClick: (val) => this.goToMapWithFilter(val, true),
+              isExpanded: false,
+              hasExpandableContent: false, // Locations are leaf nodes
+              items: locationItems,
+              customClasses: 'bg-primary-50 border-l-4 border-primary-400',
+              titleClasses: 'text-sm text-primary-700',
+              onToggle: () => { }
+            });
+
+            locationsContainer.appendChild(locationHeader);
+          });
+        header.onclick = (e) => {
+          if (e.target.closest('button')) return; // don't toggle if map button clicked
+          childrenWrapper.classList.toggle('hidden');
+          const chevron = header.querySelector('svg'); // assuming the chevron is inside header
+          if (chevron) chevron.classList.toggle('rotate-180');
+        };
+
+        childrenWrapper.appendChild(locationsContainer);
+        container.appendChild(childrenWrapper)
+      }
       wrapper.appendChild(container);
     });
 

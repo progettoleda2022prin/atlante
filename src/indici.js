@@ -26,11 +26,13 @@ function generateIndexCards(config) {
     }
 
     const groupedByCategory = aggregationsArray.reduce((groups, aggregation) => {
-        const category = aggregation.category || 'Altre categorie';
-        if (!groups[category]) {
-            groups[category] = [];
+        if (!aggregation["hide"]) {
+            const category = aggregation.category || 'Altre categorie';
+            if (!groups[category]) {
+                groups[category] = [];
+            }
+            groups[category].push(aggregation);
         }
-        groups[category].push(aggregation);
         return groups;
     }, {});
 

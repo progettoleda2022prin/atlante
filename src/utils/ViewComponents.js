@@ -15,6 +15,21 @@ export class ViewComponents {
     badge.textContent = count.toString();
     return badge;
   }
+  // Group items by location
+  // Should probably have a parent class for SimpleView, TaxonomyView with inheritance
+  // but too long to change everything
+  static groupItemsByLocation(items) {
+    return items.reduce((acc, item) => {
+      const location = item.Location || 'Non specificato';
+
+      if (!acc[location]) {
+        acc[location] = [];
+      }
+      acc[location].push(item);
+
+      return acc;
+    }, {});
+  }
 
   /**
    * Crea un'icona chevron per accordion
@@ -27,6 +42,25 @@ export class ViewComponents {
     chevron.setAttribute('viewBox', '0 0 24 24');
     chevron.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>';
     return chevron;
+  }
+
+  /**
+   * Create show work button (like in map)
+   */
+  static createWorkButton(showWorkModal, showWorkIndex){
+    const button = document.createElement('button');
+    button.className = 'modal-toggle-btn inline-flex items-center px-4 py-2 rounded-full shadow-md hover:shadow-lg transition-all duration-200 flex-shrink-0 bg-primary-500 hover:bg-primary-600 text-white';
+    button.innerHTML = `
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"/>
+      </svg>
+    `;
+    button.onclick = (e) => {
+      e.stopPropagation();
+      showWorkModal.toggleModal(showWorkIndex);
+    };
+    button.title = `Visualizza dettagli`;
+    return button;
   }
 
   /**
@@ -69,7 +103,9 @@ export class ViewComponents {
       hasExpandableContent = false,
       customClasses = '',
       titleClasses = 'font-semibold text-lg text-primary-900',
-      items = []
+      items = [],
+      showWorkModal = null,
+      showWorkIndex = 0
     } = config;
 
     const header = document.createElement('div');
@@ -93,7 +129,7 @@ export class ViewComponents {
     const right = document.createElement('div');
     right.className = 'flex items-center space-x-3 flex-shrink-0';
 
-    const badge = this.createCountBadge(count);
+    const badge = this.createCountBadge(count);      
     const mapButton = this.createMapButton(indexKey, filterValue, onMapClick);
 
     right.appendChild(badge);
@@ -104,7 +140,9 @@ export class ViewComponents {
       chevron = this.createChevron(isExpanded);
       right.appendChild(chevron);
     }
-
+    if (showWorkModal != null){
+      right.appendChild(this.createWorkButton(showWorkModal, showWorkIndex));
+    }
     right.appendChild(mapButton);
 
     header.appendChild(left);
