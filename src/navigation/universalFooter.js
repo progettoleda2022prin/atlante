@@ -16,7 +16,6 @@ export class UniversalFooter {
 
     async initLogos() {
         try {
-            const basePath = window.location.pathname.match(/^\/[^\/]+\//)?.[0] || '/';
             const manifestPath = this.getRelativePath('/imgs/institutional_logos/manifest.json');
 
             const response = await fetch(manifestPath);
@@ -75,12 +74,6 @@ export class UniversalFooter {
 
         const result = '../'.repeat(upLevels) + downPath.join('/');
         return result || './';
-    }
-
-    normalizePath(path) {
-        if (path.endsWith('/')) return path + 'index.html';
-        if (!path.includes('.') && !path.endsWith('/')) return path + '/index.html';
-        return path;
     }
 
     calculateBasePath() {
@@ -225,9 +218,9 @@ export class UniversalFooter {
 
     getNavigationLinks() {
         return [
-            { text: 'Home', path: '/index.html' },
+            { text: 'Home', path: this.getRelativePath('/index.html') },
             { text: 'Documentazione', path: 'https://github.com/valentinapasqual/leda' },
-            { text: 'Contatti', path: 'https://ledaprin2022pnrr.altervista.org/chi-siamo/' },
+            { text: 'Contatti', path: this.getRelativePath('/pages/progetto.html#members') },
         ];
     }
 

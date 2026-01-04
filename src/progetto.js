@@ -89,4 +89,24 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
     });
+    const hash = window.location.hash;
+
+    if (!hash) return;
+
+    const target = document.querySelector(hash);
+    if (!target) return;
+
+    // Reveal hidden parents if needed
+    let el = target;
+    while (el) {
+        if (el.style?.display === 'none') {
+            el.style.display = '';
+        }
+        el = el.parentElement;
+    }
+
+    // Scroll after revealing
+    requestAnimationFrame(() => {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
 });

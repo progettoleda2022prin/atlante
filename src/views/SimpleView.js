@@ -231,7 +231,7 @@ export class SimpleView {
     if (this.showWork) {
       modal = new ModalRenderer(() => { });
       modal.setConfig(this.config || null);
-      const itemsRestored = sorted.flat(2).filter(i => typeof(i) === "object");
+      const itemsRestored = sorted.flat(2).filter(i => typeof (i) === "object");
       const groupedItems = modal.groupByIdOpera(itemsRestored);
       const allWorks = Object.values(groupedItems);
       // Keep same order (alphabetical)

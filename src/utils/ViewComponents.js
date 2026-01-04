@@ -47,7 +47,7 @@ export class ViewComponents {
   /**
    * Create show work button (like in map)
    */
-  static createWorkButton(showWorkModal, showWorkIndex){
+  static createWorkButton(showWorkModal, showWorkIndex) {
     const button = document.createElement('button');
     button.className = 'modal-toggle-btn inline-flex items-center px-4 py-2 rounded-full shadow-md hover:shadow-lg transition-all duration-200 flex-shrink-0 bg-primary-500 hover:bg-primary-600 text-white';
     button.innerHTML = `
@@ -129,7 +129,7 @@ export class ViewComponents {
     const right = document.createElement('div');
     right.className = 'flex items-center space-x-3 flex-shrink-0';
 
-    const badge = this.createCountBadge(count);      
+    const badge = this.createCountBadge(count);
     const mapButton = this.createMapButton(indexKey, filterValue, onMapClick);
 
     right.appendChild(badge);
@@ -140,7 +140,7 @@ export class ViewComponents {
       chevron = this.createChevron(isExpanded);
       right.appendChild(chevron);
     }
-    if (showWorkModal != null){
+    if (showWorkModal != null) {
       right.appendChild(this.createWorkButton(showWorkModal, showWorkIndex));
     }
     right.appendChild(mapButton);
