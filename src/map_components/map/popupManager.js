@@ -238,7 +238,7 @@ const createPopupContent = (name, items, coords, isSpecial, config) => {
                   </div>
 
                   <!-- Lista risultati con scrollbar personalizzata -->
-                  <div class="space-y-2 max-h-32 overflow-y-auto scrollbar-thin scrollbar-thumb-primary-300 scrollbar-track-primary-50 hover:scrollbar-thumb-primary-400">
+                  <div class="space-y-2 max-h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-primary-300 scrollbar-track-primary-50 hover:scrollbar-thumb-primary-400">
                   ${Object.values(operaGroups).map((group, index) => `
                     <div class="group bg-white/90 backdrop-blur-sm rounded-lg shadow-sm border border-primary-100/50 hover:shadow-lg hover:border-primary-200 transition-all duration-300 cursor-pointer"
                          onclick="(function(e) {
@@ -306,7 +306,7 @@ const createPopupContent = (name, items, coords, isSpecial, config) => {
                         <!-- Accordion Content -->
                         ${group.description ? `
                         <div class="accordion-content" style="max-height: 0px; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);">
-                          <div class="max-h-24 overflow-y-auto mb-2 p-2 bg-gray-50 rounded animate-fadeIn">
+                          <div class="max-h-24 mb-2 p-2 bg-gray-50 rounded animate-fadeIn">
                             <p class="text-sm text-gray-700">${group.description}</p>
                           </div>
                         </div>
@@ -360,7 +360,7 @@ const createPopupContent = (name, items, coords, isSpecial, config) => {
                   </div>
 
                   <!-- Lista risultati con scrollbar personalizzata -->
-                  <div class="space-y-2 max-h-32 overflow-y-auto scrollbar-thin scrollbar-thumb-primary-300 scrollbar-track-primary-50 hover:scrollbar-thumb-primary-400">
+                  <div class="space-y-2 max-h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-primary-300 scrollbar-track-primary-50 hover:scrollbar-thumb-primary-400">
                     ${items.map((item, index) => `
                     <div class="group bg-white/90 backdrop-blur-sm rounded-lg shadow-sm border border-primary-100/50 hover:shadow-lg hover:border-primary-200 transition-all duration-300 cursor-pointer"
                          onclick="(function(e) {
@@ -427,7 +427,7 @@ const createPopupContent = (name, items, coords, isSpecial, config) => {
                             </div>
                             ` : ''}
 
-                            <div class="max-h-24 overflow-y-auto mb-2 p-2 bg-gray-50 rounded animate-fadeIn">
+                            <div class="max-h-24 mb-2 p-2 bg-gray-50 rounded animate-fadeIn">
                               <p class="text-xs text-gray-600">${item[config.result_cards.popup_description]}</p>
                             </div>
                         </div>

@@ -271,7 +271,12 @@ function initMap(config) {
                 }).addTo(map);
             }
 
-            marker.bindPopup(() => createPopupContent(group.name, group.items, group.coords, isSpecial, config));
+            marker.bindPopup(() => createPopupContent(group.name, group.items, group.coords, isSpecial, config), {
+                maxWidth: map.getSize().x * 0.55,   // map width
+                minWidth: map.getSize().x * 0.55,
+                className: 'full-map-popup'  // custom class for CSS
+            });
+
             // it handles the centering of the popup (focus) in the map
             marker.on('click', () => panToMarkerWithOffset(coords));
 
@@ -359,9 +364,10 @@ function initMap(config) {
             });
 
             // Bind popup con evento per aggiornare stato quando si apre
-            marker.bindPopup(() => {
-                // Ricrea il contenuto del popup ogni volta che viene aperto
-                return createPopupContent(group.name, group.items, group.coords, isSpecial, config);
+            marker.bindPopup(() => createPopupContent(group.name, group.items, group.coords, isSpecial, config), {
+                maxWidth: map.getSize().x * 0.55,   // map width
+                minWidth: map.getSize().x * 0.55,
+                className: 'full-map-popup'  // custom class for CSS
             });
 
             // Focus sul popup aperto al centro della mappa
@@ -452,9 +458,10 @@ function initMap(config) {
             });
 
             // Create popup content and bind it dynamically
-            circle.bindPopup(() => {
-                // Ricrea il contenuto del popup ogni volta che viene aperto
-                return createPopupContent(group.name, group.items, group.coords, isSpecial, config);
+            circle.bindPopup(() => createPopupContent(group.name, group.items, group.coords, isSpecial, config), {
+                maxWidth: map.getSize().x * 0.55,   // map width
+                minWidth: map.getSize().x * 0.55,
+                className: 'full-map-popup'  // custom class for CSS
             });
 
             // Focus al centro della mappa del popup cliccato
