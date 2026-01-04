@@ -31,6 +31,7 @@ export default defineConfig(({ mode }) => {
           indici: resolve(__dirname, 'pages/indici.html'),
           percorsi: resolve(__dirname, 'pages/percorsi.html'),
           percorso: resolve(__dirname, 'pages/percorso.html'),
+          progetto: resolve(__dirname, 'pages/progetto.html'),
         },
         output: {
           entryFileNames: 'assets/js/[name].js',
