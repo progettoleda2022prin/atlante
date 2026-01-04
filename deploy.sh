@@ -1,4 +1,5 @@
 #!/bin/bash
+rm -r dist
 npm run build
 git add dist -f
 git commit -m "Build"
