@@ -1,64 +1,90 @@
 {
-  "project" : {
+  "project": {
     "projectShortTitle": "LEDA",
     "projectThumbnailURL": "LEDA_logo.png",
     "projectTitle": "Atlante digitale della letteratura ecologica italiana",
-    "projectSubtitle":"LEDA: Literary Ecology in a Digital Altlas",
-    "projectDescription":"L’<b>Atlante digitale della letteratura ecologica italiana</b> è il frutto del progetto <i>For an Atlas of Italian Ecological Literature: From the Great Acceleration to the Pandemic</i>, nato dalla collaborazione fra l’<i>Università IULM di Milano</i>, l'<i>Università degli Studi di Siena</i> e l’<i>Università di Bologna</i> nell’ambito del programma PRIN 2022 PNRR.<br><br>Si tratta di uno strumento interattivo che consente di visualizzare, interagire e ragionare sugli spazi di quei <i>testi che hanno tematizzato in chiave critica il rapporto uomo-ambiente</i>. <br><br> Al suo interno, trovano spazio circa <i>cento testi narrativi</i>, pubblicati in un arco temporale che va <i>dalla Grande accelerazione</i> degli anni Cinquanta <i>alla Pandemia</i> degli anni Venti del nuovo millennio. <br><br> Questi testi sono indagabili attraverso una <i>mappa</i>, ma anche a partire da una serie di indici e percorsi che consentono di riflettere sul rapporto fra letteratura, spazio e questioni ecocritiche. <br><br> L’atlante è frutto del progetto For an Atlas of Italian Ecological Literature: From the Great Acceleration to the Pandemic, nato dalla collaborazione fra l’<b>Università IULM di Milano</b>, l'<b>Università degli Studi di Siena</b> e l’<b>Università di Bologna</b> nell’ambito del programma PRIN 2022 PNRR. ",
+    "projectSubtitle": "LEDA: Literary Ecology in a Digital Altlas",
+    "projectDescription": "L’<b>Atlante digitale della letteratura ecologica italiana</b> è il frutto del progetto <i>For an Atlas of Italian Ecological Literature: From the Great Acceleration to the Pandemic</i>, nato dalla collaborazione fra l’<i>Università IULM di Milano</i>, l'<i>Università degli Studi di Siena</i> e l’<i>Università di Bologna</i> nell’ambito del programma PRIN 2022 PNRR.<br><br>Si tratta di uno strumento interattivo che consente di visualizzare, interagire e ragionare sugli spazi di quei <i>testi che hanno tematizzato in chiave critica il rapporto uomo-ambiente</i>. <br><br> Al suo interno, trovano spazio circa <i>cento testi narrativi</i>, pubblicati in un arco temporale che va <i>dalla Grande accelerazione</i> degli anni Cinquanta <i>alla Pandemia</i> degli anni Venti del nuovo millennio. <br><br> Questi testi sono indagabili attraverso una <i>mappa</i>, ma anche a partire da una serie di indici e percorsi che consentono di riflettere sul rapporto fra letteratura, spazio e questioni ecocritiche. <br><br> L’atlante è frutto del progetto For an Atlas of Italian Ecological Literature: From the Great Acceleration to the Pandemic, nato dalla collaborazione fra l’<b>Università IULM di Milano</b>, l'<b>Università degli Studi di Siena</b> e l’<b>Università di Bologna</b> nell’ambito del programma PRIN 2022 PNRR. ",
     "mapInfoTitle": "Scopri l'Atlante",
     "mapInfoDescription": "Questa mappa interattiva ti permette di esplorare i luoghi descritti dalle opere selezionate. Clicca sui marker per visualizzare informazioni dettagliate."
   },
+  "events": [
+
+  ],
+  "publications": [
+    "Beltrami Marzia, Calvino enattivista: l’immaginazione come manipolazione, in Alessandro Ferraro (ed.), Italo Calvino. Spazi paesaggio ambiente, Pisa, ETS Edizioni, in corso di pubblicazione.",
+    "Pennacchio Filippo, Lo spazio narrativo nel “secondo” Calvino, in Alessandro Ferraro (ed.), Italo Calvino. Spazi paesaggio ambiente, Pisa, ETS Edizioni, in corso di pubblicazione.",
+    "Pennacchio Filippo, Quando lo spazio crea il racconto. L’ubicazione del bene di Giorgio Falco, in Michele Farina, Giacomo Raccis (eds.), Farla breve, Milano, Milano UP, in corso di pubblicazione.",
+    "Scaffai Niccolò, Teodora: la città e la rivincita degli animali, in “Arabeschi”, n. 22 (dicembre 2023): http://www.arabeschi.it/111-teodora-la-citt–ecologica/.",
+    "Scaffai Niccolò, Ecologia e letteratura in Scotellaro, in Rocco Scotellaro. Un intellettuale contadino scrittore oltre la modernità, a cura di Franco Vitelli e Giulia Dell’Aquila, Macerata, Quodlibet, 2024, pp. 413-424.",
+    "Scaffai Niccolò, «Attraverso reciproci influssi»: l’ecologia di Calvino tra storia e natura, in Calvino guarda il mondo. Pluralità, coesione, metamorfosi, a cura del Laboratorio Calvino, Roma, Carocci, in corso di pubblicazione.",
+    "Scaffai Niccolò, Apocalissi borghesi. Ecologia e vita individuale nel romanzo italiano contemporaneo, “Italian Studies”, special issue, in corso di pubblicazione.",
+    "Scaffai Niccolò, Natura, tempo e ambiente: la narrazione ecologica in “Uomini, boschi e api” di Mario Rigoni Stern, in La questione ecologica nell’opera di Mario Rigoni Stern all’era dell’antropocene, Vicenza, Ronzani, in corso di pubblicazione.",
+    "Scaffai Niccolò, Il paradigma della profondità. Spazio e tempo nella letteratura dell’Antropocene,in Die Zukunft gestalten/Dare forma al futuro, hg. v. C. Savettieri und C. Schaefer, Leiden, Brill, in corso di pubblicazione.",
+    "Torti Lavinia, “La bella addormentata nel frigo”. Ecologia e fiaba nella distopia italiana (Parise, Volponi, Primo Levi), “Transalpina”, 27 (2024), di prossima pubblicazione [articolo, classe A].",
+    "Torti Lavinia, La corrente marina nel nostos di Horcynus Orca: per una metafora dell’ibridazione tra nord e sud, storia e natura, “The Italianist”, 25 (2024) [articolo, classe A, accettato].",
+    "Torti Lavinia, Fossilised Presents; The Phototextual nostos in Sicily from Elio Vittorini to Giorgio Vasta, in Reframing Souths, a cura di Carmen Concilio e Alberto Baracco, Milano, Milano UP, in corso di stampa."
+  ],
   "datasetConfig": {
-    "multivalue_rows" : {
+    "multivalue_rows": {
       "Tipologia del luogo": ", ",
       "Tipologia dello Spazio": "; ",
-      "Modo":","
+      "Modo": ",",
+      "Temi Ecologici": ", "
     }
   },
   "result_cards": {
-    "card_title": "Titolo", 
-    "card_subtitle": "Autore",
-    "card_subtitle_2": "Anno",
+    "card_title": "Titolo",
+    "card_author": "Autore",
+    "card_publication_year": "Anno",
+    "card_editor": "Editore",
+    "card_mode": "Modo",
+    "card_eco_themes": "Temi Ecologici",
+    "card_collection": "Parte di",
     "card_description": "Descrizione Ecocritica",
     "popup_description": "Note sullo spazio"
   },
   "modal_information": {
-    "fields" :{
-    "catalogue": {
-      "Titolo": "Titolo",
-      "Autore": "Autore",
-      "Anno": "Anno di prima pubblicazione", 
-      "Editore": "Editore",
-      "Modo": "Modo",
-      "Temi Ecologici": "Temi Ecologici",
-      "Descrizione Ecocritica": "Descrizione dei Temi Ecocritici"
-    },
-    "geodata" : {
-      "Note sullo spazio": "Note",
-      "Tipologia del luogo": "Tipologia",
-      "Temporalità dello Spazio": "Temporalità", 
-      "Definizione dello spazio": "Definizione",
-      "Interpretazione": "Motivazione dello studioso"
+    "fields": {
+      "catalogue": {
+        "Title": "Titolo",
+        "Author": "Autore",
+        "PublicationYear": "Anno di prima pubblicazione",
+        "Editor": "Editore",
+        "Mode": "Modo",
+        "EcoThemes": "Temi Ecologici",
+        "Collection": "Parte di",
+        "Description": "Descrizione dei Temi Ecocritici"
+      },
+      "geodata": {
+        "Note sullo spazio": "Note",
+        "Tipologia del luogo": "Tipologia",
+        "Temporalità dello Spazio": "Temporalità",
+        "Definizione dello spazio": "Stati di realtà",
+        "Interpretazione": "Tipo di identificazione"
+      }
     }
-  }
   },
   "map": {
-    "initialView": [41.8719, 12.5674],
+    "initialView": [
+      41.8719,
+      12.5674
+    ],
     "initialZoom": 6,
     "tileLayers": {
-    "Default": {
-      "tileLayer": "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-      "attribution": "© OpenStreetMap contributors"
-    },
-    "Terrain": {
-      "tileLayer": "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
-      "attribution": "© OpenTopoMap (CC-BY-SA)"
-    },
-    "CartoDB_Positron": {
-      "tileLayer": "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png",
-      "attribution": "© OpenStreetMap © CartoDB"
+      "Default": {
+        "tileLayer": "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        "attribution": "© OpenStreetMap contributors"
+      },
+      "Terrain": {
+        "tileLayer": "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
+        "attribution": "© OpenTopoMap (CC-BY-SA)"
+      },
+      "CartoDB_Positron": {
+        "tileLayer": "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png",
+        "attribution": "© OpenStreetMap © CartoDB"
+      }
     }
-  }
   },
   "map_popups": {
     "show_polygons": "True",
@@ -68,14 +94,29 @@
     "debounceTime": 300,
     "defaultSort": "title_asc",
     "sortOptions": [
-      {"value": "title_asc", "label": "Titolo (Ascendente)"},
-      {"value": "title_desc", "label": "Titolo (Discendente)"},
-      {"value": "date_asc", "label": "Anno (Ascentende)"},
-      {"value": "date_desc", "label": "Anno (Discendente)"}
+      {
+        "value": "title_asc",
+        "label": "Titolo (Ascendente)"
+      },
+      {
+        "value": "title_desc",
+        "label": "Titolo (Discendente)"
+      },
+      {
+        "value": "date_asc",
+        "label": "Anno (Ascentende)"
+      },
+      {
+        "value": "date_desc",
+        "label": "Anno (Discendente)"
+      }
     ]
   },
   "resultsDisplay": {
-    "tagsToShow": ["Titolo", "Anno"]
+    "tagsToShow": [
+      "Titolo",
+      "Anno"
+    ]
   },
   "sortings": {
     "title_desc": {
@@ -95,7 +136,7 @@
       "order": "asc"
     }
   },
-  "aggregations": {   
+  "aggregations": {
     "Location": {
       "title": "I luoghi",
       "category": "Gli spazi narrati",
@@ -158,7 +199,19 @@
       "category": "I riferimenti letterari",
       "conjunction": false,
       "type": "simple"
+    },
+    "pivot_ID": {
+      "title": "PivotID",
+      "size": 500,
+      "category": null,
+      "conjunction": false,
+      "type": "filter_only",
+      "hide": true
     }
   },
-  "searchableFields": ["Titolo", "Anno", "Autore"]
+  "searchableFields": [
+    "Titolo",
+    "Anno",
+    "Autore"
+  ]
 }
