@@ -107,8 +107,8 @@ export class SimpleView {
     }
   }
 
-  goToMapWithFilter(value, isLocation = false) {
-    window.open(createMapUrlWithFilter(isLocation ? "Location" : this.indexKey, value), '_blank');
+  goToMapWithFilter(value, subFilterKey = null, subFilterValue = null) {
+    window.open(createMapUrlWithFilter(this.indexKey, value, subFilterKey, subFilterValue), '_blank');
   }
 
   // =====================================================
@@ -278,7 +278,7 @@ export class SimpleView {
               count: locationItems.length,
               indexKey: this.indexKey,
               filterValue: location,
-              onMapClick: (val) => this.goToMapWithFilter(val, true),
+              onMapClick: (val) => this.goToMapWithFilter(key, "Location", val),
               isExpanded: false,
               hasExpandableContent: false, // Locations are leaf nodes
               items: locationItems,

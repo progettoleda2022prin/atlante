@@ -261,8 +261,8 @@ class LEDASearch {
 
     await this.filterManager.applyUrlFilters({
       onApplyFilters: async () => await this.performSearch(),
-      onShowNotification: (filterKey, filterValue) =>
-        this.uiManager.showFilterNotification(filterKey, filterValue),
+      onShowNotification: (filterKey, filterValue, subfilterKey, subFilterValue) =>
+        this.uiManager.showFilterNotification(filterKey, filterValue, subfilterKey, subFilterValue),
       onError: (message, type) => this.uiManager.showNotification(message, type)
     });
   }

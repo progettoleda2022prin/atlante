@@ -11,6 +11,8 @@ if %errorlevel% neq 0 (
 )
 
 echo Creating deployment...
+echo To have changes in gh-pages branch you need to commit changes in dist folder first
+echo Also, remember to switch to gh-pages branch and push commit
 git subtree push --prefix dist origin gh-pages
 
 if %errorlevel% neq 0 (

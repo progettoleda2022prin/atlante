@@ -36,21 +36,30 @@ export class StateManager {
     return false;
   }
 
-  updateFilters(facetType, value, checked) {
+  updateFilters(facetType, faceValue, checked, subFilterKey = null, subFilterValue = null) {
     console.log(`Updating filter: ${facetType}, value: ${value}, checked: ${checked}`);
 
     if (checked) {
-      if (!this.state.filters[facetType]) {
-        this.state.filters[facetType] = [];
-      }
+      const filters = [
+        [facetType, faceValue],
+        ...(subFilterKey != null ? [[subFilterKey, subFilterValue]] : [])
+      ];
+      for (const [key, value] of filters) {
+        if (!this.state.filters[key]) {
+          this.state.filters[key] = [];
+        }
 
-      // Controlla se il valore esiste già prima di aggiungerlo [fix per taxonomy]
-      if (!this.state.filters[facetType].includes(value)) {
-        this.state.filters[facetType].push(value);
+        // Controlla se il valore esiste già prima di aggiungerlo [fix per taxonomy]
+        if (!this.state.filters[key].includes(value)) {
+          this.state.filters[key].push(value);
+        }
       }
     } else {
       this.state.filters[facetType] =
-        this.state.filters[facetType]?.filter(v => v !== value) || [];
+        this.state.filters[facetType]?.filter(v => v !== faceValue) || [];
+      if (subFilterKey != null)
+        this.state.filters[subFilterKey] =
+          this.state.filters[subFilterKey]?.filter(v => v !== subFilterValue) || [];
     }
   }
 
@@ -60,7 +69,7 @@ export class StateManager {
     try {
       switch (action.type) {
         case 'FACET_CHANGE':
-          this.updateFilters(action.facetType, action.value, action.checked);
+          this.updateFilters(action.facetType, action.value, action.checked, action.subFilterKey, action.subFilterValue);
           break;
         case 'RANGE_CHANGE':
           this.state.filters[action.facetKey] = action.value;

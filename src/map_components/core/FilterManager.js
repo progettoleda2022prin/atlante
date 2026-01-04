@@ -11,71 +11,75 @@ export class FilterManager {
       const urlParams = new URLSearchParams(window.location.search);
       const filterKey = urlParams.get('filter');
       const filterValue = urlParams.get('value');
+      const subFilterKey = urlParams.get('subfilter');
+      const subFilterValue = urlParams.get('subvalue');
 
-      console.log('Checking URL parameters:', { filterKey, filterValue });
+      console.log('Checking URL parameters:', { filterKey, filterValue, subFilterKey, subFilterValue });
 
       if (filterKey && filterValue) {
-        console.log(`Applying URL filter: ${filterKey} = ${filterValue}`);
+        console.log(`Applying URL filter: ${filterKey} = ${filterValue}, ${subFilterKey} = ${subFilterValue}`);
+        const filters = [
+          [filterKey, filterValue],
+          ...(subFilterKey != null ? [[subFilterKey, subFilterValue]] : [])
+        ];
+        const state = this.stateManager.getState();
+        for (const [key, value] of filters) {
+          if (this.config.aggregations && this.config.aggregations[key]) {
+            const facetConfig = this.config.aggregations[key];
+            let processedValue = value;
 
-        if (this.config.aggregations && this.config.aggregations[filterKey]) {
-          const facetConfig = this.config.aggregations[filterKey];
-          let processedValue = filterValue;
+            // Se è un range, converti la stringa in array [min, max]
+            if (facetConfig.type === 'range') {
+              const parts = value.includes('-')
+                ? value.split('-').map(v => parseInt(v.trim(), 10))
+                : value.split(',').map(v => parseInt(v.trim(), 10));
 
-          // Se è un range, converti la stringa in array [min, max]
-          if (facetConfig.type === 'range') {
-            const parts = filterValue.includes('-')
-              ? filterValue.split('-').map(v => parseInt(v.trim(), 10))
-              : filterValue.split(',').map(v => parseInt(v.trim(), 10));
+              if (parts.length === 2 && !isNaN(parts[0]) && !isNaN(parts[1])) {
+                processedValue = parts;
+              } else {
+                console.error(`Invalid range format: ${value}`);
+                resolve();
+                return;
+              }
+            }
 
-            if (parts.length === 2 && !isNaN(parts[0]) && !isNaN(parts[1])) {
-              processedValue = parts;
+            // Applica il filtro direttamente allo stato
+            if (facetConfig.type === 'range') {
+              state.filters[key] = processedValue;
             } else {
-              console.error(`Invalid range format: ${filterValue}`);
-              resolve();
-              return;
+              if (!state.filters[key]) {
+                state.filters[key] = [];
+              }
+              if (!state.filters[key].includes(processedValue)) {
+                state.filters[key].push(processedValue);
+              }
             }
           }
-
-          const state = this.stateManager.getState();
-
-          // Applica il filtro direttamente allo stato
-          if (facetConfig.type === 'range') {
-            state.filters[filterKey] = processedValue;
-          } else {
-            if (!state.filters[filterKey]) {
-              state.filters[filterKey] = [];
+          else {
+            console.warn(`Filter key '${key}' not found in configuration`);
+            if (callbacks.onError) {
+              callbacks.onError(`Filtro '${key}' non trovato`, 'warning');
             }
-            if (!state.filters[filterKey].includes(processedValue)) {
-              state.filters[filterKey].push(processedValue);
-            }
+            resolve();
+            return
           }
-
-          this.stateManager.setState(state);
-
-          console.log('State filters after URL application:', state.filters);
-
-          // Esegui la ricerca
-          setTimeout(async () => {
-            if (callbacks.onApplyFilters) {
-              await callbacks.onApplyFilters();
-            }
-
-            console.log(`Filter applied and search completed: ${filterKey} = ${filterValue}`);
-
-            if (callbacks.onShowNotification) {
-              callbacks.onShowNotification(filterKey, filterValue);
-            }
-
-            resolve(); // Risolvi la Promise dopo che tutto è completato
-          }, 1500);
-        } else {
-          console.warn(`Filter key '${filterKey}' not found in configuration`);
-          if (callbacks.onError) {
-            callbacks.onError(`Filtro '${filterKey}' non trovato`, 'warning');
-          }
-          resolve();
         }
-      } else {
+        this.stateManager.setState(state);
+        console.log('State filters after URL application:', state.filters);
+
+        // Esegui la ricerca
+        setTimeout(async () => {
+          if (callbacks.onApplyFilters) {
+            await callbacks.onApplyFilters();
+          }
+
+          if (callbacks.onShowNotification) {
+            callbacks.onShowNotification(filterKey, filterValue, subFilterKey, subFilterValue);
+          }
+          resolve(); // Risolvi la Promise dopo che tutto è completato
+        }, 1500);
+      }
+      else {
         // Nessun filtro URL da applicare
         resolve();
       }

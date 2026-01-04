@@ -7,10 +7,14 @@ export function getURLParameter(name) {
   return urlParams.get(name);
 }
 
-export function createMapUrlWithFilter(indexKey, categoryValue) {
+export function createMapUrlWithFilter(indexKey, categoryValue, subFilterKey = null, subFilterValue = null) {
   const baseUrl = window.location.origin + base + 'pages/mappa.html';
   const params = new URLSearchParams();
   params.set('filter', indexKey);
   params.set('value', categoryValue);
+  if (subFilterKey != null) {
+    params.set('subfilter', subFilterKey);
+    params.set('subvalue', subFilterValue);
+  }
   return `${baseUrl}?${params.toString()}`;
 }

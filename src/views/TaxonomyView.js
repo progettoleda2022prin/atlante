@@ -163,19 +163,21 @@ export class TaxonomyView {
   // NAVIGAZIONE ALLA MAPPA
   // ===============================
 
-  goToMapWithFilter(taxonomyValue, isLocation = false) {
+  goToMapWithFilter(taxonomyValue, subFilterKey = null, subFilterValue = null) {
     const filterAction = {
       type: "FACET_CHANGE",
-      facetType: isLocation ? "Location" : this.indexKey,
+      facetType: this.indexKey,
       value: taxonomyValue,
-      checked: true
+      checked: true,
+      subFilterKey: subFilterKey,
+      subFilterValue: subFilterValue
     };
 
     if (typeof window.handleStateChange === 'function') {
       window.handleStateChange(filterAction);
     }
 
-    const mapUrl = createMapUrlWithFilter(isLocation ? "Location" : this.indexKey, taxonomyValue);
+    const mapUrl = createMapUrlWithFilter(this.indexKey, taxonomyValue, subFilterKey, subFilterValue);
 
     if (typeof window.navigateToMap === 'function') {
       window.navigateToMap(filterAction);
@@ -268,7 +270,7 @@ export class TaxonomyView {
                 count: locationItems.length,
                 indexKey: this.indexKey,
                 filterValue: location, // pass whatever filter string you need
-                onMapClick: (val) => this.goToMapWithFilter(val, true),
+                onMapClick: (val) => this.goToMapWithFilter(currentPath, "Location", val),
                 isExpanded: false,
                 hasExpandableContent: false, // locations don’t expand
                 items: locationItems,
