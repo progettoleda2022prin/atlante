@@ -1,4 +1,5 @@
 // universalFooter.js - Versione Overlay Compatta con Carousel Auto-Discovery
+import { dirname, relative } from 'pathe';
 export class UniversalFooter {
     constructor(config) {
         this.currentPath = window.location.pathname;
@@ -16,7 +17,7 @@ export class UniversalFooter {
     async initLogos() {
         try {
             const basePath = window.location.pathname.match(/^\/[^\/]+\//)?.[0] || '/';
-            const manifestPath = '/imgs/institutional_logos/manifest.json';
+            const manifestPath = this.getRelativePath('/imgs/institutional_logos/manifest.json');
 
             const response = await fetch(manifestPath);
             if (!response.ok) throw new Error(`Manifest not found: ${response.status}`);
@@ -25,7 +26,7 @@ export class UniversalFooter {
 
             this.logos = logoFilenames.map(filename => ({
                 filename: filename,
-                path: `/imgs/institutional_logos/${filename}`
+                path: this.getRelativePath('/imgs/institutional_logos/' + filename)
             })).sort((a, b) => a.filename.localeCompare(b.filename));
 
             if (this.footerElement && this.logos.length > 0) {
@@ -83,13 +84,18 @@ export class UniversalFooter {
     }
 
     calculateBasePath() {
-        const currentDir = this.dirname(this.currentPath);
-        const projectShortTitle = this.config?.project?.projectShortTitle?.toLowerCase() || 'leda';
-        const rootDir = '/' + projectShortTitle;
+        // Use the environmental base path from Vite
+        const envBasePath = import.meta.env.BASE_URL || '/';
 
-        const relativePath = this.relative(currentDir, rootDir);
+        const currentDir = dirname(this.currentPath);
 
-        if (relativePath === '' || relativePath === '.') return './';
+        // Calculate relative path from current directory to the base
+        const relativePath = relative(currentDir, envBasePath);
+
+        if (relativePath === '' || relativePath === '.') {
+            return './';
+        }
+
         return relativePath || './';
     }
 
