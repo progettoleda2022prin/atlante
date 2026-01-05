@@ -4,26 +4,53 @@
     "projectThumbnailURL": "LEDA_logo.png",
     "projectTitle": "Atlante digitale della letteratura ecologica italiana",
     "projectSubtitle": "LEDA: Literary Ecology in a Digital Altlas",
-    "projectDescription": "L’<b>Atlante digitale della letteratura ecologica italiana</b> è il frutto del progetto <i>For an Atlas of Italian Ecological Literature: From the Great Acceleration to the Pandemic</i>, nato dalla collaborazione fra l’<i>Università IULM di Milano</i>, l'<i>Università degli Studi di Siena</i> e l’<i>Università di Bologna</i> nell’ambito del programma PRIN 2022 PNRR.<br><br>Si tratta di uno strumento interattivo che consente di visualizzare, interagire e ragionare sugli spazi di quei <i>testi che hanno tematizzato in chiave critica il rapporto uomo-ambiente</i>. <br><br> Al suo interno, trovano spazio circa <i>cento testi narrativi</i>, pubblicati in un arco temporale che va <i>dalla Grande accelerazione</i> degli anni Cinquanta <i>alla Pandemia</i> degli anni Venti del nuovo millennio. <br><br> Questi testi sono indagabili attraverso una <i>mappa</i>, ma anche a partire da una serie di indici e percorsi che consentono di riflettere sul rapporto fra letteratura, spazio e questioni ecocritiche. <br><br> L’atlante è frutto del progetto For an Atlas of Italian Ecological Literature: From the Great Acceleration to the Pandemic, nato dalla collaborazione fra l’<b>Università IULM di Milano</b>, l'<b>Università degli Studi di Siena</b> e l’<b>Università di Bologna</b> nell’ambito del programma PRIN 2022 PNRR. ",
+    "projectDescription": "L’<b>Atlante digitale della letteratura ecologica italiana</b> è frutto del progetto <i>For an Atlas of Italian Ecological Literature: From the Great Acceleration to the Pandemic</i>, portato avanti dall’Università IULM di Milano, dall'Università degli Studi di Siena e dall’Università di Bologna nell’ambito del programma PRIN 2022 PNRR. <br><br>Si tratta di uno strumento interattivo che consente di visualizzare, interagire e ragionare sugli spazi di quei testi che hanno tematizzato in chiave critica il rapporto uomo-ambiente. <br><br>Al suo interno, trovano spazio circa cento testi narrativi, pubblicati in un arco temporale che va dalla Grande accelerazione degli anni Cinquanta alla pandemia degli anni Venti del nuovo millennio. <br><br>Questi testi sono indagabili attraverso una mappa, ma anche a partire da una serie di indici e percorsi che consentono di riflettere sul rapporto fra letteratura, spazio e questioni ecocritiche.",
     "mapInfoTitle": "Scopri l'Atlante",
     "mapInfoDescription": "Questa mappa interattiva ti permette di esplorare i luoghi descritti dalle opere selezionate. Clicca sui marker per visualizzare informazioni dettagliate."
   },
   "events": [
-
+    {
+      "description": "Reimmaginare lo spazio tra realtà e fiction | 1 luglio 2024, Fabbrica del Vapore, Milano.\n Incontro con Giorgio Falco (scrittore), Sabrina Ragucci (fotografa) e Davide Rapp (regista e artista visivo).\n Moderatori: Marzia Beltrami (IULM), Paolo Giovannetti (IULM) e Filippo Pennacchio (IULM).",
+      "flyer_path": "/imgs/flyers/reimmaginare_lo_spazio.jpg"
+    },
+    {
+      "description": "Proiezione del film Safe (Todd Haynes, 1995) entro il ciclo Il sospetto di un altro mondo | 29 ottobre 2024, Cinema Modernissimo, Bologna. \n La proiezione del film è stata seguita da una conversazione fra lo scrittore Tommaso Pincio e Lavinia Torti.",
+      "flyer_path": "/imgs/flyers/safe.jpg"
+    },
+    {
+      "description": "Spazialità, poesia, cinema | 29 novembre 2024, Ferrobedò, Milano.\n Incontro con i poeti Giulio Marzaioli e Valentino Ronchi.\n Moderatori: Marzia Beltrami (IULM), Paolo Giovannetti (IULM) e Filippo Pennacchio (IULM)",
+      "flyer_path": "/imgs/flyers/spazialita_poesia_cinema.jpg"
+    },
+    {
+      "description": "Lo spazio attraverso i media. Prospettive narratologiche | 25 febbraio 2025, Università IULM, Milano.\n La giornata di studi si è proposta di riflettere in chiave narratologica sul rapporto fra spazio e racconto nella sua articolazione fra i vari media, dalla letteratura al cinema, dal fumetto al videogioco, fino alle narrazioni interattive digitali.",
+      "flyer_path": "/imgs/flyers/lo_spazio_attraverso_i_media.jpg"
+    },
+    {
+      "description": "Immaginari della città distopica. Spazio e rappresentazione nella letteratura contemporanea | 26-27 maggio 2025, Università di Siena.\n Attraverso gli interventi di scrittori e studiosi, la giornata di studi ha esplorato i modi in cui lo spazio urbano è stato immaginato alla luce dei cambiamenti imposti dalla crisi ecologica e delle emozioni che questa può suscitare.",
+      "flyer_path": null
+    },
+    {
+      "description": "Narrare lo spazio, mappare il racconto | 27-28 gennaio 2026, Università di Bologna.\n Il convegno conclusivo del progetto ha offerto l’occasione di ragionare attorno al rapporto fra spazio e racconto in prospettiva sia teorica che creativa, nonché di presentare l’Atlante e cominciare a discuterne le applicazioni e i potenziali sviluppi.",
+      "flyer_path": null
+    }
   ],
   "publications": [
-    "Beltrami Marzia, Calvino enattivista: l’immaginazione come manipolazione, in Alessandro Ferraro (ed.), Italo Calvino. Spazi paesaggio ambiente, Pisa, ETS Edizioni, in corso di pubblicazione.",
-    "Pennacchio Filippo, Lo spazio narrativo nel “secondo” Calvino, in Alessandro Ferraro (ed.), Italo Calvino. Spazi paesaggio ambiente, Pisa, ETS Edizioni, in corso di pubblicazione.",
-    "Pennacchio Filippo, Quando lo spazio crea il racconto. L’ubicazione del bene di Giorgio Falco, in Michele Farina, Giacomo Raccis (eds.), Farla breve, Milano, Milano UP, in corso di pubblicazione.",
-    "Scaffai Niccolò, Teodora: la città e la rivincita degli animali, in “Arabeschi”, n. 22 (dicembre 2023): http://www.arabeschi.it/111-teodora-la-citt–ecologica/.",
+    "Beltrami Marzia, Calvino enattivista: l’immaginazione come manipolazione, in Alessandro Ferraro (ed.), Italo Calvino. Spazi paesaggio ambiente, Pisa, a cura di Alessandro Ferraro, ETS Edizioni, 2025 (in stampa).",
+    "Beltrami Marzia, Giovannetti Paolo, Pennacchio Filippo (a cura di), Space Across Media. Narratological Perspectives, Berlino, de Gruyter, 2026 (in corso di preparazione).",
+    "Beltrami Marzia, Spunti per uno studio narratologico dello spazio nella narrativa post-apocalittica. Ammaniti, Arpaia, Zanotti, «Between», 15 (30), 2025: 21-41.",
+    "Pennacchio Filippo, Lo spazio narrativo nel \"secondo\", Calvino, in Italo Calvino. Spazi paesaggio ambiente, a cura di Alessandro Ferraro, Pisa, ETS Edizioni, 2025 (in stampa).",
+    "Scaffai Niccolò, «Attraverso reciproci influssi»: l’ecologia di Calvino tra storia e natura, in Calvino guarda il mondo. Pluralità, coesione, metamorfosi, a cura del Laboratorio Calvino, Roma, Carocci (in stampa).",
+    "Scaffai Niccolò, Apocalissi borghesi. Ecologia e vita individuale nel romanzo italiano contemporaneo, «Italian Studies», 80 (1), 2025: 47-60.",
     "Scaffai Niccolò, Ecologia e letteratura in Scotellaro, in Rocco Scotellaro. Un intellettuale contadino scrittore oltre la modernità, a cura di Franco Vitelli e Giulia Dell’Aquila, Macerata, Quodlibet, 2024, pp. 413-424.",
-    "Scaffai Niccolò, «Attraverso reciproci influssi»: l’ecologia di Calvino tra storia e natura, in Calvino guarda il mondo. Pluralità, coesione, metamorfosi, a cura del Laboratorio Calvino, Roma, Carocci, in corso di pubblicazione.",
-    "Scaffai Niccolò, Apocalissi borghesi. Ecologia e vita individuale nel romanzo italiano contemporaneo, “Italian Studies”, special issue, in corso di pubblicazione.",
-    "Scaffai Niccolò, Natura, tempo e ambiente: la narrazione ecologica in “Uomini, boschi e api” di Mario Rigoni Stern, in La questione ecologica nell’opera di Mario Rigoni Stern all’era dell’antropocene, Vicenza, Ronzani, in corso di pubblicazione.",
-    "Scaffai Niccolò, Il paradigma della profondità. Spazio e tempo nella letteratura dell’Antropocene,in Die Zukunft gestalten/Dare forma al futuro, hg. v. C. Savettieri und C. Schaefer, Leiden, Brill, in corso di pubblicazione.",
-    "Torti Lavinia, “La bella addormentata nel frigo”. Ecologia e fiaba nella distopia italiana (Parise, Volponi, Primo Levi), “Transalpina”, 27 (2024), di prossima pubblicazione [articolo, classe A].",
-    "Torti Lavinia, La corrente marina nel nostos di Horcynus Orca: per una metafora dell’ibridazione tra nord e sud, storia e natura, “The Italianist”, 25 (2024) [articolo, classe A, accettato].",
-    "Torti Lavinia, Fossilised Presents; The Phototextual nostos in Sicily from Elio Vittorini to Giorgio Vasta, in Reframing Souths, a cura di Carmen Concilio e Alberto Baracco, Milano, Milano UP, in corso di stampa."
+    "Scaffai Niccolò, Natura, tempo e ambiente: la narrazione ecologica in \"Uomini, boschi e api\", di Mario Rigoni Stern, in La questione ecologica nell’opera di Mario Rigoni Stern all’era dell’antropocene, Vicenza, Ronzani, 2025.",
+    "Scaffai Niccolò, Sotto l’inesauribile superficie delle cose. Il paradigma della profondità nell’immaginario dell’Antropocene, Sansepolcro, Aboca Edizioni, 2025.",
+    "Scaffai Niccolò, Teodora: la città e la rivincita degli animali, in \"Arabeschi\",, 22 (2023): http://www.arabeschi.it/111-teodora-la-citt–ecologica/.",
+    "Scaffai Niccolò, Antropocene e profondità: un paradigma dell’immaginario contemporaneo, in Le narrazioni dell’Antropocene. L’ambiente tra letteratura, politica e diritto, a cura di Domenico Amirante e Giuseppe Langella, Marcianum Press, 2025, 133-149.",
+    "Scaffai Niccolò, Il paradigma della profondità. Spazio e tempo nella letteratura dell'Antropocene, in Shaping the Future: Literary Imagination in the Anthropocene. German-italian Perspectives, a cura di Cristina Savettieri, Christina Schaefer, Franz Steiner Verlag, 2025, 59-74.",
+    "Scaffai Niccolò, Insegnare nell’Antropocene, insegnare con l’Antropocene. La letteratura, il canone, il presente, in L'Antropocene. Una sfida per la letteratura. Atti dei seminari della Rete CompitaMarche 2023-2024, Principato, 2025, 9-14.",
+    "Torti Lavinia, \"La bella addormentata nel frigo\",. Ecologia e fiaba nella distopia italiana (Parise, Volponi, Primo Levi), «Transalpina», 27, 2024.",
+    "Torti Lavinia, Fossilised Presents: The Phototextual nostos in Sicily from Elio Vittorini to Giorgio Vasta, in Reframing Souths: Ecocritical Perspectives on South in Literature, Film and New Media, a cura di Carmen Concilio e Alberto Baracco, Milano, Milano UP, 2025.",
+    "Torti Lavinia, La corrente marina nel nostos di Horcynus Orca: per una metafora dell’ibridazione tra nord e sud, storia e natura, «The Italianist», 25 (1), 2025: 29-44."
   ],
   "datasetConfig": {
     "multivalue_rows": {

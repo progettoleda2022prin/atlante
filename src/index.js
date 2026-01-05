@@ -448,16 +448,16 @@ function generateIndexPreview(config) {
 
   // Container principale centrato 100vh
   const container = document.createElement('div');
-  container.className = 'w-full min-h-screen bg-gradient-to-br from-primary-50 via-white to-secondary-50 flex items-center justify-center relative overflow-hidden';
+  container.className = 'w-full min-h-screen flex items-center justify-center relative overflow-hidden';
 
   // Elementi decorativi semplici
-  const deco1 = document.createElement('div');
-  deco1.className = 'absolute top-10 left-10 w-20 h-20 bg-primary-200 rounded-full opacity-20';
-  container.appendChild(deco1);
+  // const deco1 = document.createElement('div');
+  // deco1.className = 'absolute top-10 left-10 w-20 h-20 bg-primary-200 rounded-full opacity-20';
+  // container.appendChild(deco1);
 
-  const deco2 = document.createElement('div');
-  deco2.className = 'absolute bottom-10 right-10 w-24 h-24 bg-secondary-200 rounded-full opacity-15';
-  container.appendChild(deco2);
+  // const deco2 = document.createElement('div');
+  // deco2.className = 'absolute bottom-10 right-10 w-24 h-24 bg-secondary-200 rounded-full opacity-15';
+  // container.appendChild(deco2);
 
   // Contenuto centrato
   const content = document.createElement('div');
@@ -475,13 +475,13 @@ function generateIndexPreview(config) {
 
   // Titolo
   const title = document.createElement('h2');
-  title.className = 'pb-6 text-4xl sm:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-primary-700 to-secondary-700 bg-clip-text text-transparent';
-  title.textContent = 'Esplora le categorie';
+  title.className = 'pb-6 text-4xl sm:text-5xl lg:text-6xl lg:leading-tight font-bold bg-gradient-to-r from-primary-700 to-secondary-700 bg-clip-text text-transparent';
+  title.textContent = 'Scopri gli indici';
 
   // Descrizione
   const description = document.createElement('p');
   description.className = 'text-xl sm:text-2xl text-gray-600 mb-8 lg:mb-12';
-  description.textContent = 'Scopri i contenuti organizzati per categoria attraverso gli indici strutturati';
+  description.textContent = 'Esplora i contenuti dell’Atlante organizzati per categorie';
 
   // CTA Button
   const ctaButton = document.createElement('a');
@@ -537,6 +537,11 @@ async function initializeApp() {
 
     const universalFooter = new UniversalFooter(config);
     universalFooter.render();
+
+    document.documentElement.style.setProperty(
+      '--bg-image',
+      `url(${import.meta.env.VITE_IMG_PATH})`
+    );
 
     // Aggiorna la descrizione del progetto
     updateProjectDescription(config);

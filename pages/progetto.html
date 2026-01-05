@@ -4,24 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Progetto</title>
 </head>
 
-<body class="bg-gray-50 overflow-hidden overflow-x-hidden" id="index-page">
+<body class="bg-gray-50 overflow-hidden overflow-x-hidden">
 
     <!-- Contenitore principale delle sezioni -->
     <div class="sections-container">
-        <!-- Project presentation Section -->
-        <section class="relative bg-gradient-to-br from-primary-50 via-white to-secondary-50 overflow-hidden"
-            data-section-id="-1">
-            <!-- Decorative elements -->
-            <div
-                class="absolute top-0 left-0 w-72 h-72 bg-primary-200 rounded-full opacity-20 -translate-x-1/2 -translate-y-1/2">
-            </div>
-            <div
-                class="absolute bottom-0 right-0 w-96 h-96 bg-secondary-200 rounded-full opacity-10 translate-x-1/3 translate-y-1/3">
-            </div>
 
+        <section class="relative overflow-hidden" data-section-id="-2">
             <!-- Main content wrapper -->
             <div class="flex items-center justify-center h-full">
                 <div class="max-w-7xl mx-auto px-4 lg:px-8 relative z-10 w-full h-full flex items-center py-8 lg:py-0">
@@ -29,19 +21,183 @@
 
                         <div class="text-left">
                             <!-- Badge con project title -->
-                            <h1
-                                class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-primary-900 leading-tight">
-                                <span class="expand_subdiv initiatives">Iniziative</span>
+                            <h1 class="text-4xl font-bold text-primary-900 mb-2 mt-4">
+                                <span class="info expand_subdiv">Il progetto
+                                    <i id="info_arrow" class="info fa fa-angle-down" aria-hidden="true"></i>
+                                </span>
+                            </h1>
+                        </div>
+
+                        <!-- Right column - Project Description con scroll interno -->
+                        <div id="info" class=" lg:h-auto" style="display: none;">
+                            <br>
+                            <p>
+                                <span><span>L’Atlante
+                                        è il prodotto finale di
+                                        una ricerca collaborativa che ha esplorato il rapporto fra letteratura,
+                                        spazio e riflessione ecologica. Nell’ambito del progetto, le unità
+                                        di lavoro dell’Università
+                                        IULM, dell’Università di Bologna
+                                        e dell’Università di Siena si sono dedicate ad aspetti
+                                        diversi della ricerca, contribuendo alla costruzione
+                                        dell’Atlante ma anche approfondendo le questioni teoriche e
+                                        critiche che ne sono alla base. </span></span>
+                            </p>
+                            <br>
+                            <p>
+                                <span><span>Università
+                                        IULM</span></span>
+                            </p>
+
+                            <p>
+                                <span><span>L’ambito
+                                        di lavoro
+                                        dell’Unità IULM è quello
+                                        della </span></span><span><b>narratologia</b></span><span><span>; l’idea
+                                        da
+                                        cui si è partiti è che gli studi
+                                        &ldquo;classici&rdquo; abbiano per lo più trascurato lo spazio dei testi
+                                        narrativi, concentrandosi su altri aspetti (la temporalità, le voci
+                                        narranti, i punti di
+                                        vista). Eppure, </span></span><span><b>lo spazio
+                                        è un elemento
+                                        decisivo </b></span><span><span>di
+                                        molti testi, oltre che un aspetto
+                                        essenziale del modo in cui lettori e lettrici ricostruiscono mentalmente i mondi
+                                        della storia.</span></span>
+                            </p>
+                            <p>
+                                <span><span>Muovendo
+                                        da questa idea, l’Unità
+                                        IULM ha cercato di elaborare
+                                        una </span></span><span><b>metodologia
+                                        per lo studio dello spazio dei
+                                        testi narrativi</b></span><span><span>,
+                                        non solo quelli di stampo </span><span>ecocritico</span><span>. Per farlo, ha
+                                    </span><span>puntato a</span><span> integrare le nozioni cardine della
+                                    </span></span><span><b>narratologia
+                                        strutturalista</b></span><span><span> con
+                                        le più recenti acquisizioni
+                                        delle </span></span><span><b>narratologie
+                                        post-classiche</b></span><span><span>,
+                                        in particolare di quelle di stampo
+                                        cognitivo.</span></span>
+                            </p>
+                            <p>
+                                <span><span>I
+                                        risultati di questa ricerca sono stati
+                                        disseminati sia in ambito accademico attraverso seminari e pubblicazioni
+                                        scientifiche, sia attraverso iniziative rivolte a un pubblico più
+                                        ampio.</span></span>
+                            </p>
+                            <br>
+                            <p>
+                                <span><span>Università
+                                        degli Studi di
+                                        Siena</span></span>
+                            </p>
+                            <p>
+                                <span><span>L’unità
+                                        senese
+                                        si è occupata di indagare
+                                        il </span></span><span><b>rapporto fra
+                                        letteratura italiana e
+                                        tematiche ambientali</b></span><span><span> nel
+                                        primo quarto di secolo del nuovo
+                                        millennio. Si tratta di un periodo particolarmente ricco di romanzi ecologici:
+                                        negli ultimi anni, infatti, l’accresciuta sensibilità per
+                                        tali tematiche ha portato al moltiplicarsi dei libri dedicati a
+                                        quest’argomento, nelle varie forme che può assumere, valorizzati e
+                                        resi ben riconoscibili anche in ambito editoriale con specifiche collane,
+                                        festival e concorsi letterari a tema.</span></span>
+                            </p>
+                            <p>
+                                <span><span>L’obiettivo era produrre
+                                        un
+                                        atlante consultabile on-line con una mappa interattiva che permettesse al
+                                        visitatore di scorrere l’Italia sia in senso geografico che cronologico
+                                        mostrando i romanzi pubblicati in questo periodo, i luoghi rappresentati e le
+                                        modalità narrative scelte da ogni
+                                        autore.</span></span>
+                            </p>
+                            <p>
+                                <span><span>Oltre
+                                        a questo, l’unità
+                                        senese ha organizzato una giornata di studi dedicata al
+                                        tema della </span></span><span><b>città
+                                        distopica</b></span><span><span>;
+                                        si è trattato di una prima
+                                        possibilità di lettura trasversale del materiale
+                                        raccolto.</span></span>
+                            </p>
+                            <p>
+                                <br>
+                            </p>
+                            <p>
+                                <span><span>Università
+                                        di
+                                        Bologna</span></span>
+                            </p>
+                            <p>
+                                <span><span>L’Università
+                                        di Bologna, grazie
+                                        all’esperienza di specialisti in </span></span><span><b>Digital
+                                        Humanities</b></span><span><span>,
+                                        si è occupata di mettere in relazione
+                                        i testi selezionati e le aree geografiche italiane attraverso una mappa
+                                        interattiva e ipertestuale, illuminando cos&igrave; la relazione fra spazi reali
+                                        e testuali. Da un lato, l’Atlante consente una rappresentazione visiva
+                                        delle categorie </span><span>ecocritiche</span><span> e
+                                    </span><span>geocritiche</span><span> su cui si concentra il progetto;
+                                        dall’altro, </span><span>fornisce
+                                    </span><span>un metodo efficace per visualizzare i
+                                        territori presentati e discussi nella letteratura ambientale
+                                        contemporanea.</span></span>
+                            </p>
+                            <p>
+                                <span><span>I
+                                        contenuti del progetto sono
+                                        stati diffusi attraverso </span></span><span><b>iniziative
+                                        che hanno
+                                        coinvolto direttamente i cittadini</b></span><span><span>,
+                                        a partire da presentazioni divulgative,
+                                        incontri con autori e collaborazioni con i cinema di Bologna. Tale
+                                        operazione ha consentito di focalizzare l’attenzione dei
+                                        partecipanti sulle dinamiche di interazione con lo spazio e l’ambiente
+                                        urbano circostante e, allo stesso tempo,
+                                        di </span></span><span><b>costruire
+                                        o implementare la consapevolezza
+                                        sulle aree coinvolte</b></span><span><span> e
+                                        sulle problematiche a
+                                        esse legate.</span></span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <br><br>
+
+        <!-- Project presentation Section -->
+        <section class="relative overflow-hidden" data-section-id="-1">
+            <!-- Main content wrapper -->
+            <div class="flex items-center justify-center h-full">
+                <div class="max-w-7xl mx-auto px-4 lg:px-8 relative z-10 w-full h-full flex items-center py-8 lg:py-0">
+                    <div class="lg:grid-cols-2 gap-6 lg:gap-16 items-center w-full">
+
+                        <div class="text-left">
+                            <!-- Badge con project title -->
+                            <h1 class="text-4xl font-bold text-primary-900 mb-2 mt-4">
+                                <span class="initiatives expand_subdiv">Iniziative
+                                    <i id="initiatives_arrow" class="initiatives fa fa-angle-down" aria-hidden="true"></i>
+                                </span>
                             </h1>
                         </div>
 
                         <!-- Right column - Project Description con scroll interno -->
                         <div id="initiatives" class=" lg:h-auto" style="display: none;">
                             <!-- Container con scroll interno -->
-                            <div class="">
-                                <div class="">
-                                    <p class=" lg:text-sm text-gray-600 leading-tight" data-content="events"></p>
-                                </div>
+                            <div id="content" data-content="events">
                             </div>
                         </div>
                     </div>
@@ -51,8 +207,7 @@
         <br><br>
 
         <!-- Project presentation Section -->
-        <section class="relative bg-gradient-to-br from-primary-50 via-white to-secondary-50 overflow-hidden"
-            data-section-id="0">
+        <section class="relative overflow-hidden" data-section-id="0">
             <!-- Main content wrapper -->
             <div class="flex items-center justify-center h-full">
                 <div class="max-w-7xl mx-auto px-4 lg:px-8 relative z-10 w-full h-full flex items-center py-8 lg:py-0">
@@ -60,9 +215,10 @@
 
                         <div class="text-left">
                             <!-- Badge con project title -->
-                            <h1
-                                class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-primary-900 leading-tight">
-                                <span class="expand_subdiv publications">Pubblicazioni</span>
+                            <h1 class="text-4xl font-bold text-primary-900 mb-2 mt-4">
+                                <span class="publications expand_subdiv">Pubblicazioni
+                                    <i id="publications_arrow" class="publications fa fa-angle-down" aria-hidden="true"></i>
+                                </span>
                             </h1>
                         </div>
 
@@ -71,7 +227,7 @@
                             <!-- Container con scroll interno -->
                             <div class="">
                                 <div class="">
-                                    <p class=" lg:text-sm text-gray-600 leading-tight" data-content="publications"></p>
+                                    <div class="" data-content="publications"></p>
                                 </div>
                             </div>
                         </div>
@@ -81,8 +237,7 @@
         </section>
         <br><br>
 
-        <section class="relative bg-gradient-to-br from-primary-50 via-white to-secondary-50 overflow-hidden"
-            data-section-id="1">
+        <section class="relative overflow-hidden" data-section-id="1">
             <!-- Main content wrapper -->
             <div class="flex items-center justify-center h-full">
                 <div class="max-w-7xl mx-auto px-4 lg:px-8 relative z-10 w-full h-full flex items-center py-8 lg:py-0">
@@ -90,9 +245,10 @@
 
                         <div class="text-left">
                             <!-- Badge con project title -->
-                            <h1
-                                class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-primary-900 leading-tight">
-                                <span class="expand_subdiv members">Chi siamo</span>
+                            <h1 class="text-4xl font-bold text-primary-900 mb-2 mt-4">
+                                <span class="members expand_subdiv">Chi siamo
+                                    <i id="members_arrow" class="members fa fa-angle-down" aria-hidden="true"></i>
+                                </span>
                             </h1>
                         </div>
 
@@ -119,22 +275,17 @@
                                         <p>
                                             <a href="https://www.iulm.it/it/iulm/ateneo/docenti-e-collaboratori/pennacchio-filippo"
                                                 class="text-blue-600 underline hover:text-blue-800">Filippo
-                                                Pennacchio</a>&nbsp;Filippo Pennacchio è
-                                            ricercatore a tempo
-                                            determinato in Letteratura
+                                                Pennacchio</a> è
+                                            professore associato in Letteratura
                                             italiana contemporanea. È Principal Investigator
-                                            del Progetto
-                                            PRIN
-                                            PNRR 2022 <em>For an
+                                            del Progetto PRIN PNRR 2022 <em>For an
                                                 Atlas of Italian Ecological Literature: From
                                                 the Great
                                                 Acceleration to the Pandemic</em>
                                             (LEDA). Nel 2020 ha fondato, insieme ad altri
-                                            studiosi
-                                            dell’Università IULM e
+                                            studiosi dell’Università IULM e
                                             dell’Università Federico II di Napoli, il
-                                            Seminario Permanente
-                                            di
+                                            Seminario Permanente di
                                             Narratologia. I suoi
                                             interessi riguardano soprattutto la narrativa
                                             fra Ottocento e
@@ -159,18 +310,19 @@
 
                                     <div>
                                         <p>
-                                            <a href="https://orcid.org/0000-0001-7589-0552/print">Marzia
-                                                Beltrami</a>&nbsp;è assegnista
+                                            <a href="https://orcid.org/0000-0001-7589-0552/print"
+                                                class="text-blue-600 underline hover:text-blue-800">Marzia
+                                                Beltrami</a> è assegnista
                                             di ricerca in Letteratura italiana contemporanea
                                             presso lo IULM
                                             di
                                             Milano nell’ambito del
-                                            progetto PRIN 2022 PNRR&nbsp;<em>For an Atlas of
+                                            progetto PRIN 2022 PNRR <em>For an Atlas of
                                                 Italian
                                                 Ecological
                                                 Literature: From the
                                                 Great Acceleration to the
-                                                Pandemic&nbsp;</em>(LEDA). Si
+                                                Pandemic </em>(LEDA). Si
                                             occupa
                                             di narratologia cognitiva
                                             con particolare attenzione alla spazialità e dei
@@ -180,11 +332,11 @@
                                             fantascienza. Oltre a diversi saggi su riviste e
                                             in volume, ha
                                             pubblicato nel 2021 la
-                                            monografia&nbsp;<em>Spatial Plots. Virtuality
+                                            monografia <em>Spatial Plots. Virtuality
                                                 and the Embodied
                                                 Mind
                                                 in Baricco, Camilleri
-                                                and Calvino</em>&nbsp;(Cambridge, Legenda).
+                                                and Calvino</em> (Cambridge, Legenda).
                                         </p>
                                     </div>
                                 </div>
@@ -203,8 +355,8 @@
 
                                     <div>
                                         <p>
-                                            <a
-                                                href="https://www.iulm.it/it/iulm/ateneo/docenti-e-collaboratori/giovannetti-paolo">Paolo
+                                            <a href="https://www.iulm.it/it/iulm/ateneo/docenti-e-collaboratori/giovannetti-paolo"
+                                                class="text-blue-600 underline hover:text-blue-800">Paolo
                                                 Giovannetti</a> (Milano 1958) è professore ordinario
                                             di
                                             Letteratura italiana
@@ -247,9 +399,10 @@
                                     </div>
 
                                     <div>
-                                        <p><a href="https://www.unibo.it/sitoweb/riccardo.gasperina">Riccardo
+                                        <p><a href="https://www.unibo.it/sitoweb/riccardo.gasperina"
+                                                class="text-blue-600 underline hover:text-blue-800">Riccardo
                                                 Gasperina
-                                                Geroni</a>&nbsp;insegna Letteratura italiana contemporanea,
+                                                Geroni</a> insegna Letteratura italiana contemporanea,
                                             presso l’Università di
                                             Bologna. I suoi interessi vertono principalmente sui rapporti
                                             che la
@@ -274,19 +427,20 @@
                                     </div>
 
                                     <div>
-                                        <p><a href="https://www.unibo.it/sitoweb/lavinia.torti2">Lavinia
-                                                Torti</a>&nbsp;è assegnista di
+                                        <p><a href="https://www.unibo.it/sitoweb/lavinia.torti2"
+                                                class="text-blue-600 underline hover:text-blue-800">Lavinia
+                                                Torti</a> è assegnista di
                                             ricerca presso l’Università di Bologna nell’ambito del PRIN
-                                            PNRR&nbsp;<em>For an Atlas of
+                                            PNRR <em>For an Atlas of
                                                 Italian Ecological Literature: From the Great Acceleration
                                                 to
                                                 the
-                                                Pandemic&nbsp;</em>(LEDA)<em>.&nbsp;</em>Ha insegnato Lingua
+                                                Pandemic </em>(LEDA)<em>. </em>Ha insegnato Lingua
                                             e
                                             Letteratura italiana
                                             contemporanea alla Sorbonne Université e ha svolto un assegno di
                                             ricerca presso l’Università
-                                            di Bologna nell’ambito del progetto&nbsp;<em>Silva.
+                                            di Bologna nell’ambito del progetto <em>Silva.
                                                 Sostenibilità in
                                                 Italia, tra
                                                 Letteratura, Visualità e Architettura</em>.
@@ -307,12 +461,13 @@
                                     </div>
 
                                     <div>
-                                        <p><a href="https://www.unibo.it/sitoweb/valentina.pasqual2">Valentina
+                                        <p><a href="https://www.unibo.it/sitoweb/valentina.pasqual2"
+                                                class="text-blue-600 underline hover:text-blue-800">Valentina
                                                 Pasqual</a> è assegnista
                                             di ricerca presso il Dipartimento di Filologia Classica e
                                             Italianistica (FICLIT), dove
-                                            attualmente lavora sulle applicazioni del&nbsp;<em>Semantic
-                                                Web&nbsp;</em>nel dominio dei
+                                            attualmente lavora sulle applicazioni del <em>Semantic
+                                                Web </em>nel dominio dei
                                             Beni Culturali. Nel contesto del progetto LEDA si occupa dello
                                             sviluppo dell’applicazione
                                             ospitante l’atlante digitale.
@@ -337,9 +492,9 @@
                                     </div>
 
                                     <div>
-                                        <p><a
-                                                href="https://www.dfclam.unisi.it/it/dipartimento/persone/docenti-ordinari-associati-ricercatori/scaffai-niccolo">Niccolò
-                                                Scaffai</a>&nbsp;è professore ordinario di Letteratura
+                                        <p><a href="https://www.dfclam.unisi.it/it/dipartimento/persone/docenti-ordinari-associati-ricercatori/scaffai-niccolo"
+                                                class="text-blue-600 underline hover:text-blue-800">Niccolò
+                                                Scaffai</a> è professore ordinario di Letteratura
                                             italiana
                                             contemporanea e
                                             vicedirettore del Dipartimento di Filologia e critica delle
@@ -402,20 +557,20 @@
                                     </div>
 
                                     <div>
-                                        <p><a
-                                                href="https://www.dfclam.unisi.it/it/dipartimento/persone/assegnisti-di-ricerca/tommasini-lorenzo">Lorenzo
-                                                Tommasini</a>&nbsp;è assegnista di ricerca presso
+                                        <p><a href="https://www.dfclam.unisi.it/it/dipartimento/persone/assegnisti-di-ricerca/tommasini-lorenzo"
+                                                class="text-blue-600 underline hover:text-blue-800">Lorenzo
+                                                Tommasini</a> è assegnista di ricerca presso
                                             l’Università
                                             di Siena nell’ambito del
-                                            PRIN PNRR&nbsp;<em>For an Atlas of Italian Ecological
+                                            PRIN PNRR <em>For an Atlas of Italian Ecological
                                                 Literature:
                                                 From the Great
-                                                Acceleration to the Pandemic&nbsp;</em>(LEDA). In precedenza
+                                                Acceleration to the Pandemic </em>(LEDA). In precedenza
                                             è
                                             stato assegnista di
                                             ricerca presso la Scuola Normale Superiore di Pisa nell’ambito
                                             del
-                                            progetto&nbsp;<em>Narrazioni dell’epidemia nella letteratura
+                                            progetto <em>Narrazioni dell’epidemia nella letteratura
                                                 italiana della modernità</em>.
                                         </p>
                                     </div>
@@ -458,7 +613,7 @@
                                             della collana Extrema Ratio (nottetempo); è inoltre Area Advisor
                                             per
                                             la sezione “Literature
-                                            and Media” dell’opera&nbsp;<em><a
+                                            and Media” dell’opera <em><a
                                                     href="https://www.oxfordbibliographies.com/page/Literary-and-Critical-Theory#editorialBoard">Oxford
                                                     Bibliographies</a></em>, Oxford University Press. È
                                             membro
@@ -472,14 +627,14 @@
                                         </p>
                                         <br>
                                         <p>Ha pubblicato cinque volumi (<em>L’innamoramento</em>, Laterza
-                                            2001;&nbsp;<em>Miti e riti del
-                                                moderno</em>, Le Monnier 2002;&nbsp;<em>Ascesa e declino
+                                            2001; <em>Miti e riti del
+                                                moderno</em>, Le Monnier 2002; <em>Ascesa e declino
                                                 dell’Uomo di lusso. Il romanzo
                                                 dell’intellettuale nella Nuova Italia e i suoi modelli
                                                 europei</em>, Le Monnier
-                                            2008;&nbsp;<em>Towards a Posthuman Imagination in Literature and
+                                            2008; <em>Towards a Posthuman Imagination in Literature and
                                                 Media</em>, Peter Lang
-                                            2019;&nbsp;<em>Creature. La costruzione dell’immaginario
+                                            2019; <em>Creature. La costruzione dell’immaginario
                                                 postumano</em>, Shake 2022) e
                                             numerosi saggi in volume o rivista sulla letteratura moderna e
                                             postmoderna e l’immaginario
@@ -491,6 +646,7 @@
                                 </div>
                             </div>
                         </div>
+                        <br><br>
 
                         <!-- Gradient fade indicator per mobile (indica che c'è più contenuto) -->
                         <div

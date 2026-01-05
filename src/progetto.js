@@ -5,8 +5,43 @@ import { UniversalFooter } from './navigation/universalFooter.js';
 import './styles/tailwind.css'
 import './styles/fonts.css'
 
+function arrToUl(root, arr, universalFooter) {
+    var ul = document.createElement('ul');
+    root.appendChild(document.createElement('br'));
+    root.appendChild(ul);
+
+    arr.forEach(function (item) {
+        var li = document.createElement('li');
+
+        // ---- description text ----
+        var desc = document.createElement('div');
+        desc.style.whiteSpace = 'pre-line'; // renders \n as line breaks
+        desc.appendChild(document.createTextNode(item.description));
+        li.appendChild(desc);
+
+        // ---- image under description ----
+        if (item.flyer_path) {
+            var img = document.createElement('img');
+            img.src = universalFooter.getRelativePath(item.flyer_path);
+            img.alt = 'Flyer image';
+            img.style.display = 'block'; // puts image on new line
+            img.style.marginTop = '8px';  // spacing under text
+            img.style.height = '200px';
+
+            var a = document.createElement('a');
+            a.href = item.flyer_path;
+            a.target = '_b';
+            a.appendChild(img);
+            li.appendChild(a);
+        }
+
+        ul.appendChild(li);
+    });
+}
+
+
 // Funzione per aggiornare i contenuti dinamicamente
-function updateProjectDescription(config) {
+function updateProjectDescription(config, universalFooter) {
     // Aggiorna i paragrafi della descrizione (codice esistente)
     const pubs = document.querySelector('[data-content="publications"]');
     if (pubs) {
@@ -24,8 +59,9 @@ function updateProjectDescription(config) {
     const evs = document.querySelector('[data-content="events"]');
     if (evs) {
         let events = config.events;
-        if (events.length > 0)
-            evs.innerHTML = "<br><br>" + events.join("<br><br>");
+        if (events.length > 0) {
+            arrToUl(evs, events, universalFooter)
+        }
         else
             evs.innerHTML = "<br><br>Non ci sono eventi previsti";
     }
@@ -54,7 +90,7 @@ async function initializeApp() {
         universalFooter.render();
 
         // Aggiorna la descrizione del progetto
-        updateProjectDescription(config);
+        updateProjectDescription(config, universalFooter);
 
     } catch (error) {
         console.error('Errore durante l\'inizializzazione dell\'app:', error);
@@ -77,16 +113,20 @@ document.addEventListener('DOMContentLoaded', () => {
     Array.from(expand_subdiv).forEach(header => {
         header.onclick = (e) => {
             // find the div you want to toggle
-            const div = e.target.classList[1];
+            const div = e.target.classList[0];
             if (!div) return;
 
             document.getElementById(div).style.display = document.getElementById(div).style.display == "block" ? "none" : "block"
-
-            // find chevron inside header
-            const chevron = header.querySelector('svg');
-            if (chevron) {
-                chevron.classList.toggle('rotate-180');
+            const arrow_val = document.getElementById(div + "_arrow").classList;
+            if (arrow_val.contains("fa-angle-down")) {
+                arrow_val.remove("fa-angle-down");
+                arrow_val.add("fa-angle-up");
             }
+            else {
+                arrow_val.remove("fa-angle-up");
+                arrow_val.add("fa-angle-down");
+            }
+
         };
     });
     const hash = window.location.hash;

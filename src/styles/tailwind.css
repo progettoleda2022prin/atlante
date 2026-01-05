@@ -50,6 +50,30 @@ figure {
 
 /* INDEX */
 
+.bg_image {
+  background-image: var(--bg-image);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+}
+
+.bg_image::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.bg_image .content {
+  position: relative;
+  z-index: 1;
+  color: white;
+}
+
 .scroll-arrow-container {
   position: fixed;
   z-index: 100;
@@ -521,6 +545,10 @@ input[type="checkbox"].form-checkbox:indeterminate::after {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+
+  .bg_image{
+    background-image: none;
+  }
 
   #facets-container,
   #results-panel {
