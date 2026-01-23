@@ -37,7 +37,7 @@ export class StateManager {
   }
 
   updateFilters(facetType, faceValue, checked, subFilterKey = null, subFilterValue = null) {
-    console.log(`Updating filter: ${facetType}, value: ${value}, checked: ${checked}`);
+    console.log(`Updating filter: ${facetType}, value: ${faceValue}, checked: ${checked}`);
 
     if (checked) {
       const filters = [

@@ -126,6 +126,7 @@ export class ResultsRenderer {
     <div class="flex items-start justify-between gap-4 mb-4">
       <div class="min-w-0 flex-1">
         <h1 class="text-xl font-bold text-gray-900 leading-tight">${work.Title}</h1>
+        ${work.Collection ? `<div class="flex items-center gap-4 mt-2"><p class="text-lg text-gray-700 font-medium truncate">Incluso in: ${work.Collection}</p></div>` : ''}
         <div class="flex items-center gap-4 mt-2">
           ${work.Author ? `<p class="text-lg text-gray-700 font-medium truncate">${work.Author}</p>` : ''}
           ${work.Author && work.PublicationYear ? `<span class="w-1.5 h-1.5 bg-gray-400 rounded-full flex-shrink-0"></span>` : ''}

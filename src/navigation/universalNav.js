@@ -9,6 +9,10 @@ export class UniversalNav {
         this.header = null;
         this.isScrolling = false;
         this.scrollThreshold = 100; // Pixel di scroll prima che diventi overlay
+        document.documentElement.style.setProperty(
+            '--bg-image',
+            `url(${import.meta.env.VITE_IMG_PATH})`
+        );
     }
 
     // Normalizza il path considerando che "/base/" equivale a "/base/index.html"
@@ -53,7 +57,7 @@ export class UniversalNav {
             { text: 'Mappa', path: 'pages/mappa.html' },
             { text: 'Indici', path: 'pages/indici.html' },
             { text: 'Percorsi critici', path: 'pages/percorsi.html' },
-            { text: 'Progetto', path: 'pages/progetto.html' },
+            { text: 'Progetto', path: 'pages/progetto.html', separate: true },
         ];
 
         const navHTML = this.generateNavHTML(navItems);
@@ -98,6 +102,7 @@ export class UniversalNav {
             const href = isExternal ? item.path : this.getRelativePath(item.path);
             const target = isExternal ? 'target="_blank" rel="noopener noreferrer"' : '';
             const isActive = !isExternal && this.isActivePath(item.path);
+            const isSeparate = "separate" in item ? item.separate : false
 
             let linkClass, linkContent;
 
@@ -109,7 +114,12 @@ export class UniversalNav {
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                     </svg>
                 `;
-            } else {
+            } else if (isSeparate) {
+                const activeClass = isActive ? 'text-primary-900 border-primary-600 pb-1' : 'text-gray-400 hover:text-primary-600';
+                linkClass = `nav-link ${activeClass} font-medium transition duration-200 ml-8 pl-8 border-l-2 border-gray-200`;
+                linkContent = item.text;
+            }
+            else {
                 const activeClass = isActive ? 'text-primary-900 border-b-2 border-primary-600 pb-1' : 'text-gray-600 hover:text-primary-600';
                 linkClass = `nav-link ${activeClass} font-medium transition duration-200`;
                 linkContent = item.text;
@@ -125,7 +135,7 @@ export class UniversalNav {
             const href = isExternal ? item.path : this.getRelativePath(item.path);
             const target = isExternal ? 'target="_blank" rel="noopener noreferrer"' : '';
             const isActive = !isExternal && this.isActivePath(item.path);
-
+            const isSeparate = "separate" in item ? item.separate : false
             let linkClass, linkContent;
 
             if (isExternal) {
@@ -136,7 +146,12 @@ export class UniversalNav {
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                     </svg>
                 `;
-            } else {
+            } else if (isSeparate) {
+                const activeClass = isActive ? 'text-primary-900 bg-primary-50 font-medium' : 'text-gray-400 hover:text-primary-600 hover:bg-gray-50';
+                linkClass = `block px-4 py-3 ${activeClass} transition duration-200 border-t-2 border-gray-200`;
+                linkContent = item.text;
+            }
+            else {
                 const activeClass = isActive ? 'text-primary-900 bg-primary-50 font-medium' : 'text-gray-600 hover:text-primary-600 hover:bg-gray-50';
                 linkClass = `block px-4 py-3 ${activeClass} transition duration-200`;
                 linkContent = item.text;

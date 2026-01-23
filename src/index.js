@@ -87,27 +87,26 @@ function initializeScrollytelling() {
   const sections = document.querySelectorAll('.section-fullscreen[data-section-id]');
   const indicators = document.querySelectorAll('.indicator');
   const navLinks = document.querySelectorAll('.nav-link');
-  const sectionButtons = document.querySelectorAll('.section-btn');
+  // const sectionButtons = document.querySelectorAll('.section-btn');
 
   let currentSection = 0;
   let isScrolling = false;
   let isManualScroll = false;
 
-  sectionButtons.forEach((button) => {
-    button.addEventListener('click', (e) => {
-      e.preventDefault(); // Previene comportamenti di default
+  // sectionButtons.forEach((button) => {
+  //   button.addEventListener('click', (e) => {
+  //     e.preventDefault(); // Previene comportamenti di default
 
-      const targetSection = parseInt(button.getAttribute('data-section'));
-
-      // Verifica che la sezione target sia valida
-      if (!isNaN(targetSection) && targetSection >= 0 && targetSection < sections.length) {
-        console.log(`Navigazione verso sezione ${targetSection} tramite bottone`);
-        goToSection(targetSection);
-      } else {
-        console.warn(`Sezione target non valida: ${targetSection}`);
-      }
-    });
-  });
+  //     const targetSection = parseInt(button.getAttribute('data-section'));
+  //     // Verifica che la sezione target sia valida
+  //     if (!isNaN(targetSection) && targetSection >= 0 && targetSection < sections.length) {
+  //       console.log(`Navigazione verso sezione ${targetSection} tramite bottone`);
+  //       goToSection(targetSection);
+  //     } else {
+  //       console.warn(`Sezione target non valida: ${targetSection}`);
+  //     }
+  //   });
+  // });
 
   function ensureContainerHeight() {
     if (sectionsContainer) {
@@ -142,7 +141,7 @@ function initializeScrollytelling() {
   }
 
   // Funzione per navigare a una sezione specifica
-  function goToSection(sectionIndex) {
+  function goToSection(sectionIndex, skip_scroll = false) {
     if (sectionIndex < 0 || sectionIndex >= sections.length || isScrolling) return;
     if (sectionIndex == sections.length - 1)
       scrollArrow.classList.remove("active")
@@ -155,23 +154,25 @@ function initializeScrollytelling() {
     // Scroll alla sezione con calcolo preciso
     const targetSection = sections[sectionIndex];
     const headerHeight = 80; // Altezza header fisso
-
-    sectionsContainer.scrollTo({
-      top: targetSection.offsetTop - headerHeight,
-      behavior: 'smooth'
-    });
+    if (!skip_scroll)
+      sectionsContainer.scrollTo({
+        top: targetSection.offsetTop - headerHeight,
+        behavior: 'smooth'
+      });
 
     // Aggiorna indicatori e navigazione
     updateIndicators();
     updateNavigation();
 
     // Reset dei flag dopo l'animazione
-    setTimeout(() => {
-      isScrolling = false;
-      setTimeout(() => {
-        isManualScroll = false;
-      }, 50);
-    }, 600);
+    isScrolling = false;
+    isManualScroll = false;
+    // setTimeout(() => {
+    //   isScrolling = false;
+    //   setTimeout(() => {
+    //     isManualScroll = false;
+    //   }, 50);
+    // }, 600);
   }
 
   // Aggiorna gli indicatori attivi
@@ -201,7 +202,8 @@ function initializeScrollytelling() {
 
   // Event listeners per gli indicatori
   indicators.forEach((indicator, index) => {
-    indicator.addEventListener('click', () => {
+    indicator.addEventListener('click', (e) => {
+      e.preventDefault();
       goToSection(index);
     });
   });
@@ -272,70 +274,70 @@ function initializeScrollytelling() {
     }
   });
 
-  // FIX: Detecta la sezione attuale durante lo scroll manuale (MIGLIORATA)
-  let scrollDetectionTimeout;
-  sectionsContainer.addEventListener('scroll', () => {
+  // For smartphone
+  // Works a bit differently from others, other first update indicator then move
+  // Here is os that moves and a timer update the indicator
+  // Maybe there's a better way tho
+  sectionsContainer.addEventListener('touchend', (e) => {
     // Solo se non è uno scroll programmatico
     if (isScrolling || isManualScroll) return;
+    setTimeout(() => {
 
-    clearTimeout(scrollDetectionTimeout);
-    scrollDetectionTimeout = setTimeout(() => {
-      const scrollTop = sectionsContainer.scrollTop + 80;
-      let newSection = currentSection;
-
-      // Trova la sezione più vicina al centro dello schermo
+      const viewportCenter = sectionsContainer.scrollTop + (window.innerHeight / 2);
+      let detectedSection = currentSection;
       let minDistance = Infinity;
+
       sections.forEach((section, index) => {
-        const sectionCenter = section.offsetTop - 80 + (section.offsetHeight / 2);
-        const distance = Math.abs(scrollTop + (window.innerHeight / 2) - sectionCenter);
+        const sectionCenter = section.offsetTop + (section.offsetHeight / 2);
+        const distance = Math.abs(viewportCenter - sectionCenter);
 
         if (distance < minDistance) {
           minDistance = distance;
-          newSection = index;
+          detectedSection = index;
         }
       });
 
-      if (currentSection !== newSection) {
-        currentSection = newSection;
-        updateIndicators();
-        updateNavigation();
+      // Only trigger goToSection when the section actually changes
+      if (detectedSection !== currentSection) {
+        currentSection = detectedSection;
+        goToSection(detectedSection, true);
       }
-    }, 50);
+    }, 200);
   });
 
   // FIX: Gestione del tocco per dispositivi mobili (MIGLIORATA)
-  let touchStartY = 0;
-  let touchEndY = 0;
-  let touchStartTime = 0;
+  // let touchStartY = 0;
+  // let touchEndY = 0;
+  // let touchStartTime = 0;
 
-  sectionsContainer.addEventListener('touchstart', (e) => {
-    touchStartY = e.touches[0].clientY;
-    touchStartTime = Date.now();
-  }, { passive: true });
+  // sectionsContainer.addEventListener('touchstart', (e) => {
+  //   touchStartY = e.touches[0].clientY;
+  //   touchStartTime = Date.now();
+  // }, { passive: true });
 
-  sectionsContainer.addEventListener('touchend', (e) => {
-    if (isScrolling || isManualScroll) return;
+  // sectionsContainer.addEventListener('touchend', (e) => {
+  //   if (isScrolling || isManualScroll) return;
 
-    const touchEndTime = Date.now();
-    const touchDuration = touchEndTime - touchStartTime;
+  //   const touchEndTime = Date.now();
+  //   const touchDuration = touchEndTime - touchStartTime;
 
-    // Ignora tocchi troppo lunghi (probabilmente scroll normale)
-    if (touchDuration > 300) return;
+  //   // Ignora tocchi troppo lunghi (probabilmente scroll normale)
+  //   if (touchDuration > 300) return;
 
-    touchEndY = e.changedTouches[0].clientY;
-    const touchDiff = touchStartY - touchEndY;
+  //   touchEndY = e.changedTouches[0].clientY;
+  //   const touchDiff = touchStartY - touchEndY;
 
-    // Minimo movimento per attivare il cambio sezione
-    if (Math.abs(touchDiff) > 80) {
-      if (touchDiff > 0 && currentSection < sections.length - 1) {
-        // Swipe verso l'alto - vai alla sezione successiva
-        goToSection(currentSection + 1);
-      } else if (touchDiff < 0 && currentSection > 0) {
-        // Swipe verso il basso - vai alla sezione precedente
-        goToSection(currentSection - 1);
-      }
-    }
-  }, { passive: true });
+  // Minimo movimento per attivare il cambio sezione
+  // if (Math.abs(touchDiff) > 80) {
+  //   if (touchDiff > 0 && currentSection < sections.length - 1) {
+  //     // Swipe verso l'alto - vai alla sezione successiva
+  //     goToSection(currentSection + 1);
+  //   } else if (touchDiff < 0 && currentSection > 0) {
+  //     // Swipe verso il basso - vai alla sezione precedente
+  //     goToSection(currentSection - 1);
+  //   }
+  // }
+  // }, { passive: true });
 
   // FIX: Gestione del resize della finestra
   window.addEventListener('resize', () => {
@@ -538,11 +540,6 @@ async function initializeApp() {
     const universalFooter = new UniversalFooter(config);
     universalFooter.render();
 
-    document.documentElement.style.setProperty(
-      '--bg-image',
-      `url(${import.meta.env.VITE_IMG_PATH})`
-    );
-
     // Aggiorna la descrizione del progetto
     updateProjectDescription(config);
 
@@ -550,11 +547,11 @@ async function initializeApp() {
     await initializeIndexPreview(config);
 
     // Carica e processa i dati
-    const data = await parseData();
-    console.log('Dati caricati:', data);
+    // const data = await parseData();
+    // console.log('Dati caricati:', data);
 
     // Inizializza la mappa
-    await initializeMap(config, data);
+    // await initializeMap(config, data);
 
     // FIX: Inizializza lo scrollytelling dopo che tutto è caricato
     setTimeout(() => {

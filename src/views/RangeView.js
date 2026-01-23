@@ -1,18 +1,15 @@
 // views/RangeView.js
 import * as d3 from "d3";
-import { ViewComponents } from '../utils/ViewComponents.js';
+import { ViewComponents } from './ViewComponents.js';
 import { createMapUrlWithFilter } from '../utils/urlHelper.js';
 
 const base = import.meta.env.BASE_URL;
 
-export class RangeView {
+export class RangeView extends ViewComponents {
   constructor(data, indexKey, indexInfo) {
-    this.data = data;
-    this.indexKey = indexKey;
-    this.indexInfo = indexInfo || {};
+    super(data, indexKey, indexInfo);
     this.rangeData = this.buildRangeData(data, indexKey);
     this.activeTab = 'range-list';
-    this.currentSearchTerm = '';
     this.expandedItems = new Set();
     this.selectedRange = null;
   }
@@ -110,79 +107,6 @@ export class RangeView {
   // COMPONENTI SIDEBAR
   // ===============================
 
-  generateHeader() {
-    const header = document.createElement('div');
-    header.className = 'mb-6';
-    header.innerHTML = `
-      <span class="font-medium border-b-2 border-primary-600 pb-1">${this.indexInfo.category || 'Range Numerici'}</span>
-      <h1 class="text-3xl font-bold text-slate-800 my-2">Indice: <span class="text-secondary-700">${this.indexInfo.name || this.indexKey}</span></h1>
-    `;
-    return header;
-  }
-
-  generateSearchBar() {
-    const container = document.createElement('div');
-    container.className = 'mb-6';
-
-    const input = document.createElement('input');
-    input.placeholder = 'Cerca valore numerico...';
-    input.className = 'w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500';
-
-    let timeout;
-    input.addEventListener('input', (e) => {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => this.filterBySearch(e.target.value), 300);
-    });
-
-    container.appendChild(input);
-    return container;
-  }
-
-  generateTabsMenu() {
-    const container = document.createElement('div');
-    container.className = 'mb-6';
-
-    const title = document.createElement('h3');
-    title.className = 'text-sm font-medium text-slate-700 mb-2';
-    title.textContent = 'Visualizzazione';
-
-    const buttons = document.createElement('div');
-    buttons.className = 'flex flex-col gap-2';
-
-    const tabs = [
-      { id: 'range-list', label: 'Lista degli intervalli', icon: '📋' },
-      { id: 'timeline', label: 'Grafico di andamento', icon: '📊' },
-      { id: 'histogram', label: 'Istogramma', icon: '📈' },
-    ];
-
-    const tabButtons = [];
-
-    tabs.forEach(tab => {
-      const button = ViewComponents.createTabButton(
-        tab.label,
-        tab.icon,
-        this.activeTab === tab.id,
-        () => {
-          this.switchTab(tab.id);
-          this.setActiveButton(button, tabButtons);
-        }
-      );
-      tabButtons.push(button);
-      buttons.appendChild(button);
-    });
-
-    container.appendChild(title);
-    container.appendChild(buttons);
-    return container;
-  }
-
-  setActiveButton(activeButton, allButtons) {
-    allButtons.forEach(btn => {
-      btn.className = 'flex items-center gap-2 w-full px-3 py-2 text-sm bg-slate-200 text-slate-700 rounded hover:bg-slate-300';
-    });
-    activeButton.className = 'flex items-center gap-2 w-full px-3 py-2 text-sm bg-primary-600 text-white rounded hover:bg-primary-700';
-  }
-
   generateRangeInfo() {
     const info = document.createElement('div');
     info.className = 'mb-6 p-4 bg-slate-50 rounded-lg';
@@ -258,8 +182,12 @@ export class RangeView {
       sidebarContent.innerHTML = '';
 
       const sidebarComponents = [
-        this.generateHeader(),
-        this.generateTabsMenu(),
+        this.generateHeader('Range Numerici'),
+        this.generateTabsMenu([
+          { id: 'range-list', label: 'Lista degli intervalli', icon: '📋' },
+          { id: 'timeline', label: 'Grafico di andamento', icon: '📊' },
+          { id: 'histogram', label: 'Istogramma', icon: '📈' },
+        ]),
         this.generateRangeInfo(),
       ];
 
@@ -302,7 +230,7 @@ export class RangeView {
 
   renderRangeList(container) {
     if (!this.rangeData.buckets || Object.keys(this.rangeData.buckets).length === 0) {
-      container.appendChild(ViewComponents.createEmptyState('Nessun dato numerico disponibile'));
+      container.appendChild(this.createEmptyState('Nessun dato numerico disponibile'));
       return;
     }
 
@@ -314,7 +242,7 @@ export class RangeView {
       .sort((a, b) => a.start - b.start);
 
     bucketArray.forEach((bucket, index) => {
-      const accordionItem = ViewComponents.createAccordionItem({
+      const accordionItem = this.createAccordionItem({
         id: `range-accordion-${index}`,
         title: bucket.key,
         subtitle: null,
@@ -410,7 +338,7 @@ export class RangeView {
         // Quantity badge
         const qtyCell = document.createElement("div");
         qtyCell.className = "w-12 flex-shrink-0 text-center";
-        qtyCell.appendChild(ViewComponents.createCountBadge(items.length, 'text-xs px-2 py-0.5'));
+        qtyCell.appendChild(this.createCountBadge(items.length, 'text-xs px-2 py-0.5'));
 
         // Bottone azione
         const actionCell = document.createElement("div");
@@ -635,8 +563,12 @@ export class RangeView {
   generateViewComponents() {
     return {
       sidebar: [
-        this.generateHeader(),
-        this.generateTabsMenu(),
+        this.generateHeader('Range Numerici'),
+        this.generateTabsMenu([
+          { id: 'range-list', label: 'Lista degli intervalli', icon: '📋' },
+          { id: 'timeline', label: 'Grafico di andamento', icon: '📊' },
+          { id: 'histogram', label: 'Istogramma', icon: '📈' },
+        ]),
         this.generateRangeInfo(),
       ],
       content: [

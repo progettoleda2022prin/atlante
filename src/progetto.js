@@ -5,37 +5,34 @@ import { UniversalFooter } from './navigation/universalFooter.js';
 import './styles/tailwind.css'
 import './styles/fonts.css'
 
-function arrToUl(root, arr, universalFooter) {
-    var ul = document.createElement('ul');
-    root.appendChild(document.createElement('br'));
-    root.appendChild(ul);
+function createEventsWFlyer(root, arr, universalFooter) {
+    var eventsDiv = document.createElement('div');
+    eventsDiv.className = "grid lg:grid-cols-2 gap-6 lg:gap-16 items-center w-full"
+    root.appendChild(eventsDiv);
 
     arr.forEach(function (item) {
-        var li = document.createElement('li');
 
         // ---- description text ----
         var desc = document.createElement('div');
         desc.style.whiteSpace = 'pre-line'; // renders \n as line breaks
-        desc.appendChild(document.createTextNode(item.description));
-        li.appendChild(desc);
-
+        desc.innerHTML = item.description;
+        eventsDiv.appendChild(desc);
         // ---- image under description ----
         if (item.flyer_path) {
             var img = document.createElement('img');
             img.src = universalFooter.getRelativePath(item.flyer_path);
             img.alt = 'Flyer image';
             img.style.display = 'block'; // puts image on new line
-            img.style.marginTop = '8px';  // spacing under text
             img.style.height = '200px';
+            img.style.width = 'auto';
+            img.className ="mx-auto object-cover"
 
             var a = document.createElement('a');
-            a.href = item.flyer_path;
+            a.href = universalFooter.getRelativePath(item.flyer_path);
             a.target = '_b';
             a.appendChild(img);
-            li.appendChild(a);
+            eventsDiv.appendChild(a);
         }
-
-        ul.appendChild(li);
     });
 }
 
@@ -60,7 +57,7 @@ function updateProjectDescription(config, universalFooter) {
     if (evs) {
         let events = config.events;
         if (events.length > 0) {
-            arrToUl(evs, events, universalFooter)
+            createEventsWFlyer(evs, events, universalFooter)
         }
         else
             evs.innerHTML = "<br><br>Non ci sono eventi previsti";

@@ -1,15 +1,62 @@
 // utils/ViewComponents.js
-import { createMapUrlWithFilter } from './urlHelper.js';
+import { createMapUrlWithFilter } from '../utils/urlHelper.js';
 
 /**
  * Componenti UI riutilizzabili per le viste
  */
 export class ViewComponents {
+  constructor(data, indexKey, indexInfo) {
+    this.data = data;
+    this.indexKey = indexKey;
+    this.indexInfo = indexInfo || {};
+    this.currentSearchTerm = '';
+  }
+
+  generateHeader(name) {
+    const header = document.createElement('div');
+    header.className = 'mb-6';
+    header.innerHTML = `
+      <span class="font-medium border-b-2 border-primary-600 pb-1">${this.indexInfo.category || name}</span>
+      <h1 class="text-3xl font-bold text-slate-800 my-2">Indice: <span class="text-secondary-700">${this.indexInfo.name || this.indexKey}</span></h1>
+    `;
+    return header;
+  }
+  generateTabsMenu(tabs) {
+    const container = document.createElement('div');
+    container.className = 'mb-6';
+
+    const title = document.createElement('h3');
+    title.className = 'text-sm font-medium text-slate-700 mb-2';
+    title.textContent = 'Visualizzazione';
+
+    const buttons = document.createElement('div');
+    buttons.className = 'flex flex-col gap-2';
+
+    const tabButtons = [];
+
+    tabs.forEach(tab => {
+      const button = this.createTabButton(
+        tab.label,
+        tab.icon,
+        this.activeTab === tab.id,
+        () => {
+          this.switchTab(tab.id);
+          this.setActiveButton(button, tabButtons);
+        }
+      );
+      tabButtons.push(button);
+      buttons.appendChild(button);
+    });
+
+    container.appendChild(title);
+    container.appendChild(buttons);
+    return container;
+  }
 
   /**
    * Crea un badge con conteggio
    */
-  static createCountBadge(count, className = '') {
+  createCountBadge(count, className = '') {
     const badge = document.createElement('span');
     badge.className = `text-secondary-500 bg-secondary-100 px-3 py-1 rounded-full text-sm font-medium ${className}`;
     badge.textContent = count.toString();
@@ -18,7 +65,7 @@ export class ViewComponents {
   // Group items by location
   // Should probably have a parent class for SimpleView, TaxonomyView with inheritance
   // but too long to change everything
-  static groupItemsByLocation(items) {
+  groupItemsByLocation(items) {
     return items.reduce((acc, item) => {
       const location = item.Location || 'Non specificato';
 
@@ -34,7 +81,7 @@ export class ViewComponents {
   /**
    * Crea un'icona chevron per accordion
    */
-  static createChevron(isExpanded = false) {
+  createChevron(isExpanded = false) {
     const chevron = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     chevron.setAttribute('class', `w-5 h-5 text-slate-400 transform transition-transform ${isExpanded ? 'rotate-180' : ''}`);
     chevron.setAttribute('fill', 'none');
@@ -47,7 +94,7 @@ export class ViewComponents {
   /**
    * Create show work button (like in map)
    */
-  static createWorkButton(showWorkModal, showWorkIndex) {
+  createWorkButton(showWorkModal, showWorkIndex) {
     const button = document.createElement('button');
     button.className = 'modal-toggle-btn inline-flex items-center px-4 py-2 rounded-full shadow-md hover:shadow-lg transition-all duration-200 flex-shrink-0 bg-primary-500 hover:bg-primary-600 text-white';
     button.innerHTML = `
@@ -66,7 +113,7 @@ export class ViewComponents {
   /**
    * Crea il bottone mappa
    */
-  static createMapButton(indexKey, filterValue, onClick = null) {
+  createMapButton(indexKey, filterValue, onClick = null) {
     const button = document.createElement('button');
     button.className = 'p-2 text-secondary-600 hover:text-secondary-700 hover:bg-secondary-50 rounded';
     button.innerHTML = `
@@ -89,7 +136,7 @@ export class ViewComponents {
   /**
    * Crea l'header di un accordion item
    */
-  static createAccordionHeader(config) {
+  createAccordionHeader(config) {
     const {
       title,
       subtitle = null,
@@ -162,7 +209,7 @@ export class ViewComponents {
   /**
    * Crea un accordion item completo
    */
-  static createAccordionItem(config) {
+  createAccordionItem(config) {
     const {
       id,
       title,
@@ -215,7 +262,7 @@ export class ViewComponents {
   /**
    * Crea un bottone tab
    */
-  static createTabButton(text, icon, isActive, onClick) {
+  createTabButton(text, icon, isActive, onClick) {
     const button = document.createElement('button');
     button.className = isActive
       ? 'flex items-center gap-2 w-full px-3 py-2 text-sm bg-primary-600 text-white rounded hover:bg-primary-700'
@@ -228,7 +275,7 @@ export class ViewComponents {
   /**
    * Crea un container vuoto per "nessun risultato"
    */
-  static createEmptyState(message = 'Nessun risultato trovato') {
+  createEmptyState(message = 'Nessun risultato trovato') {
     const wrapper = document.createElement('div');
     wrapper.className = 'bg-white rounded-lg shadow-sm';
     wrapper.innerHTML = `

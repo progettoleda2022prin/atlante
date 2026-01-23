@@ -49,30 +49,38 @@ figure {
 }
 
 /* INDEX */
-
+.bg_image_absolute,
 .bg_image {
   background-image: var(--bg-image);
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
-  background-position: center;
+  background-position: bottom;
+  position: relative;
 }
 
-.bg_image::before {
+.bg_image_absolute::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(255, 255, 255, 0.85);
+  z-index: -10;
 }
 
-.bg_image .content {
-  position: relative;
-  z-index: 1;
-  color: white;
+.bg_image::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.85);
+  z-index: -10;
 }
+
 
 .scroll-arrow-container {
   position: fixed;
@@ -194,18 +202,16 @@ body#map-page #map {
   transform: translateX(0%) !important;
 }
 
+.left_margin {
+  margin-left: 8rem;
+}
+
 /* Facets and Results */
 #results-panel {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  max-width: 20%;
-}
-
-#facets-container {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  max-width: 15rem;
 }
 
 .facet-hidden {
@@ -214,7 +220,7 @@ body#map-page #map {
 
 #filters-panel {
   overflow: scroll;
-  max-width: 20%;
+  max-width: 15rem;
 }
 
 .facet-category,
@@ -542,13 +548,13 @@ input[type="checkbox"].form-checkbox:indeterminate::after {
   background: linear-gradient(to bottom, #64748b, #475569);
 }
 
+.leaflet-control-zoom {
+  margin-bottom: 6vh !important;
+  margin-right: 35vh !important;
+}
 
 /* Responsive Design */
 @media (max-width: 768px) {
-
-  .bg_image{
-    background-image: none;
-  }
 
   #facets-container,
   #results-panel {
@@ -570,6 +576,11 @@ input[type="checkbox"].form-checkbox:indeterminate::after {
   .facet-category-content .facet-group,
   .result-card {
     padding: 0.625rem;
+  }
+
+  .leaflet-control-zoom {
+    margin-bottom: 7vh !important;
+    margin-right: 3vh !important;
   }
 }
 
@@ -928,10 +939,10 @@ header {
   @apply bg-primary-400;
 }
 
-.indicator:hover {
+/* .indicator:hover {
   background-color: var(--primary-400);
   @apply bg-secondary-400;
-}
+} */
 
 /* Animazione pulse esistente */
 .pulse-animation {
@@ -977,6 +988,10 @@ header {
 
   .sections-container {
     height: calc(100dvh - 80px);
+  }
+
+  .left_margin {
+    margin-left: 0;
   }
 }
 

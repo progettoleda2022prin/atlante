@@ -46,7 +46,7 @@ class IndexPageManager {
     // Colonna sinistra (sidebar) - FISSA su desktop, scrollabile su mobile
     const sidebar = document.createElement('div');
     sidebar.className = `
-      w-full lg:w-1/3 bg-white 
+      w-full lg:w-1/3 bg-white bg_image_absolute relative z-10
       lg:fixed lg:top-20 lg:left-0 lg:h-[calc(100vh-5rem)] lg:flex lg:flex-col lg:justify-center 
       p-6 lg:overflow-hidden
       order-1 lg:order-1
@@ -182,7 +182,7 @@ class IndexPageManager {
           await this.currentView.loadContent();
           break;
         case 'taxonomy':
-          this.currentView = new TaxonomyView(data, indexKey, this.indexInfo);
+          this.currentView = new TaxonomyView(data, indexKey, this.indexInfo, this.showLocationsIndices.includes(indexKey), this.showWorkIndices.includes(indexKey));
           break;
         case 'range':
           this.currentView = new RangeView(data, indexKey, this.indexInfo);

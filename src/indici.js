@@ -37,7 +37,8 @@ function generateIndexCards(config) {
     }, {});
 
     const container = document.createElement('div');
-    container.className = 'min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50 py-12';
+    container.className = 'min-h-screen';
+    container.style.marginTop = "6em";
 
     const mainContent = document.createElement('div');
     mainContent.className = 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8';
@@ -98,6 +99,7 @@ function createAggregationCard(aggregation, index) {
     let buttonHoverBg = 'hover:bg-gradient-to-r hover:from-white hover:to-primary-200';
 
     switch (aggregation.type) {
+        case 'taxonomy':
         case 'simple':
             headerBgClass = 'bg-gradient-to-r from-primary-600 to-primary-800';
             buttonTextColor = 'text-primary-600';
@@ -108,11 +110,11 @@ function createAggregationCard(aggregation, index) {
             buttonTextColor = 'text-primary-600';
             buttonHoverBg = 'hover:bg-gradient-to-r hover:from-white hover:to-secondary-200';
             break;
-        case 'taxonomy':
-            headerBgClass = 'bg-gradient-to-r from-primary-600 to-primary-800';
-            buttonTextColor = 'text-primary-600';
-            buttonHoverBg = 'hover:bg-gradient-to-r hover:from-white hover:to-accent-200';
-            break;
+        // case 'taxonomy':
+        //     headerBgClass = 'bg-gradient-to-r from-primary-600 to-primary-800';
+        //     buttonTextColor = 'text-primary-600';
+        //     buttonHoverBg = 'hover:bg-gradient-to-r hover:from-white hover:to-accent-200';
+        //     break;
     }
 
     const card = document.createElement('div');
@@ -130,6 +132,7 @@ function createAggregationCard(aggregation, index) {
 
     let svgContent = '';
     switch (aggregation.type) {
+        case 'taxonomy':
         case 'simple':
             svgContent = `
                 <svg viewBox="0 0 100 100" class="w-20 h-20 text-white">
@@ -157,26 +160,26 @@ function createAggregationCard(aggregation, index) {
                 </svg>
             `;
             break;
-        case 'taxonomy':
-            svgContent = `
-                <svg viewBox="0 0 100 100" class="w-20 h-20 text-white">
-                    <circle cx="50" cy="20" r="8" fill="currentColor"/>
-                    <line x1="50" y1="28" x2="50" y2="40" stroke="currentColor" stroke-width="3"/>
-                    <line x1="30" y1="40" x2="70" y2="40" stroke="currentColor" stroke-width="3"/>
-                    <line x1="30" y1="40" x2="30" y2="50" stroke="currentColor" stroke-width="3"/>
-                    <line x1="70" y1="40" x2="70" y2="50" stroke="currentColor" stroke-width="3"/>
-                    <circle cx="30" cy="55" r="6" fill="currentColor"/>
-                    <circle cx="70" cy="55" r="6" fill="currentColor"/>
-                    <line x1="30" y1="61" x2="30" y2="70" stroke="currentColor" stroke-width="2"/>
-                    <line x1="70" y1="61" x2="70" y2="70" stroke="currentColor" stroke-width="2"/>
-                    <line x1="20" y1="70" x2="80" y2="70" stroke="currentColor" stroke-width="2"/>
-                    <circle cx="20" cy="75" r="4" fill="currentColor"/>
-                    <circle cx="40" cy="75" r="4" fill="currentColor"/>
-                    <circle cx="60" cy="75" r="4" fill="currentColor"/>
-                    <circle cx="80" cy="75" r="4" fill="currentColor"/>
-                </svg>
-            `;
-            break;
+        // case 'taxonomy':
+        //     svgContent = `
+        //         <svg viewBox="0 0 100 100" class="w-20 h-20 text-white">
+        //             <circle cx="50" cy="20" r="8" fill="currentColor"/>
+        //             <line x1="50" y1="28" x2="50" y2="40" stroke="currentColor" stroke-width="3"/>
+        //             <line x1="30" y1="40" x2="70" y2="40" stroke="currentColor" stroke-width="3"/>
+        //             <line x1="30" y1="40" x2="30" y2="50" stroke="currentColor" stroke-width="3"/>
+        //             <line x1="70" y1="40" x2="70" y2="50" stroke="currentColor" stroke-width="3"/>
+        //             <circle cx="30" cy="55" r="6" fill="currentColor"/>
+        //             <circle cx="70" cy="55" r="6" fill="currentColor"/>
+        //             <line x1="30" y1="61" x2="30" y2="70" stroke="currentColor" stroke-width="2"/>
+        //             <line x1="70" y1="61" x2="70" y2="70" stroke="currentColor" stroke-width="2"/>
+        //             <line x1="20" y1="70" x2="80" y2="70" stroke="currentColor" stroke-width="2"/>
+        //             <circle cx="20" cy="75" r="4" fill="currentColor"/>
+        //             <circle cx="40" cy="75" r="4" fill="currentColor"/>
+        //             <circle cx="60" cy="75" r="4" fill="currentColor"/>
+        //             <circle cx="80" cy="75" r="4" fill="currentColor"/>
+        //         </svg>
+        //     `;
+        //     break;
         default:
             svgContent = `
                 <svg viewBox="0 0 100 100" class="w-20 h-20 text-white">
@@ -205,7 +208,7 @@ function createAggregationCard(aggregation, index) {
 
     // Footer con pulsante
     const footer = document.createElement('div');
-    footer.className = 'bg-gray-50 px-4 py-3 border-t border-gray-200 flex justify-end';
+    footer.className = 'px-4 py-3 border-t border-gray-200 flex justify-end';
 
     const link = document.createElement('a');
     const encodedIndex = encodeURIComponent(aggregation.name);

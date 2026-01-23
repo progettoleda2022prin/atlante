@@ -34,7 +34,7 @@ export class SearchCoordinator {
 
       if (itemsCount > 0 && callbacks.onBoundsCalculated) {
 
-        const bounds = this.calculateBounds(results.items);
+        const bounds = this.calculateBounds(results.items, state.filters.Location);
 
         if (bounds) {
           callbacks.onBoundsCalculated(bounds);
@@ -49,7 +49,7 @@ export class SearchCoordinator {
     }
   }
 
-  calculateBounds(items) {
+  calculateBounds(items, locations_to_filter) {
 
     if (!items || !Array.isArray(items) || items.length === 0) {
       console.warn('⚠️ No items to calculate bounds');
@@ -63,7 +63,11 @@ export class SearchCoordinator {
     let hasValidCoordinates = false;
     let coordsFoundCount = 0;
 
-    items.forEach((item, index) => {
+    for (const item of items) {
+      if (locations_to_filter.length > 0 && !locations_to_filter.includes(item.Location)) {
+        continue;
+      }
+
       let lat, lng;
 
       // First, try to get from lat_long field (format: "lat,lng")
@@ -109,7 +113,7 @@ export class SearchCoordinator {
           coordsFoundCount++;
         }
       }
-    });
+    };
 
     // Check if any valid coordinates were found
     if (!hasValidCoordinates) {

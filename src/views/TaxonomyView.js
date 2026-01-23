@@ -1,18 +1,15 @@
 // views/TaxonomyView.js
 import * as d3 from "d3";
-import { ViewComponents } from '../utils/ViewComponents.js';
 import { createMapUrlWithFilter } from '../utils/urlHelper.js';
+import { SimpleView } from "./SimpleView.js";
 
 const base = import.meta.env.BASE_URL;
 
-export class TaxonomyView {
-  constructor(data, indexKey, indexInfo) {
-    this.data = data;
-    this.indexKey = indexKey;
-    this.indexInfo = indexInfo || {};
+export class TaxonomyView extends SimpleView {
+  constructor(data, indexKey, indexInfo, showLocations, showWork) {
+    super(data, indexKey, indexInfo, showLocations, showWork);
     this.hierarchyData = this.buildHierarchy(data, indexKey);
     this.activeTab = 'nested-list';
-    this.currentSearchTerm = '';
     this.expandedItems = new Set();
   }
 
@@ -39,65 +36,6 @@ export class TaxonomyView {
     });
 
     return root;
-  }
-
-  // ===============================
-  // COMPONENTI SIDEBAR
-  // ===============================
-
-  generateHeader() {
-    const header = document.createElement('div');
-    header.className = 'mb-6';
-    header.innerHTML = `
-      <span class="font-medium border-b-2 border-primary-600 pb-1">${this.indexInfo.category || 'Tassonomia'}</span>
-      <h1 class="text-3xl font-bold text-slate-800 my-2">Indice: <span class="text-secondary-700">${this.indexInfo.name || this.indexKey}</span></h1>
-    `;
-    return header;
-  }
-
-  generateTabsMenu() {
-    const container = document.createElement('div');
-    container.className = 'mb-6';
-
-    const title = document.createElement('h3');
-    title.className = 'text-sm font-medium text-slate-700 mb-2';
-    title.textContent = 'Visualizzazione';
-
-    const buttons = document.createElement('div');
-    buttons.className = 'flex flex-col gap-2';
-
-    const tabs = [
-      { id: 'nested-list', label: 'Lista Annidata', icon: '📋' },
-      // { id: 'treemap', label: 'Treemap', icon: '🔲' },
-      // { id: 'sunburst', label: 'Sunburst', icon: '☀️' }
-    ];
-
-    const tabButtons = [];
-
-    tabs.forEach(tab => {
-      const button = ViewComponents.createTabButton(
-        tab.label,
-        tab.icon,
-        this.activeTab === tab.id,
-        () => {
-          this.switchTab(tab.id);
-          this.setActiveButton(button, tabButtons);
-        }
-      );
-      tabButtons.push(button);
-      buttons.appendChild(button);
-    });
-
-    container.appendChild(title);
-    container.appendChild(buttons);
-    return container;
-  }
-
-  setActiveButton(activeButton, allButtons) {
-    allButtons.forEach(btn => {
-      btn.className = 'flex items-center gap-2 w-full px-3 py-2 text-sm bg-slate-200 text-slate-700 rounded hover:bg-slate-300';
-    });
-    activeButton.className = 'flex items-center gap-2 w-full px-3 py-2 text-sm bg-primary-600 text-white rounded hover:bg-primary-700';
   }
 
   // ===============================
@@ -138,22 +76,31 @@ export class TaxonomyView {
       this.renderActiveView(container);
     }
   }
+  refreshList() {
+    const container = document.querySelector('.taxonomy-content-wrapper');
+    if (container) {
+      this.renderActiveView(container);
+    }
+  }
 
   // ===============================
   // RICERCA E FILTRI
   // ===============================
 
-  filterBySearch(searchTerm) {
-    this.currentSearchTerm = searchTerm.toLowerCase();
-    this.refreshContent();
-  }
+  // filterBySearch(searchTerm) {
+  //   this.currentSearchTerm = searchTerm.toLowerCase();
+  //   this.refreshContent();
+  // }
 
-  shouldShowItem(key, items, currentPath) {
+  shouldShowItem(key, items, currentPath, subElements) {
     if (!this.currentSearchTerm) return true;
     if (key.toLowerCase().includes(this.currentSearchTerm)) return true;
     if (items && items.some(item =>
       (item.Name && item.Name.toLowerCase().includes(this.currentSearchTerm)) ||
       (item.Location && item.Location.toLowerCase().includes(this.currentSearchTerm))
+    )) return true;
+    if (subElements && Object.keys(subElements).some(key =>
+      key.toLowerCase().includes(this.currentSearchTerm)
     )) return true;
     if (currentPath.toLowerCase().includes(this.currentSearchTerm)) return true;
     return false;
@@ -187,20 +134,24 @@ export class TaxonomyView {
   }
 
   // ===============================
-  // VISUALIZZAZIONE: Lista Annidata SENZA DETTAGLI LOCATION
+  // VISUALIZZAZIONE: Lista Annidata 
   // ===============================
 
   renderNestedList(container) {
     const buildList = (obj, level = 0, parentPath = '') => {
       const listContainer = document.createElement("div");
-
-      Object.entries(obj).forEach(([key, value]) => {
+      let obj_list = Object.entries(obj);
+      this.sortOrder === 'alphabetical'
+        ? obj_list.sort(([a], [b]) => a.localeCompare(b))
+        : obj_list.sort(([a, itemsA], [b, itemsB]) => this.countItems(itemsB) - this.countItems(itemsA));
+      obj_list.forEach(([key, value]) => {
         if (key === "_items") return;
 
         const currentPath = parentPath ? `${parentPath} > ${key}` : key;
         const items = value._items || [];
+        const subElement = items.length == 0 && value;
 
-        if (!this.shouldShowItem(key, items, currentPath)) return;
+        if (!this.shouldShowItem(key, items, currentPath, subElement)) return;
 
         const count = this.countItems(value);
         const hasDirectItems = items.length > 0;
@@ -225,9 +176,9 @@ export class TaxonomyView {
         const right = document.createElement("div");
         right.className = "flex items-center space-x-3 flex-shrink-0";
 
-        const badge = ViewComponents.createCountBadge(count);
-        const chevron = ViewComponents.createChevron(this.expandedItems.has(itemId));
-        const mapButton = ViewComponents.createMapButton(this.indexKey, currentPath, (val) => this.goToMapWithFilter(val));
+        const badge = this.createCountBadge(count);
+        const chevron = this.createChevron(this.expandedItems.has(itemId));
+        const mapButton = this.createMapButton(this.indexKey, currentPath, (val) => this.goToMapWithFilter(val));
 
         right.appendChild(badge);
         right.appendChild(chevron);
@@ -254,7 +205,7 @@ export class TaxonomyView {
 
         // Show direct items if any (SOLO HEADER)
         if (hasDirectItems) {
-          const locations = ViewComponents.groupItemsByLocation(items);
+          const locations = this.groupItemsByLocation(items);
 
           // Wrap locations with same indentation as other child nodes
           const locationsContainer = document.createElement('div');
@@ -264,7 +215,7 @@ export class TaxonomyView {
             .sort(([a], [b]) => a.localeCompare(b, 'it', { sensitivity: 'base' }))
             .forEach(([location, locationItems]) => {
 
-              const { header: locationHeader } = ViewComponents.createAccordionHeader({
+              const { header: locationHeader } = this.createAccordionHeader({
                 title: location,
                 subtitle: null,
                 count: locationItems.length,
@@ -304,10 +255,17 @@ export class TaxonomyView {
 
     const wrapper = document.createElement("div");
     wrapper.className = "bg-white rounded-lg shadow-sm divide-y divide-slate-200";
-    const list = buildList(this.hierarchyData);
+    const list = buildList(Object.fromEntries(
+      Object.entries(this.hierarchyData)
+        .filter(([hierarchyKey, value]) =>
+          Object.keys(this.filteredData).some(filteredKey =>
+            filteredKey.startsWith(hierarchyKey)
+          )
+        )
+    ));
 
     if (list.children.length === 0) {
-      wrapper.appendChild(ViewComponents.createEmptyState('Nessun risultato trovato'));
+      wrapper.appendChild(this.createEmptyState('Nessun risultato trovato'));
     } else {
       wrapper.appendChild(list);
     }
@@ -559,8 +517,16 @@ export class TaxonomyView {
   generateViewComponents() {
     return {
       sidebar: [
-        this.generateHeader(),
-        this.generateTabsMenu()
+        this.generateHeader('Tassonomia'),
+        // From parent SimpleView
+        this.generateSearchBar(),
+        this.generateSortMenu(),
+        this.generateInitialsFilter()
+        // this.generateTabsMenu([
+        // { id: 'nested-list', label: 'Lista Annidata', icon: '📋' },
+        // { id: 'treemap', label: 'Treemap', icon: '🔲' },
+        // { id: 'sunburst', label: 'Sunburst', icon: '☀️' }
+        //  ])
       ],
       content: [
         this.generateTaxonomyContent()

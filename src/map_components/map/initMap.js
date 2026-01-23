@@ -14,8 +14,13 @@ import { createPopupContent } from './popupManager.js';
 function initMap(config) {
     const { initialView, initialZoom, tileLayer = config.map.tileLayers[Object.keys(config.map.tileLayers)[0]].tileLayer, attribution = config.map.tileLayers[Object.keys(config.map.tileLayers)[0]].attribution } = config.map;
 
-    const map = L.map('map').setView(initialView, initialZoom);
+    const map = L.map('map', {
+        zoomControl: false
+    }).setView(initialView, initialZoom);
     L.tileLayer(tileLayer, { attribution }).addTo(map);
+    L.control.zoom({
+        position: 'bottomright'
+    }).addTo(map);
 
     window.map = map;
 
@@ -272,8 +277,8 @@ function initMap(config) {
             }
 
             marker.bindPopup(() => createPopupContent(group.name, group.items, group.coords, isSpecial, config), {
-                maxWidth: map.getSize().x * 0.55,   // map width
-                minWidth: map.getSize().x * 0.55,
+                maxWidth: map.getSize().x * 0.4,   // map width
+                minWidth: map.getSize().x * 0.4,
                 className: 'full-map-popup'  // custom class for CSS
             });
 
@@ -365,8 +370,8 @@ function initMap(config) {
 
             // Bind popup con evento per aggiornare stato quando si apre
             marker.bindPopup(() => createPopupContent(group.name, group.items, group.coords, isSpecial, config), {
-                maxWidth: map.getSize().x * 0.55,   // map width
-                minWidth: map.getSize().x * 0.55,
+                maxWidth: map.getSize().x * 0.4,   // map width
+                minWidth: map.getSize().x * 0.4,
                 className: 'full-map-popup'  // custom class for CSS
             });
 
@@ -459,8 +464,8 @@ function initMap(config) {
 
             // Create popup content and bind it dynamically
             circle.bindPopup(() => createPopupContent(group.name, group.items, group.coords, isSpecial, config), {
-                maxWidth: map.getSize().x * 0.55,   // map width
-                minWidth: map.getSize().x * 0.55,
+                maxWidth: map.getSize().x * 0.4,   // map width
+                minWidth: map.getSize().x * 0.4,
                 className: 'full-map-popup'  // custom class for CSS
             });
 

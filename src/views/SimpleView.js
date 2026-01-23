@@ -1,17 +1,14 @@
 // views/SimpleView.js
-import { ViewComponents } from '../utils/ViewComponents.js';
+import { ViewComponents } from './ViewComponents.js';
 import { createMapUrlWithFilter } from '../utils/urlHelper.js';
 import { ModalRenderer } from '.././map_components/references/modalRenderer.js';
 import { loadConfiguration } from '.././utils/configLoader.js';
 
-export class SimpleView {
+export class SimpleView extends ViewComponents {
   constructor(data, indexKey, indexInfo, showLocations, showWork) {
-    this.data = data;
-    this.indexKey = indexKey;
-    this.indexInfo = indexInfo || {};
+    super(data, indexKey, indexInfo);
     this.aggregatedData = this.aggregateData(data, indexKey);
     this.filteredData = { ...this.aggregatedData };
-    this.currentSearchTerm = '';
     this.sortOrder = 'alphabetical';
     this.showLocations = showLocations
     this.showWork = showWork
@@ -115,16 +112,6 @@ export class SimpleView {
   // COMPONENTI SIDEBAR
   // =====================================================
 
-  generateHeader() {
-    const header = document.createElement('div');
-    header.className = 'mb-6';
-    header.innerHTML = `
-      <span class="font-medium border-b-2 border-primary-600 pb-1">${this.indexInfo.category || 'Indice'}</span>
-      <h1 class="text-3xl font-bold text-slate-800 my-2">Indice: <span class="text-secondary-700">${this.indexInfo.name || this.indexKey}</span></h1>
-    `;
-    return header;
-  }
-
   generateSearchBar() {
     const container = document.createElement('div');
     container.className = 'mb-6';
@@ -218,7 +205,7 @@ export class SimpleView {
     const entries = Object.entries(this.filteredData);
 
     if (entries.length === 0) {
-      return ViewComponents.createEmptyState('Nessun risultato trovato');
+      return this.createEmptyState('Nessun risultato trovato');
     }
 
     const wrapper = document.createElement("div");
@@ -243,7 +230,7 @@ export class SimpleView {
       const container = document.createElement('div');
       container.className = 'border-b border-slate-200 last:border-b-0';
 
-      const { header } = ViewComponents.createAccordionHeader({
+      const { header } = this.createAccordionHeader({
         title: key,
         count: items.length,
         indexKey: this.indexKey,
@@ -266,13 +253,13 @@ export class SimpleView {
         const locationsContainer = document.createElement('div');
         locationsContainer.className = 'ml-4';
 
-        const locations = ViewComponents.groupItemsByLocation(items);
+        const locations = this.groupItemsByLocation(items);
 
         Object.entries(locations)
           .sort(([a], [b]) => a.localeCompare(b, 'it', { sensitivity: 'base' }))
           .forEach(([location, locationItems]) => {
 
-            const { header: locationHeader } = ViewComponents.createAccordionHeader({
+            const { header: locationHeader } = this.createAccordionHeader({
               title: location,
               subtitle: null,
               count: locationItems.length,
@@ -329,7 +316,7 @@ export class SimpleView {
 
     return {
       sidebar: [
-        this.generateHeader(),
+        this.generateHeader('Indice'),
         this.generateSearchBar(),
         this.generateSortMenu(),
         this.generateInitialsFilter()
