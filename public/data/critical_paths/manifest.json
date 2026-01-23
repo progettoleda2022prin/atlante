@@ -4,6 +4,27 @@
     "title": "Spazi reali, spazi fittizi, spazi generici o specifici: una tassonomia",
     "description": "Questo percorso critico attraversa una serie di opere dell’atlante in cui la costruzione dello spazio – reale, fittizio, indefinito – diventa parte essenziale della narrazione e del pensiero ecologico che le attraversa. Non si tratta solo di osservare dove le storie si svolgono, ma di capire come lo spazio viene pensato, deformato, nominato, reso riconoscibile o, al contrario, reso vago fino a diventare universale. L’intento è quello di delineare una piccola tassonomia della rappresentazione spaziale nella letteratura italiana contemporanea, dagli anni Cinquanta a oggi, nei testi in cui la questione ambientale e quella geografica si intrecciano.",
     "authors": ["Lavinia Torti"],   
-    "keywords": ["Spazio", "Tassonomia"]
+    "keywords": ["spazio", "tassonomia", "tipologie di spazio"]
+  }, 
+    {
+    "fileName": "Percorso critico 2.docx",
+    "title": "Ecologia e vita individuale nel romanzo italiano contemporaneo",
+    "description": "Questo percorso analizza alcuni romanzi italiani contemporanei (anni Dieci–oggi) che integrano esplicitamente la dimensione ecologica all’interno di narrazioni realistiche e quotidiane. In queste opere la crisi ambientale non funziona come semplice metafora, ma come condizione concreta dell’esperienza vissuta, in rapporto figurale con le crisi esistenziali, sociali e politiche dei personaggi. Attraverso testi di Sarchi, Pecoraro, Luccone, Mezzalama e Di Paolo, emerge una riflessione critica sulle ideologie della natura, sul fallimento di modelli conciliativi tra sviluppo e ambiente e sulla necessità di ripensare il rapporto tra storia umana e tempo ecologico, tra oìkos individuale e oìkos comune.",
+    "authors": ["Niccolò Scaffai"],   
+    "keywords": ["crisi ecologica", "antropocene", "esperienza vissuta", "ideologia della natura"]
+  },
+  {
+    "fileName": "Percorso critico 3.docx",
+    "title": "Per un’ecologia della fiaba e una fiaba dell’ecologia: Primo Levi e Paolo Volponi",
+    "description": "La scheda ripercorre due raccolte di racconti di Primo Levi (Storie naturali e Vizio di forma) e Il pianeta irritabile di Paolo Volponi per verificare la presenza di elementi strutturali e tematici della fiaba all’interno della narrativa distopica e postapocalittica a tema ecologico. Muovendo dall’ipotesi di un’“ecologia della fiaba”, l’analisi mette in luce affinità quali l’indeterminatezza spazio-temporale, la ridotta agency umana, il ruolo di animali e oggetti e un linguaggio privo di patetismo pur in presenza di estrema violenza, suggerendo una continuità formale e simbolica tra fiaba ed eco-distopia.",
+    "authors": ["Lavinia Torti"],   
+    "keywords": ["fiaba", "distopia", "romanzo postapocalittico", "non umano-Animali"]
+  },
+    {
+    "fileName": "Percorso critico 4.docx",
+    "title": "Re-immaginare la città",
+    "description": "Questo percorso critico è dedicato all’immaginazione del futuro della città. In altre parole, prende in considerazione alcuni romanzi che, nel narrare le vicende dei personaggi, dedicano molto spazio al tracciare l’assetto futuro di una specifica città: Roma in Cinacittà di Tommaso Pincio¸ Venezia ne La seconda mezzanotte di Antonio Scurati e Milano in Prima della rivolta di Michele Turazzi. A partire da queste rappresentazioni, si proverà a ragionare sulle strategie impiegate, sulle somiglianze e sulle differenze tra i vari modi possibili di pensare la città nel suo futuro e quindi nel suo presente.",
+    "authors": ["Marzia Beltrami"],   
+    "keywords": ["città", "futuro", "speculazione", "distopia"]
   }
 ]
