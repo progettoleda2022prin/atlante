@@ -10,28 +10,28 @@
   },
   "events": [
     {
-      "description": "Reimmaginare lo spazio tra realtà e fiction | 1 luglio 2024, Fabbrica del Vapore, Milano.\n Incontro con Giorgio Falco (scrittore), Sabrina Ragucci (fotografa) e Davide Rapp (regista e artista visivo).\n Moderatori: Marzia Beltrami (IULM), Paolo Giovannetti (IULM) e Filippo Pennacchio (IULM).",
+      "description": "<i>Reimmaginare lo spazio tra realtà e fiction</i> | 1 luglio 2024, Fabbrica del Vapore, Milano.\n Incontro con Giorgio Falco (scrittore), Sabrina Ragucci (fotografa) e Davide Rapp (regista e artista visivo).\n Moderatori: Marzia Beltrami (IULM), Paolo Giovannetti (IULM) e Filippo Pennacchio (IULM).",
       "flyer_path": "/imgs/flyers/reimmaginare_lo_spazio.jpg"
     },
     {
-      "description": "Proiezione del film Safe (Todd Haynes, 1995) entro il ciclo Il sospetto di un altro mondo | 29 ottobre 2024, Cinema Modernissimo, Bologna. \n La proiezione del film è stata seguita da una conversazione fra lo scrittore Tommaso Pincio e Lavinia Torti.",
+      "description": "Proiezione del film <i>Safe</i> (Todd Haynes, 1995) entro il ciclo <i>Il sospetto di un altro mondo</i> | 29 ottobre 2024, Cinema Modernissimo, Bologna. \n La proiezione del film è stata seguita da una conversazione fra lo scrittore Tommaso Pincio e Lavinia Torti.",
       "flyer_path": "/imgs/flyers/safe.jpg"
     },
     {
-      "description": "Spazialità, poesia, cinema | 29 novembre 2024, Ferrobedò, Milano.\n Incontro con i poeti Giulio Marzaioli e Valentino Ronchi.\n Moderatori: Marzia Beltrami (IULM), Paolo Giovannetti (IULM) e Filippo Pennacchio (IULM)",
+      "description": "<i>Spazialità, poesia, cinema</i> | 29 novembre 2024, Ferrobedò, Milano.\n Incontro con i poeti Giulio Marzaioli e Valentino Ronchi.\n Moderatori: Marzia Beltrami (IULM), Paolo Giovannetti (IULM) e Filippo Pennacchio (IULM)",
       "flyer_path": "/imgs/flyers/spazialita_poesia_cinema.jpg"
     },
     {
-      "description": "Lo spazio attraverso i media. Prospettive narratologiche | 25 febbraio 2025, Università IULM, Milano.\n La giornata di studi si è proposta di riflettere in chiave narratologica sul rapporto fra spazio e racconto nella sua articolazione fra i vari media, dalla letteratura al cinema, dal fumetto al videogioco, fino alle narrazioni interattive digitali.",
+      "description": "<i>Lo spazio attraverso i media. Prospettive narratologiche</i> | 25 febbraio 2025, Università IULM, Milano.\n La giornata di studi si è proposta di riflettere in chiave narratologica sul rapporto fra spazio e racconto nella sua articolazione fra i vari media, dalla letteratura al cinema, dal fumetto al videogioco, fino alle narrazioni interattive digitali.",
       "flyer_path": "/imgs/flyers/lo_spazio_attraverso_i_media.jpg"
     },
     {
-      "description": "Immaginari della città distopica. Spazio e rappresentazione nella letteratura contemporanea | 26-27 maggio 2025, Università di Siena.\n Attraverso gli interventi di scrittori e studiosi, la giornata di studi ha esplorato i modi in cui lo spazio urbano è stato immaginato alla luce dei cambiamenti imposti dalla crisi ecologica e delle emozioni che questa può suscitare.",
-      "flyer_path": null
+      "description": "<i>Immaginari della città distopica. Spazio e rappresentazione nella letteratura contemporanea</i> | 26-27 maggio 2025, Università di Siena.\n Attraverso gli interventi di scrittori e studiosi, la giornata di studi ha esplorato i modi in cui lo spazio urbano è stato immaginato alla luce dei cambiamenti imposti dalla crisi ecologica e delle emozioni che questa può suscitare.",
+      "flyer_path": "/imgs/flyers/citta_distopica.jpg"
     },
     {
-      "description": "Narrare lo spazio, mappare il racconto | 27-28 gennaio 2026, Università di Bologna.\n Il convegno conclusivo del progetto ha offerto l’occasione di ragionare attorno al rapporto fra spazio e racconto in prospettiva sia teorica che creativa, nonché di presentare l’Atlante e cominciare a discuterne le applicazioni e i potenziali sviluppi.",
-      "flyer_path": null
+      "description": "<i>Narrare lo spazio, mappare il racconto</i> | 27-28 gennaio 2026, Università di Bologna.\n Il convegno conclusivo del progetto ha offerto l’occasione di ragionare attorno al rapporto fra spazio e racconto in prospettiva sia teorica che creativa, nonché di presentare l’Atlante e cominciare a discuterne le applicazioni e i potenziali sviluppi.",
+      "flyer_path": "/imgs/flyers/narrare_lo_spazio.jpg"
     }
   ],
   "publications": [
@@ -131,7 +131,7 @@
       },
       {
         "value": "date_asc",
-        "label": "Anno (Ascentende)"
+        "label": "Anno (Ascendente)"
       },
       {
         "value": "date_desc",
@@ -239,6 +239,7 @@
   "searchableFields": [
     "Titolo",
     "Anno",
-    "Autore"
+    "Autore",
+    "Parte di"
   ]
 }
