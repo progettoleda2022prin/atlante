@@ -223,7 +223,7 @@ export class FacetRenderer {
       checkbox.dataset.facetType = facetKey;
       checkbox.checked = isSelected;
       checkbox.disabled = isDisabled;
-      checkbox.className = 'form-checkbox mr-2';
+      checkbox.className = 'form-checkbox mr-2 flex-shrink-0';
 
       leftContainer.appendChild(checkbox);
 

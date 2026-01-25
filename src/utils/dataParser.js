@@ -211,7 +211,7 @@ const dataParser = {
         // If empty or missing, check if this field should have "Non specificato"
         if (value === '') {
           if (fieldsForNonSpecificato.includes(header)) {
-            item[header] = 'Non specificato';
+            item[header] = header == 'Tipologia del luogo' ? 'non specificato' : 'Non specificato';
           } else {
             item[header] = '';
           }

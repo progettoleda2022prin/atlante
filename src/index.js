@@ -1,6 +1,6 @@
 // src/index.js
 import { initMap } from './map_components/map/initMap.js';
-import { parseData } from './utils/dataParser.js';
+// import { parseData } from './utils/dataParser.js';
 import { loadConfiguration } from './utils/configLoader.js';
 import { UniversalNav } from './navigation/universalNav.js';
 import { UniversalFooter } from './navigation/universalFooter.js';

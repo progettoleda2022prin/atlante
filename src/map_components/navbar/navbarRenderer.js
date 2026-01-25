@@ -226,7 +226,6 @@ export class NavBarRenderer {
                 this.popups.layers = new LayerSelectionPopupManager(this.config.map.tileLayers);
                 this.popups.layers.init();
             }
-
             if (this.mapInstance) {
                 this.popups.markers = new MarkersSelectionPopupManager(this.mapInstance);
                 this.popups.markers.init();
@@ -489,6 +488,3 @@ export class NavBarRenderer {
         this.mobileMenu = null;
     }
 }
-
-// Esporta istanza singleton
-export const navBarRenderer = new NavBarRenderer();

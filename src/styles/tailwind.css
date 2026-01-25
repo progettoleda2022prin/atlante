@@ -211,7 +211,7 @@ body#map-page #map {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  max-width: 15rem;
+  max-width: 20rem;
 }
 
 .facet-hidden {
@@ -550,7 +550,7 @@ input[type="checkbox"].form-checkbox:indeterminate::after {
 
 .leaflet-control-zoom {
   margin-bottom: 6vh !important;
-  margin-right: 35vh !important;
+  margin-right: 46vh !important;
 }
 
 /* Responsive Design */
