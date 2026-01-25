@@ -83,7 +83,7 @@ function createKeywordsBadges(keywords) {
 // Function to create document card
 function createDocumentCard(doc, index) {
     const card = document.createElement('div');
-    card.className = 'bg-white rounded-2xl overflow-hidden shadow-lg border-2 border-primary-100 hover:border-primary-300 hover:shadow-2xl duration-300 transform mb-8';
+    card.className = 'bg-white rounded-2xl overflow-hidden shadow-lg border-2 border-primary-100 hover:border-primary-300 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 group animate-slide-in-up break-inside-avoid mb-8';
     card.style.animationDelay = `${index * 0.05}s`;
 
     // Main content container
