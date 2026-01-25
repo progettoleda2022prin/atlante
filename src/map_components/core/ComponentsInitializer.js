@@ -1,7 +1,7 @@
 // src/map_components/core/ComponentsInitializer.js
 
 import { initMap } from '../map/initMap.js';
-import { NavBarRenderer } from '../navbar/navbarRenderer.js';
+import { navBarRenderer } from '../navbar/navbarRenderer.js';
 import { FacetRenderer } from '../facets/facetRenderer.js';
 import { RangeRenderer } from '../facets/rangeRenderer.js';
 import { TaxonomyRenderer } from '../facets/taxonomyRenderer.js';
@@ -30,6 +30,7 @@ export class ComponentsInitializer {
     }
     window.ledaSearch.config = this.config;
     window.ledaSearch.mapInstance = this.components.mapInstance;
+
     // Make the switchMarkerType function globally accessible
     window.switchMarkerType = (markerType) => {
       if (this.components.mapInstance && this.components.mapInstance.switchMarkerType) {
@@ -49,7 +50,8 @@ export class ComponentsInitializer {
     });
 
     // Setup map navbar 
-    this.components.navBar = new NavBarRenderer();
+    this.components.navBar = navBarRenderer;
+    navBarRenderer.init();
 
     return this.components;
   }

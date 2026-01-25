@@ -74,7 +74,7 @@ export class MobileMenuManager {
         this.clickHandler = () => this.toggleMenu();
         this.hamburgerBtn.addEventListener('click', this.clickHandler);
 
-        const bottomNav = this.elements.bottomNav || document.querySelector('nav') || document.body;
+        const bottomNav = this.elements.bottomNav || document.getElementById('bottom-navbar') || document.body;
         bottomNav.appendChild(this.hamburgerBtn);
     }
 

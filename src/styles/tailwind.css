@@ -548,9 +548,10 @@ input[type="checkbox"].form-checkbox:indeterminate::after {
   background: linear-gradient(to bottom, #64748b, #475569);
 }
 
-.leaflet-control-zoom {
-  margin-bottom: 6vh !important;
-  margin-right: 46vh !important;
+.leaflet-top,
+.leaflet-left {
+  margin-top: 80px !important;
+  margin-left: 240px !important;
 }
 
 /* Responsive Design */
@@ -578,9 +579,10 @@ input[type="checkbox"].form-checkbox:indeterminate::after {
     padding: 0.625rem;
   }
 
-  .leaflet-control-zoom {
-    margin-bottom: 7vh !important;
-    margin-right: 3vh !important;
+  .leaflet-top,
+  .leaflet-left {
+    margin-top: 120px !important;
+    margin-left: 10px !important;
   }
 }
 

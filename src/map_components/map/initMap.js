@@ -14,13 +14,8 @@ import { createPopupContent } from './popupManager.js';
 function initMap(config) {
     const { initialView, initialZoom, tileLayer = config.map.tileLayers[Object.keys(config.map.tileLayers)[0]].tileLayer, attribution = config.map.tileLayers[Object.keys(config.map.tileLayers)[0]].attribution } = config.map;
 
-    const map = L.map('map', {
-        zoomControl: false
-    }).setView(initialView, initialZoom);
+    const map = L.map('map').setView(initialView, initialZoom);
     L.tileLayer(tileLayer, { attribution }).addTo(map);
-    L.control.zoom({
-        position: 'bottomright'
-    }).addTo(map);
 
     window.map = map;
 

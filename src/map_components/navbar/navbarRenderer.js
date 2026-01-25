@@ -42,7 +42,6 @@ export class NavBarRenderer {
         this.mobileMenu = null;
         this.cleanupFns = [];
 
-        this.init();
     }
 
     // Getters per accesso globale
@@ -488,3 +487,6 @@ export class NavBarRenderer {
         this.mobileMenu = null;
     }
 }
+
+// Esporta istanza singleton
+export const navBarRenderer = new NavBarRenderer();
