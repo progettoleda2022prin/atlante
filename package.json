@@ -8,9 +8,13 @@
     "build": "vite build --mode production",
     "build:css": "tailwindcss -i ./src/styles/tailwind.css -o ./dist/assets/css/tailwind.css --watch",
     "preview": "vite preview",
-    "setup": "npm install"
+    "setup": "npm install",
+    "test:chrome": "npx playwright test --headed --project=chromium",
+    "test:firefox": "npx playwright test --headed --project=firefox",
+    "test:safari": "npx playwright test --headed --project=webkit --ui"
   },
   "devDependencies": {
+    "@playwright/test": "^1.58.0",
     "autoprefixer": "^10.4.20",
     "gh-pages": "^6.3.0",
     "postcss": "^8.4.49",
