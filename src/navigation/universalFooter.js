@@ -77,23 +77,13 @@ export class UniversalFooter {
     }
 
     calculateBasePath() {
-        // Use the environmental base path from Vite
-        const envBasePath = import.meta.env.BASE_URL || '/';
-
-        const currentDir = dirname(this.currentPath);
-
-        // Calculate relative path from current directory to the base
-        const relativePath = relative(currentDir, envBasePath);
-
-        if (relativePath === '' || relativePath === '.') {
-            return './';
-        }
-
-        return relativePath || './';
+        return import.meta.env.BASE_URL || '/';
     }
 
     getRelativePath(targetPath) {
-        return this.join(this.basePath, targetPath);
+        // Remove leading slash from targetPath to avoid double slashes
+        const cleanTarget = targetPath.replace(/^\//, '');
+        return this.basePath + cleanTarget;
     }
 
     isExternalLink(path) {
