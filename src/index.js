@@ -7,80 +7,6 @@ import { UniversalFooter } from './navigation/universalFooter.js';
 import './styles/tailwind.css'
 import './styles/fonts.css'
 
-// Funzione per aggiornare i contenuti dinamicamente
-function updateProjectDescription(config) {
-
-  if (config.project && config.project.projectShortTitle) {
-    document.title = config.project.projectShortTitle;
-  }
-
-  // Aggiorna elementi in base agli attributi data-*
-
-  const projectTitle = document.querySelector('[data-content="project-title"]');
-  if (projectTitle) projectTitle.innerHTML = config.project.projectTitle;
-
-  const projectSubtitle = document.querySelector('[data-content="project-subtitle"]');
-  if (projectSubtitle) projectSubtitle.innerHTML = config.project.projectSubtitle;
-
-  const mapInfoTitle = document.querySelector('[data-content="map-info-title"]');
-  if (mapInfoTitle) mapInfoTitle.textContent = config.project.mapInfoTitle;
-
-  const mapInfoDescription = document.querySelector('[data-content="map-info-description"]');
-  if (mapInfoDescription) mapInfoDescription.textContent = config.project.mapInfoDescription;
-
-  // **NUOVA GESTIONE THUMBNAIL**
-  // Aggiunge/aggiorna la thumbnail del progetto usando data-content
-  const projectThumbnail = document.querySelector('[data-content="project-thumbnail"]');
-  if (projectThumbnail && config.project.projectThumbnailURL) {
-    // Controlla se esiste già un'immagine
-    let existingImage = projectThumbnail.querySelector('img');
-
-    if (existingImage) {
-      // Se esiste già, aggiorna solo il src e l'alt
-      existingImage.src = config.project.projectThumbnailURL;
-      existingImage.alt = config.project.projectShortTitle || 'Logo del progetto';
-    } else {
-      // Pulisce il contenuto esistente
-      projectThumbnail.innerHTML = '';
-
-      // Crea una nuova immagine
-      const thumbnailImage = document.createElement('img');
-      thumbnailImage.src = config.project.projectThumbnailURL;
-      thumbnailImage.alt = config.project.projectShortTitle || 'Logo del progetto';
-      thumbnailImage.className = 'h-20 object-contain'; // Dimensioni appropriate per l'header
-
-      projectThumbnail.appendChild(thumbnailImage);
-    }
-  } else if (projectThumbnail && !config.project.projectThumbnailURL) {
-    // Se il container esiste ma non c'è thumbnail nel config, rimuovi eventuali immagini
-    const existingImage = projectThumbnail.querySelector('img');
-    if (existingImage) {
-      existingImage.remove();
-    }
-  }
-
-  // Per il testo del titolo del progetto (codice esistente)
-  const projectNameElement = document.querySelector('[data-content="project-name"]');
-  if (projectNameElement) {
-    // Troviamo l'ultimo nodo di testo che contiene "Il Progetto"
-    let lastTextNode = null;
-    for (let i = 0; i < projectNameElement.childNodes.length; i++) {
-      if (projectNameElement.childNodes[i].nodeType === Node.TEXT_NODE) {
-        lastTextNode = projectNameElement.childNodes[i];
-      }
-    }
-
-    if (lastTextNode) {
-      lastTextNode.textContent = "Il " + config.project.projectName;
-    }
-  }
-
-  // Aggiorna i paragrafi della descrizione (codice esistente)
-  const projectDescription = document.querySelector('[data-content="project-description"]');
-  if (projectDescription) projectDescription.innerHTML = config.project.projectDescription;
-
-  console.log("Contenuti aggiornati con successo");
-}
 
 function initializeScrollytelling() {
   const sectionsContainer = document.querySelector('.sections-container');
@@ -539,9 +465,6 @@ async function initializeApp() {
 
     const universalFooter = new UniversalFooter(config);
     universalFooter.render();
-
-    // Aggiorna la descrizione del progetto
-    updateProjectDescription(config);
 
     // Inizializza le schede degli indici
     await initializeIndexPreview(config);
